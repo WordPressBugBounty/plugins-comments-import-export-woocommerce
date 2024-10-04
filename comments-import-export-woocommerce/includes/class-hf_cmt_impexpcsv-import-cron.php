@@ -8,6 +8,9 @@ class HW_Cmt_ImpExpCsv_ImportCron {
     public $file_url;
     public $error_message;
 
+    public $imports_enabled;
+    public $settings_ftp_import;
+
     public function __construct() {
         add_filter('cron_schedules', array($this, 'hw_auto_import_schedule'));
         add_action('init', array($this, 'hw_new_scheduled_cmt_import'));

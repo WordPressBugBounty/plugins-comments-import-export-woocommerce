@@ -352,9 +352,9 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer {
                     wp_die(__('Access Denied', 'hw_csv_import_export'));
                 }
                 $file      = stripslashes( $_POST['file'] ); // Validating given path is valid path, not a URL
-                if (filter_var($file, FILTER_VALIDATE_URL)) {
+                if (filter_var($file, FILTER_VALIDATE_URL) || !self::is_valid_file_path($file)) {
                     die();
-                } 
+                }
 
                 add_filter('http_request_timeout', array($this, 'bump_request_timeout'));
 
@@ -1219,6 +1219,25 @@ public function product_id_not_exists($id, $cmd_type) {
      */
     public function bump_request_timeout($val) {
         return 60;
+    }
+    public static function is_valid_file_path( $file_url ) {
+
+        $real_file_path = realpath( $file_url );
+    
+        if ( ! $real_file_path ) {
+            return false;
+        }
+    
+        
+        $content_dir 		= realpath( WP_CONTENT_DIR ); // Get the real path of WP_CONTENT_DIR.
+        $upload_dir 		= wp_upload_dir();
+        $current_upload_dir = realpath( $upload_dir['path'] ); // Get the real path of wp upload directory.
+        $plugin_upload_dir 	= $content_dir . '/plugins/comments-import-export-woocommerce'; // Plugin directory for FTP upload.
+    
+        return  ( strpos( $real_file_path, $content_dir ) === 0 ) &&
+                ( ( $current_upload_dir && strpos( $real_file_path, $current_upload_dir ) === 0 ) || 
+                  ( strpos( $real_file_path, $plugin_upload_dir ) === 0 )
+                );
     }
 
 }

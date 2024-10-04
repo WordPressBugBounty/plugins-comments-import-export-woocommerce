@@ -5,6 +5,8 @@ if (!defined('ABSPATH'))
 class HW_Cmt_ImpExpCsv_Cron {
 
     public $settings;
+    public $exports_enabled;
+    
 
     public function __construct() {
         add_filter('cron_schedules', array($this, 'hw_auto_export_schedule'));
