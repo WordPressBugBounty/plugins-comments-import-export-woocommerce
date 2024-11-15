@@ -6,7 +6,7 @@
   Description: Import and Export WordPress Comments From and To your Website.
   Author: WebToffee
   Author URI: https://www.webtoffee.com/
-  Version: 2.3.9
+  Version: 2.4.0
   Text Domain: comments-import-export-woocommerce
   License: GPLv3
   License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -27,7 +27,7 @@ if (!defined('HW_CMT_CSV_IM_EX')) {
 
 if (!defined('PLUGIN_VERSION')) {
 
-    define("PLUGIN_VERSION", "2.3.9");
+    define("PLUGIN_VERSION", "2.4.0");
 }
 
 define('HF_CMT_IM_EX_PATH_URL',  plugin_dir_url(__FILE__));
@@ -104,8 +104,8 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
                         '<a href="' . admin_url('admin.php?page=hw_cmt_csv_im_ex') . '">' . __('Import Export', 'comments-import-export-woocommerce') . '</a>',
                         '<a href="https://www.webtoffee.com/setting-up-wordpress-woocommerce-comments-import-export-plugin" target="_blank">' . __('Documentation', 'comments-import-export-woocommerce') . '</a>',
                         '<a href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/" target="_blank">' . __('Support', 'comments-import-export-woocommerce') . '</a>',
-                        '<a href="https://www.webtoffee.com/" target="_blank"  style="color:#3db634;">' . __('Premium Plugins', 'comments-import-export-woocommerce') . '</a>',
-                        '<a target="_blank" href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/reviews?rate=5#new-post">' . __('Review', 'comments-import-export-woocommerce') . '</a>',
+                        '<a href="https://www.webtoffee.com/plugins/" target="_blank"  style="color:#3db634;">' . __('Premium Plugins', 'comments-import-export-woocommerce') . '</a>',
+                        '<a target="_blank" style="color:#f909ff;" href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/reviews#new-post">' . __('Review', 'comments-import-export-woocommerce') . '</a>',
                         );
                       if (array_key_exists('deactivate', $links)) {
                     $links['deactivate'] = str_replace('<a', '<a class="cmt-deactivate-link"', $links['deactivate']);
@@ -214,7 +214,7 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
                     if (in_array($screen->id, $allowed_screen_ids) || (isset($_GET['page']) && $_GET['page'] == 'hw_cmt_csv_im_ex')|| (isset($_GET['import']) && $_GET['import'] == 'product_comments_csv')) {
                         if (!get_option('wcie_wt_plugin_reviewed')) {
                             $footer_text = sprintf(
-                                    __('If you like the plugin please leave us a %1$s review.', 'comments-import-export-woocommerce'), '<a href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/reviews?rate=5#new-post" target="_blank" class="wt-review-link" data-rated="' . esc_attr__('Thanks :)', 'comments-import-export-woocommerce') . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
+                                    __('If you like the plugin please leave us a %1$s review.', 'comments-import-export-woocommerce'), '<a href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/reviews#new-post" target="_blank" class="wt-review-link" data-rated="' . esc_attr__('Thanks :)', 'comments-import-export-woocommerce') . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
                             );
 
                             $user_js = "jQuery( 'a.wt-review-link' ).click( function() {

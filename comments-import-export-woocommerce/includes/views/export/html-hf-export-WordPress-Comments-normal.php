@@ -103,54 +103,14 @@
                         <p style="font-size: 12px"><?php _e('Comments under these Articles will be exported.', 'comments-import-export-woocommerce'); ?></p>
                 </td>
                 </div>
-            </tr>
-            
-           <!--  <tr>
-                 <th>
-                     <label for="v_ratings"><?php _e('Stars', 'comments-import-export-woocommerce'); ?></label>
-                 </th>
-                 <td>
-                     <select id="v_ratings" name="stars[]" data-placeholder="<?php _e('Any Star', 'comments-import-export-woocommerce'); ?>" class="wc-enhanced-select" multiple="multiple">
-            <?php
-            for ($i = 1; $i <= 5; $i++) {
-                echo '<option value="' . $i . '">' . $i . ' Star</option>';
-            }
-            ?>
-                     </select>
-                                                         
-                     <p style="font-size: 12px"><?php _e('Comments with these stars will be exported.', 'comments-import-export-woocommerce'); ?></p>
-                 </td>
-             </tr>
-         <!--    <tr>
-                 <th>
-                     <label for="v_owner"><?php _e('Verified Owner`s Comments?', 'comments-import-export-woocommerce'); ?></label>
-                 </th>
-                 <td>
-                     <select id="v_owner" name="owner" data-placeholder="<?php _e('Any Owner', 'comments-import-export-woocommerce'); ?>" class="wc-enhanced-select">
-                         <option value="">--All Comments--</option>
-                         <option value="verified">Yes</option>
-                         <option value="non-verified">No</option>
-                     </select>
-                                                         
-                     <p style="font-size: 12px"><?php _e('Comments of these users will be exported.', 'comments-import-export-woocommerce'); ?></p>
-                 </td>
-             </tr>
-             <!-- <tr>
-                 <th>
-                     <label for="v_sortcolumn"><?php _e('Sort Columns', 'comments-import-export-woocommerce'); ?></label>
-                 </th>
-                 <td>
-                     <input type="text" name="sortcolumn" id="v_sortcolumn" placeholder="<?php _e('post_parent , ID', 'comments-import-export-woocommerce'); ?>" class="input-text" />
-                     <p style="font-size: 12px"><?php _e('What columns to sort pages by, comma-separated. Accepts post_author , post_date , post_title, post_name, post_modified, menu_order, post_modified_gmt , rand , comment_count.', 'comments-import-export-woocommerce'); ?> </p>
-                 </td>
-             </tr> -->
+            </tr>                       
             <tr>
                 <th>
                     <label for="v_delimiter"><?php _e('Delimiter', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
                     <input type="text" name="delimiter" id="v_delimiter" placeholder="<?php _e(',', 'comments-import-export-woocommerce'); ?>" class="input-text" />
-                    <p style="font-size: 12px"><?php _e('Column seperator for exported file', 'comments-import-export-woocommerce'); ?></p>
+                    <p style="font-size: 12px"><?php _e('Column seperator for exported file ( default comma )', 'comments-import-export-woocommerce'); ?></p>
                 </td>
             </tr>
             <tr>

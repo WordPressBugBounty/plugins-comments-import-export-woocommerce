@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div> */?>
     <div class="pipe-review-widget">
         <?php
-        echo sprintf(__('<div class=""><p><i>If you like the plugin please leave us a %1$s review!</i><p></div>', 'comments-import-export-woocommerce'), '<a href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/reviews?rate=5#new-post" target="_blank" class="xa-pipe-rating-link" data-reviewed="' . esc_attr__('Thanks for the review.', 'comments-import-export-woocommerce') . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>');
+        echo sprintf(__('<div class=""><p><i>If you like the plugin please leave us a %1$s review!</i><p></div>', 'comments-import-export-woocommerce'), '<a href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/reviews#new-post" target="_blank" class="xa-pipe-rating-link" data-reviewed="' . esc_attr__('Thanks for the review.', 'comments-import-export-woocommerce') . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>');
         ?>
     </div>
 	
@@ -39,6 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <li><a href="https://wordpress.org/plugins/users-customers-import-export-for-wp-woocommerce/" target="_blank" class=""><?php _e('Import Export WordPress Users and WooCommerce Customers', 'comments-import-export-woocommerce'); ?></a> </li>
                 <li><a href="https://wordpress.org/plugins/order-import-export-for-woocommerce/" target="_blank" class=""><?php _e('Order Export & Order Import for WooCommerce', 'comments-import-export-woocommerce'); ?></a> </li>
                 <li><a href="https://wordpress.org/plugins/wp-migration-duplicator/" target="_blank" class=""><?php _e('WordPress Backup & Migration', 'comments-import-export-woocommerce'); ?></a> </li>
+                <li><a href="https://wordpress.org/plugins/webtoffee-product-feed/" target="_blank" class=""><?php _e('Product Feed for WooCommerce – Google Shopping Feed, Pinterest Feed, TikTok Ads & More', 'comments-import-export-woocommerce'); ?></a> </li>
             </ul>
                 
         

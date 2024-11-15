@@ -109,7 +109,7 @@
                 </th>
                 <td>
                     <input type="text" name="delimiter" id="v_delimiter" placeholder="<?php _e(',', 'comments-import-export-woocommerce'); ?>" class="input-text" />
-                    <p style="font-size: 12px"><?php _e('Column seperator for exported file', 'comments-import-export-woocommerce'); ?></p>
+                    <p style="font-size: 12px"><?php _e('Column seperator for exported file ( default comma )', 'comments-import-export-woocommerce'); ?></p>
                 </td>
             </tr>
             <tr>

@@ -1,11 +1,11 @@
 === WordPress Comments Import & Export ===
 Contributors: webtoffee
 Donate link: https://www.webtoffee.com/plugins/
-Tags: Comments Import,Comments export,WooCommerce comments,WordPress Comments,Comments Import & Export.
+Tags: comments import, comments export, wordpress comments, wordpress comments import, wordpress comments export.
 Requires at least: 3.0.1
-Tested up to: 6.6.2
+Tested up to: 6.7
 Requires PHP: 5.6
-Stable tag: 2.3.9
+Stable tag: 2.4.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -48,14 +48,14 @@ Please refer the <a rel="nofollow" href="https://www.webtoffee.com/setting-up-wo
 Other useful plugins from WebToffee for migrating WooCommerce/WordPress data:
 
  &#128312; <a href="https://wordpress.org/plugins/product-import-export-for-woo/">WooCommerce Product Import Export Plugin</a>: Easily import and export products to/from your WooCommerce store using a CSV file.
- &#128312; <a href="https://wordpress.org/plugins/order-import-export-for-woocommerce/">WooCommerce Order/Coupon/Subscription Import Export</a>: The plugin lets you export and import orders and coupons via CSV to and from your WooCommerce store. 
- &#128312; <a href="https://wordpress.org/plugins/users-customers-import-export-for-wp-woocommerce/">Import Export WordPress Users/Customers</a>: Import and export the users in WordPress and customers in your WooCommerce store using a CSV file with the help of this plugin.
- &#128312; <a href="https://wordpress.org/plugins/wp-migration-duplicator/">WordPress Backup & Migration</a>: Quickly migrate and backup your entire WordPress site or selected files from one location to another. Backup to FTP, Google drive, Amazon S3 or local storage and easily restore them back.
- &#128312; <a href="https://wordpress.org/plugins/webtoffee-product-feed/">WebToffee WooCommerce Product Feed & Sync Manager</a>: Generate WooCommerce product feed for Google and Facebook shops and sync WooCommerce products with Facebook catalog.
+ &#128312; <a href="https://wordpress.org/plugins/order-import-export-for-woocommerce/">WooCommerce Order/Coupon Import Export</a>: The plugin lets you export and import woocommerce orders and woocommerce coupons via CSV to and from your WooCommerce store. 
+ &#128312; <a href="https://wordpress.org/plugins/users-customers-import-export-for-wp-woocommerce/">Import Export WordPress Users and  WooCommerce Customers</a>: Import and export the users in WordPress and customers in your WooCommerce store using a CSV file with the help of this plugin.
+ &#128312; <a href="https://wordpress.org/plugins/wp-migration-duplicator/">WordPress Backup and WordPress Migration</a>: Quickly migrate and backup your entire WordPress site or selected files from one location to another. Backup to FTP, Google drive, Amazon S3 or local storage and easily restore them back.
+ &#128312; <a href="https://wordpress.org/plugins/webtoffee-product-feed/">WooCommerce Product Feed & Facebook Catalog Sync Manager</a>: Generate WooCommerce product feed for Google shop, Facebook shops, Bing, Twitter,...etc and sync WooCommerce products with Facebook catalog.
 
 = About WebToffee.com =
 
-WebToffee creates quality WordPress/WooCommerce/WooDiscuz plugins that are easy to use and customize. We are proud to have thousands of customers actively using our plugins across the globe.
+WebToffee creates quality WordPress/WooCommerce plugins that are easy to use and customize. We are proud to have millions of users actively using our plugins across the globe.
 
 == Installation ==
 
@@ -91,7 +91,10 @@ No. The plugin only supports the import and export of post/article comments. For
 
 == Changelog ==
 
-= 2.3.9 2024-10-04 =
+= 2.4.0 2024-11-15 =
+* [Compatibility] Tested OK with WordPress 6.7
+
+= 2.3.9 2024-10-03 =
 * [Fix] Added File path validation Check.
 * [Compatibility] Tested OK with WordPress 6.6.2
 
@@ -268,6 +271,5 @@ No. The plugin only supports the import and export of post/article comments. For
 
 == Upgrade Notice ==
 
-= 2.3.9 =
-* [Fix] Added File path validation Check.
-* [Compatibility] Tested OK with WordPress 6.6.2
+= 2.4.0 =
+* [Compatibility] Tested OK with WordPress 6.7
