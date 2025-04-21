@@ -95,7 +95,7 @@ class HW_Cmt_ImpExpCsv_Settings {
                     wp_clear_scheduled_hook('hw_cmt_csv_im_ex_auto_import_products');
                 }
                 
-		wp_redirect( admin_url( '/admin.php?page='.hw_cmt_csv_im_ex.'&tab=settings' ) );
+		wp_redirect( admin_url( '/admin.php?page=hw_cmt_csv_im_ex&tab=settings' ) );
 		exit;
 	}
 }

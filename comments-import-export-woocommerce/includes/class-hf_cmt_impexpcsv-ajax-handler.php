@@ -16,6 +16,7 @@ class HW_Cmt_ImpExpCsv_AJAX_Handler {
      * Ajax event for importing a CSV
      */
     public function csv_import_request() {
+
         // Check user capability
         if ( ! current_user_can( 'import' ) ) {
             wp_die( __( 'You do not have sufficient permissions to import data.', 'hw_csv_import_export' ) );

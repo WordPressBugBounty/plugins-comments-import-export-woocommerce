@@ -31,6 +31,7 @@
         <tbody>
             <?php
             $wpost_attributes = include( dirname(__FILE__) . '/../data/data-hf-reserved-fields-pair.php' );
+           
             foreach ($wpost_attributes as $key => $value) :
                 $sel_key = ($saved_mapping && isset($saved_mapping[$key])) ? $saved_mapping[$key] : $key;
                 $evaluation_value = ($saved_evaluation && isset($saved_evaluation[$key])) ? $saved_evaluation[$key] : '';
@@ -62,25 +63,27 @@
                             </select>                             
                     </td>
                     <td width="25%">
-                        <select name="map_from[<?php echo $key; ?>]">
+                        <select name="map_from[<?php echo esc_attr($key); ?>]">
                             <option value=""><?php _e('Do not import', 'comments-import-export-woocommerce'); ?></option>
                             <?php
                             foreach ($row as $hkey => $hdr):
-                                $hdr = strlen($hdr) > 50 ? substr($hdr, 0, 50) . "..." : $hdr;
+                                    $hdr = strlen(esc_attr($hdr)) > 50 ? substr(esc_attr($hdr), 0, 50) . "..." : esc_attr($hdr);
                                 ?>
-                                <option value="<?php echo $raw_headers[$hkey]; ?>" <?php selected(strtolower($sel_key), $hkey); ?>><?php echo $raw_headers[$hkey] . " &nbsp;  : &nbsp; " . $hdr; ?></option>
+                                <option value="<?php echo esc_attr($raw_headers[$hkey]); ?>" <?php selected(strtolower($sel_key), $hkey); ?>><?php echo esc_attr($raw_headers[$hkey]) . " &nbsp;  : &nbsp; " . $hdr; ?></option>
                             <?php endforeach; ?>
                         </select>
                         <?php do_action('product_comments_csv_product_data_mapping', $key); ?>
                     </td>
-                    <td width="10%"><input type="text" name="eval_field[<?php echo $key; ?>]" value="<?php echo $evaluation_value; ?>"  /></td>
+                    <td width="10%"><input type="text" name="eval_field[<?php echo esc_html($key); ?>]" value="<?php echo  esc_html($evaluation_value); ?>"  /></td>
                 </tr>
-            <?php endforeach; ?>
+            <?php endforeach;
+            ?>
         </tbody>
     </table>
     <p class="submit">
         <input type="submit" class="button button-primary" value="<?php esc_attr_e('Submit', 'comments-import-export-woocommerce'); ?>" />
-        <input type="hidden" name="delimiter" value="<?php echo $this->delimiter ?>" />
-        <input type="hidden" name="clean_before_import" value="<?php echo $this->clean_before_import ?>" />
+        <input type="hidden" name="delimiter" value="<?php echo esc_attr($this->delimiter) ?>" />
+        <input type="hidden" name="clean_before_import" value="<?php echo esc_attr($this->clean_before_import) ?>" />
     </p>
 </form>
+

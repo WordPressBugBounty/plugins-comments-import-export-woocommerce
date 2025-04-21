@@ -753,7 +753,7 @@ public function product_id_not_exists($id, $cmd_type) {
         $post_type_inserted_by_wtim = isset($post['added_by_wtci']) ? $post['added_by_wtci'] : false;
         $processing_product_id = absint($post['comment_ID']);
         $merging = !empty($post['merging']);
-        $comment_txt = ( $post['comment_content'] ) ? $post['comment_content'] : 'Empty';
+        $comment_txt = !empty($post['comment_content']) ? esc_html($post['comment_content']) : 'Empty';
 
         if ($post['comment_type'] != 'woodiscuz') {
             $cmd_type = 'comment';
