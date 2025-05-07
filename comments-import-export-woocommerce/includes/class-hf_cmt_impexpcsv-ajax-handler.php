@@ -19,7 +19,7 @@ class HW_Cmt_ImpExpCsv_AJAX_Handler {
 
         // Check user capability
         if ( ! current_user_can( 'import' ) ) {
-            wp_die( __( 'You do not have sufficient permissions to import data.', 'hw_csv_import_export' ) );
+            wp_die( esc_html__( 'You do not have sufficient permissions to import data.', 'hw_csv_import_export' ) );
         }
 
         // Ensure WP_LOAD_IMPORTERS is defined

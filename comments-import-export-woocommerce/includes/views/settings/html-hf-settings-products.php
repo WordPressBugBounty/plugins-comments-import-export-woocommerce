@@ -32,7 +32,7 @@ wp_localize_script('woocommerce-product-csv-importer', 'woocommerce_product_csv_
 if ($scheduled_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_export_products')) {
     $scheduled_desc = sprintf(__('The next export is scheduled on <code>%s</code>', 'comments-import-export-woocommerce'), get_date_from_gmt(date('Y-m-d H:i:s', $scheduled_timestamp), $datefor . ' ' . $timefor));
 } else {
-    $scheduled_desc = __('There is no export scheduled.', 'comments-import-export-woocommerce');
+        $scheduled_desc = __('There is no export scheduled.', 'comments-import-export-woocommerce');
 }
 if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_import_products')) {
     $scheduled_import_desc = sprintf(__('The next import is scheduled on <code>%s</code>', 'comments-import-export-woocommerce'), get_date_from_gmt(date('Y-m-d H:i:s', $scheduled_import_timestamp), $datefor . ' ' . $timefor));
@@ -47,12 +47,12 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
         <table class="form-table">
             <tr>
                 <th>
-                    <h3 class="title"><?php _e('FTP Settings for Export', 'comments-import-export-woocommerce'); ?></h3>
+                    <h3 class="title"><?php esc_html_e('FTP Settings for Export', 'comments-import-export-woocommerce'); ?></h3>
                 </th>
             </tr>
             <tr>
                 <th>
-                    <label for="enable_ftp_ie"><?php _e('Enable FTP', 'comments-import-export-woocommerce'); ?></label>
+                    <label for="enable_ftp_ie"><?php esc_html_e('Enable FTP', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
                     <input type="checkbox" name="enable_ftp_ie" id="enable_ftp_ie" class="checkbox" <?php checked($enable_ftp_ie, 1); ?> />
@@ -60,15 +60,15 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
             </tr>
             <tr>
                 <th>
-                    <label for="ftp_server"><?php _e('FTP Server Host/IP', 'comments-import-export-woocommerce'); ?></label>
+                    <label for="ftp_server"><?php esc_html_e('FTP Server Host/IP', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
-                    <input type="text" name="ftp_server" id="ftp_server" placeholder="<?php _e('XXX.XXX.XXX.XXX', 'comments-import-export-woocommerce'); ?>" value="<?php echo $ftp_server; ?>" class="input-text" />
+                    <input type="text" name="ftp_server" id="ftp_server" placeholder="<?php esc_html_e('XXX.XXX.XXX.XXX', 'comments-import-export-woocommerce'); ?>" value="<?php echo $ftp_server; ?>" class="input-text" />
                 </td>
             </tr>
             <tr>
                 <th>
-                    <label for="ftp_user"><?php _e('FTP User Name', 'comments-import-export-woocommerce'); ?></label>
+                    <label for="ftp_user"><?php esc_html_e('FTP User Name', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
                     <input type="text" name="ftp_user" id="ftp_user"  value="<?php echo $ftp_user; ?>" class="input-text" />
@@ -76,7 +76,7 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
             </tr>
             <tr>
                 <th>
-                    <label for="ftp_password"><?php _e('FTP Password', 'comments-import-export-woocommerce'); ?></label>
+                    <label for="ftp_password"><?php esc_html_e('FTP Password', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
                     <input type="password" name="ftp_password" id="ftp_password"  value="<?php echo $ftp_password; ?>" class="input-text" />
@@ -84,16 +84,16 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
             </tr>
              <tr>
                 <th>
-                    <label for="ftp_port"><?php _e('FTP Port', 'comments-import-export-woocommerce'); ?></label>
+                    <label for="ftp_port"><?php esc_html_e('FTP Port', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
                     <input type="text" name="ftp_port" id="ftp_port" placeholder="21 (default) " value="<?php if(isset($ftp_port)) echo $ftp_port; ?>" class="input-text" />
-<!--                  <p style="font-size: 12px"><?php _e('Enter your port number', 'comments-import-export-woocommerce'); ?></p>-->
+<!--                  <p style="font-size: 12px"><?php esc_html_e('Enter your port number', 'comments-import-export-woocommerce'); ?></p>-->
                 </td>
             </tr>
             <tr>
                 <th>
-                    <label for="use_ftps"><?php _e('Use FTPS', 'comments-import-export-woocommerce'); ?></label>
+                    <label for="use_ftps"><?php esc_html_e('Use FTPS', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
                     <input type="checkbox" name="use_ftps" id="use_ftps" class="checkbox" <?php checked($use_ftps, 1); ?> />
@@ -102,7 +102,7 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
 
             <tr>
                 <th>
-                    <label for="use_pasv"><?php _e('Enable Passive mode', 'comments-import-export-woocommerce'); ?></label>
+                    <label for="use_pasv"><?php esc_html_e('Enable Passive mode', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
                     <input type="checkbox" name="use_pasv" id="use_pasv" class="checkbox"  <?php checked($use_pasv, 1); ?>/>
@@ -111,7 +111,7 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
             
             <tr>
                 <th>
-                    <label for="export_ftp_path"><?php _e('Export Path', 'comments-import-export-woocommerce'); ?></label>
+                    <label for="export_ftp_path"><?php esc_html_e('Export Path', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
                     <input type="text" name="export_ftp_path" id="export_ftp_path"  value="<?php echo $export_ftp_path; ?>"/>
@@ -121,7 +121,7 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
 
             <tr>
                 <th>
-                    <label for="export_ftp_file_name"><?php _e('Export Filename', 'comments-import-export-woocommerce'); ?></label>
+                    <label for="export_ftp_file_name"><?php esc_html_e('Export Filename', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
                     <input type="text" name="export_ftp_file_name" id="export_ftp_file_name"  value="<?php echo $export_ftp_file_name; ?>" placeholder="For example sample.csv"/>
@@ -132,30 +132,30 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
 
             <tr>
                 <th>
-                    <label for="auto_export"><?php _e('Automatically Export WordPress Comments', 'comments-import-export-woocommerce'); ?></label>
+                    <label for="auto_export"><?php esc_html_e('Automatically Export WordPress Comments', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
                     <select class="" style="" id="auto_export" name="auto_export">
-                        <option <?php if ($auto_export === 'Disabled') echo 'selected'; ?> value="Disabled"><?php _e('Disabled', 'comments-import-export-woocommerce'); ?></option>
-                        <option <?php if ($auto_export === 'Enabled') echo 'selected'; ?> value="Enabled"><?php _e('Enabled', 'comments-import-export-woocommerce'); ?></option>
+                        <option <?php if ($auto_export === 'Disabled') echo 'selected'; ?> value="Disabled"><?php esc_html_e('Disabled', 'comments-import-export-woocommerce'); ?></option>
+                        <option <?php if ($auto_export === 'Enabled') echo 'selected'; ?> value="Enabled"><?php esc_html_e('Enabled', 'comments-import-export-woocommerce'); ?></option>
                     </select>
                 </td>
             </tr>
             <tbody class="export_section">
                 <tr>
                     <th>
-                        <label for="auto_export_start_time"><?php _e('Export Start Time', 'comments-import-export-woocommerce'); ?></label>
+                        <label for="auto_export_start_time"><?php esc_html_e('Export Start Time', 'comments-import-export-woocommerce'); ?></label>
                     </th>
                     <td>
                         <input type="text" name="auto_export_start_time" id="auto_export_start_time"  value="<?php echo $auto_export_start_time; ?>"/>
                         <span class="description"><?php echo sprintf(__('Local time is <code>%s</code>.', 'comments-import-export-woocommerce'), date_i18n($timefor)) . ' ' . $scheduled_desc; ?></span>
                         <br/>
-                        <span class="description"><?php _e('<code>Enter like 6:18pm or 12:27am</code>', 'comments-import-export-woocommerce'); ?></span>
+                        <span class="description"><?php esc_html_e('<code>Enter like 6:18pm or 12:27am</code>', 'comments-import-export-woocommerce'); ?></span>
                     </td>
                 </tr>
                 <tr>
                     <th>
-                        <label for="auto_export_interval"><?php _e('Export Interval [ Minutes ]', 'comments-import-export-woocommerce'); ?></label>
+                        <label for="auto_export_interval"><?php esc_html_e('Export Interval [ Minutes ]', 'comments-import-export-woocommerce'); ?></label>
                     </th>
                     <td>
                         <input type="text" name="auto_export_interval" id="auto_export_interval"  value="<?php echo $auto_export_interval; ?>"  />
@@ -169,19 +169,19 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
 
             <tr>
                 <th>
-                    <label for="auto_import"><?php _e('Automatically Import WordPress Comments', 'comments-import-export-woocommerce'); ?></label>
+                    <label for="auto_import"><?php esc_html_e('Automatically Import WordPress Comments', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
                     <select class="" style="" id="auto_import" name="auto_import">
-                        <option <?php if ($auto_import === 'Disabled') echo 'selected'; ?> value="Disabled"><?php _e('Disabled', 'comments-import-export-woocommerce'); ?></option>
-                        <option <?php if ($auto_import === 'Enabled') echo 'selected'; ?> value="Enabled"><?php _e('Enabled', 'comments-import-export-woocommerce'); ?></option>
+                        <option <?php if ($auto_import === 'Disabled') echo 'selected'; ?> value="Disabled"><?php esc_html_e('Disabled', 'comments-import-export-woocommerce'); ?></option>
+                        <option <?php if ($auto_import === 'Enabled') echo 'selected'; ?> value="Enabled"><?php esc_html_e('Enabled', 'comments-import-export-woocommerce'); ?></option>
                     </select>
                 </td>
             </tr>
             <tbody class="import_section">
                   <tr>
                     <th>
-                        <label for="ftp_server_path"><?php _e('FTP Server Path', 'comments-import-export-woocommerce'); ?></label>
+                        <label for="ftp_server_path"><?php esc_html_e('FTP Server Path', 'comments-import-export-woocommerce'); ?></label>
                     </th>
                     <td>
                         <input type="text" name="ftp_server_path" id="ftp_server_path"  value="<?php echo $ftp_server_path; ?>" class="input-text" />
@@ -189,18 +189,18 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                 </tr>
                 <tr>
                     <th>
-                        <label for="auto_import_start_time"><?php _e('Import Start Time', 'comments-import-export-woocommerce'); ?></label>
+                        <label for="auto_import_start_time"><?php esc_html_e('Import Start Time', 'comments-import-export-woocommerce'); ?></label>
                     </th>
                     <td>
                         <input type="text" name="auto_import_start_time" id="auto_export_start_time"  value="<?php echo $auto_import_start_time; ?>"/>
                         <span class="description"><?php echo sprintf(__('Local time is <code>%s</code>.', 'comments-import-export-woocommerce'), date_i18n($timefor)) . ' ' . $scheduled_import_desc; ?></span>
                         <br/>
-                        <span class="description"><?php _e('<code>Enter like 6:18pm or 12:27am</code>', 'comments-import-export-woocommerce'); ?></span>
+                        <span class="description"><?php esc_html_e('<code>Enter like 6:18pm or 12:27am</code>', 'comments-import-export-woocommerce'); ?></span>
                     </td>
                 </tr>
                 <tr>
                     <th>
-                        <label for="auto_import_interval"><?php _e('Import Interval [ Minutes ]', 'comments-import-export-woocommerce'); ?></label>
+                        <label for="auto_import_interval"><?php esc_html_e('Import Interval [ Minutes ]', 'comments-import-export-woocommerce'); ?></label>
                     </th>
                     <td>
                         <input type="text" name="auto_import_interval" id="auto_export_interval"  value="<?php echo $auto_import_interval; ?>"  />
@@ -208,7 +208,7 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                 </tr>
                 <tr>
                     <th>
-                        <label for="auto_import_merge"><?php _e('Update Comment if exist', 'comments-import-export-woocommerce'); ?></label>
+                        <label for="auto_import_merge"><?php esc_html_e('Update Comment if exist', 'comments-import-export-woocommerce'); ?></label>
                     </th>
                     <td>
                         <input type="checkbox" name="auto_import_merge" id="auto_import_merge"  class="checkbox" <?php checked($auto_import_merge, 1); ?> />
@@ -223,7 +223,7 @@ if (!empty($mapping_from_db)) {
     ?>
                     <tr>
                         <th>
-                            <label for="auto_import_profile"><?php _e('Select a mapping file.'); ?></label>
+                            <label for="auto_import_profile"><?php esc_html_e('Select a mapping file.'); ?></label>
                         </th>
                         <td>
                             <select name="auto_import_profile">
@@ -242,7 +242,7 @@ if (!empty($mapping_from_db)) {
 
         </table>
 
-        <p class="submit"><input type="submit" class="button button-primary" value="<?php _e('Save Settings', 'comments-import-export-woocommerce'); ?>" /></p>
+        <p class="submit"><input type="submit" class="button button-primary" value="<?php esc_html_e('Save Settings', 'comments-import-export-woocommerce'); ?>" /></p>
 
     </form>
 </div>

@@ -79,7 +79,7 @@ if (!class_exists('WT_Cmt_ImpExp_Uninstall_Feedback')) :
             <div class="cmtimport-modal" id="cmtimport-cmtimport-modal">
                 <div class="cmtimport-modal-wrap">
                     <div class="cmtimport-modal-header">
-                        <h3><?php _e('If you have a moment, please let us know why you are deactivating:', 'comments-import-export-woocommerce'); ?></h3>
+                        <h3><?php esc_html_e('If you have a moment, please let us know why you are deactivating:', 'comments-import-export-woocommerce'); ?></h3>
                     </div>
                     <div class="cmtimport-modal-body">
                         <ul class="reasons">
@@ -91,9 +91,9 @@ if (!class_exists('WT_Cmt_ImpExp_Uninstall_Feedback')) :
                         </ul>
                     </div>
                     <div class="cmtimport-modal-footer">
-                        <a href="#" class="dont-bother-me"><?php _e('I rather wouldn\'t say', 'comments-import-export-woocommerce'); ?></a>
-                        <button class="button-primary cmtimport-model-submit"><?php _e('Submit & Deactivate', 'comments-import-export-woocommerce'); ?></button>
-                        <button class="button-secondary cmtimport-model-cancel"><?php _e('Cancel', 'comments-import-export-woocommerce'); ?></button>
+                        <a href="#" class="dont-bother-me"><?php esc_html_e('I rather wouldn\'t say', 'comments-import-export-woocommerce'); ?></a>
+                        <button class="button-primary cmtimport-model-submit"><?php esc_html_e('Submit & Deactivate', 'comments-import-export-woocommerce'); ?></button>
+                        <button class="button-secondary cmtimport-model-cancel"><?php esc_html_e('Cancel', 'comments-import-export-woocommerce'); ?></button>
                     </div>
                 </div>
             </div>
@@ -172,7 +172,7 @@ if (!class_exists('WT_Cmt_ImpExp_Uninstall_Feedback')) :
                                     inputPlaceholder = parent.data('placeholder');
                                     
                                 if ('reviewhtml' === inputType) {
-                                    var reasonInputHtml = '<div class="reviewlink"><a href="#" target="_blank" class="review-and-deactivate"><?php _e('Deactivate and leave a review', 'comments-import-export-woocommerce'); ?> <span class="wt-userimport-rating-link"> &#9733;&#9733;&#9733;&#9733;&#9733; </span></a></div>';
+                                    var reasonInputHtml = '<div class="reviewlink"><a href="#" target="_blank" class="review-and-deactivate"><?php esc_html_e('Deactivate and leave a review', 'comments-import-export-woocommerce'); ?> <span class="wt-userimport-rating-link"> &#9733;&#9733;&#9733;&#9733;&#9733; </span></a></div>';
                                 } else {
                                     var reasonInputHtml = '<div class="reason-input">' + (('text' === inputType) ? '<input type="text" class="input-text" size="40" />' : '<textarea rows="5" cols="45"></textarea>') + '</div>';
                                 }
@@ -226,7 +226,7 @@ if (!class_exists('WT_Cmt_ImpExp_Uninstall_Feedback')) :
 
 
             $data = array(
-                'reason_id' => sanitize_text_field($_POST['reason_id']),
+                'reason_id' => sanitize_text_field(wp_unslash($_POST['reason_id'])),
                 'plugin' => "wtcmtie",
                 'auth' => 'wtcmtie_uninstall_1234#',
                 'date' => gmdate("M d, Y h:i:s A"),

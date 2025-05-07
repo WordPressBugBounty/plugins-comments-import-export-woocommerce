@@ -4,24 +4,24 @@
     <?php if ($this->file_url_import_enabled) : ?>
         <input type="hidden" name="import_url" value="<?php echo $this->file_url; ?>" />
     <?php endif; ?>
-    <h3><?php _e('Map Fields', 'comments-import-export-woocommerce'); ?></h3>
+    <h3><?php esc_html_e('Map Fields', 'comments-import-export-woocommerce'); ?></h3>
     <?php if($this->profile == ''){?>
-        <?php _e('Mapping file name:', 'comments-import-export-woocommerce'); ?> <input type="text" name="profile" value="" placeholder="Enter filename to save" />
+        <?php esc_html_e('Mapping file name:', 'comments-import-export-woocommerce'); ?> <input type="text" name="profile" value="" placeholder="Enter filename to save" />
     <?php }else{ ?>
         <input type="hidden" name="profile" value="<?php echo $this->profile; ?>" />
     <?php } ?>
-    <p><?php _e('Here you can map your imported columns to product data fields.', 'comments-import-export-woocommerce'); ?></p>
+    <p><?php esc_html_e('Here you can map your imported columns to product data fields.', 'comments-import-export-woocommerce'); ?></p>
     <table class="widefat widefat_importer">
         <thead>
             <tr>
-                <th><?php _e('Map to', 'comments-import-export-woocommerce'); ?></th>
-                <th><?php _e('Column Header', 'comments-import-export-woocommerce'); ?></th>
-                <th><?php _e('Evaluation Field', 'comments-import-export-woocommerce'); ?>
+                <th><?php esc_html_e('Map to', 'comments-import-export-woocommerce'); ?></th>
+                <th><?php esc_html_e('Column Header', 'comments-import-export-woocommerce'); ?></th>
+                <th><?php esc_html_e('Evaluation Field', 'comments-import-export-woocommerce'); ?>
                     <?php $plugin_url = HW_Cmt_ImpExpCsv_Admin_Screen::hw_get_wc_path(); ?>
 					<?php if(function_exists('WC')) { ?>
-                   		  <img class="help_tip" style="float:none;" data-tip="<?php _e('Assign constant value HikeFoce to comment_author:</br>=HikeFoce</br>Append a value By HikeFoce to comments_content:</br>&By HikeFoce</br>Prepend a value HikeFoce to comments_content:</br>&HikeFoce [VAL].', 'comments-import-export-woocommerce'); ?>" src="<?php echo $plugin_url; ?>/assets/images/help.png" height="20" width="20" /> 
+                   		  <img class="help_tip" style="float:none;" data-tip="<?php esc_html_e('Assign constant value HikeFoce to comment_author:</br>=HikeFoce</br>Append a value By HikeFoce to comments_content:</br>&By HikeFoce</br>Prepend a value HikeFoce to comments_content:</br>&HikeFoce [VAL].', 'comments-import-export-woocommerce'); ?>" src="<?php echo $plugin_url; ?>/assets/images/help.png" height="20" width="20" /> 
 						<?php } else { ?>
-                      		  <img class="help_tip" style="float:none;" data-tip="<?php _e('Assign constant value HikeFoce to comment_author:</br>=HikeFoce</br>Append a value By HikeFoce to comments_content:</br>&By HikeFoce</br>Prepend a value HikeFoce to comments_content:</br>&HikeFoce [VAL].', 'comments-import-export-woocommerce'); ?>" src="<?php echo $plugin_url; ?>/images/help.png" height="20" width="20" />   
+                      		  <img class="help_tip" style="float:none;" data-tip="<?php esc_html_e('Assign constant value HikeFoce to comment_author:</br>=HikeFoce</br>Append a value By HikeFoce to comments_content:</br>&By HikeFoce</br>Prepend a value HikeFoce to comments_content:</br>&HikeFoce [VAL].', 'comments-import-export-woocommerce'); ?>" src="<?php echo $plugin_url; ?>/images/help.png" height="20" width="20" />   
                         <?php } ?>                  
 
 
@@ -64,7 +64,7 @@
                     </td>
                     <td width="25%">
                         <select name="map_from[<?php echo esc_attr($key); ?>]">
-                            <option value=""><?php _e('Do not import', 'comments-import-export-woocommerce'); ?></option>
+                            <option value=""><?php esc_html_e('Do not import', 'comments-import-export-woocommerce'); ?></option>
                             <?php
                             foreach ($row as $hkey => $hdr):
                                     $hdr = strlen(esc_attr($hdr)) > 50 ? substr(esc_attr($hdr), 0, 50) . "..." : esc_attr($hdr);

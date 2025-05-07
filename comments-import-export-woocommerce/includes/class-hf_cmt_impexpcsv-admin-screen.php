@@ -41,7 +41,7 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
 
     public function process_ajax_export_single_comment() {
         
-        $nonce = sanitize_text_field($_GET['_wpnonce']);
+        $nonce = sanitize_text_field(wp_unslash($_GET['_wpnonce']));
         if (!wp_verify_nonce($nonce,'comments-import-export-woocommerce') || !HW_Product_Comments_Import_Export_CSV::hf_user_permission()) {
             wp_die(__('You do not have sufficient permissions to access this page.', 'hw_csv_import_export'));
         }
@@ -60,7 +60,7 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
      */
     public function admin_notices() {
         if (!function_exists('mb_detect_encoding')) {
-            echo '<div class="error"><p>' . __('Product CSV Import Export requires the function <code>mb_detect_encoding</code> to import and export CSV files. Please ask your hosting provider to enable this function.', 'comments-import-export-woocommerce') . '</p></div>';
+            echo '<div class="error"><p>' . esc_html__('Product CSV Import Export requires the function <code>mb_detect_encoding</code> to import and export CSV files. Please ask your hosting provider to enable this function.', 'comments-import-export-woocommerce') . '</p></div>';
         }
     }
 
@@ -68,9 +68,8 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
      * Admin Menu
      */
     public function admin_menu() {
-        // $page = add_menu_page( __('Comments Im-Ex', 'comments-import-export-woocommerce'), __('Comments Im-Ex', 'comments-import-export-woocommerce'), apply_filters('product_reviews_csv_product_role', 'read'), 'hw_cmt_csv_im_ex', array($this, 'output'),'dashicons-admin-comments',$position='25');
        
-            $page = add_comments_page(__('Comments Im-Ex', 'comments-import-export-woocommerce'), __('Comments Im-Ex', 'comments-import-export-woocommerce'), apply_filters('product_reviews_csv_product_role', 'read'), 'hw_cmt_csv_im_ex', array($this, 'output'));
+            $page = add_comments_page(esc_html__('Comments Im-Ex', 'comments-import-export-woocommerce'), __('Comments Im-Ex', 'comments-import-export-woocommerce'), apply_filters('product_reviews_csv_product_role', 'read'), 'hw_cmt_csv_im_ex', array($this, 'output'));
        
     }
 
@@ -136,7 +135,7 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
         ?>
         <script type="text/javascript">
             jQuery(document).ready(function ($) {
-                var $downloadToCSV = $('<option>').val('download_to_cmtiew_csv_hf').text('<?php _e('Download as CSV', 'comments-import-export-woocommerce') ?>');
+                var $downloadToCSV = $('<option>').val('download_to_cmtiew_csv_hf').text('<?php esc_html__('Download as CSV', 'comments-import-export-woocommerce') ?>');
                 $('select[name^="action"]').append($downloadToCSV);
             });
         </script>

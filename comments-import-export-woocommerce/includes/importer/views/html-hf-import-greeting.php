@@ -20,10 +20,10 @@
 
 ?>
 <div class="tool-box bg-white p-20p pipe-view" style="width: 100%">
-	<p><?php _e( 'You can import comments (in CSV format) in to the shop using any of below methods.', 'comments-import-export-woocommerce' ); ?></p>
+	<p><?php esc_html_e( 'You can import comments (in CSV format) in to the shop using any of below methods.', 'comments-import-export-woocommerce' ); ?></p>
 
 	<?php if ( ! empty( $upload_dir['error'] ) ) : ?>
-		<div class="error"><p><?php _e('Before you can upload your import file, you will need to fix the following error:'); ?></p>
+		<div class="error"><p><?php esc_html_e('Before you can upload your import file, you will need to fix the following error:'); ?></p>
 		<p><strong><?php echo $upload_dir['error']; ?></strong></p></div>
 	<?php else : ?>
 		<form enctype="multipart/form-data" id="import-upload-form" method="post" action="<?php echo esc_attr(wp_nonce_url($action, 'import-upload')); ?>">
@@ -31,7 +31,7 @@
 				<tbody>
 					<tr>
 						<th>
-							<label for="upload"><?php _e( 'Method 1: Select a file from your computer' ); ?></label>
+							<label for="upload"><?php esc_html_e( 'Method 1: Select a file from your computer' ); ?></label>
 						</th>
 						<td>
 							<input type="file" id="upload" name="import" size="25" />
@@ -43,13 +43,13 @@
                                         
 					<tr>
 						<th>
-							<label for="ftp"><?php _e( 'Method 2: Provide FTP Details:', 'comments-import-export-woocommerce' ); ?></label>
+							<label for="ftp"><?php esc_html_e( 'Method 2: Provide FTP Details:', 'comments-import-export-woocommerce' ); ?></label>
 						</th>
 						<td>
 							<table class="form-table">
 								<tr>
 									<th>
-										<label for="enable_ftp_ie"><?php _e( 'Enable FTP import', 'comments-import-export-woocommerce' ); ?></label>
+										<label for="enable_ftp_ie"><?php esc_html_e( 'Enable FTP import', 'comments-import-export-woocommerce' ); ?></label>
 									</th>
 									<td>
 										<input type="checkbox" name="enable_ftp_ie" id="enable_ftp_ie" class="checkbox" <?php checked( $enable_ftp_ie, 1 ); ?> />
@@ -57,15 +57,15 @@
 								</tr>
 								<tr>
 									<th>
-										<label for="ftp_server"><?php _e( 'FTP Server Host/IP', 'comments-import-export-woocommerce' ); ?></label>
+										<label for="ftp_server"><?php esc_html_e( 'FTP Server Host/IP', 'comments-import-export-woocommerce' ); ?></label>
 									</th>
 									<td>
-										<input type="text" name="ftp_server" id="ftp_server" placeholder="<?php _e('XXX.XXX.XXX.XXX', 'comments-import-export-woocommerce'); ?>" value="<?php echo $ftp_server; ?>" class="input-text" />
+										<input type="text" name="ftp_server" id="ftp_server" placeholder="<?php esc_html_e('XXX.XXX.XXX.XXX', 'comments-import-export-woocommerce'); ?>" value="<?php echo $ftp_server; ?>" class="input-text" />
 									</td>
 								</tr>
 								<tr>
 									<th>
-										<label for="ftp_user"><?php _e( 'FTP User Name', 'comments-import-export-woocommerce' ); ?></label>
+										<label for="ftp_user"><?php esc_html_e( 'FTP User Name', 'comments-import-export-woocommerce' ); ?></label>
 									</th>
 									<td>
 										<input type="text" name="ftp_user" id="ftp_user"  value="<?php echo $ftp_user; ?>" class="input-text" />
@@ -73,7 +73,7 @@
 								</tr>
 								<tr>
 									<th>
-										<label for="ftp_password"><?php _e( 'FTP Password', 'comments-import-export-woocommerce' ); ?></label>
+										<label for="ftp_password"><?php esc_html_e( 'FTP Password', 'comments-import-export-woocommerce' ); ?></label>
 									</th>
 									<td>
 										<input type="password" name="ftp_password" id="ftp_password"  value="<?php echo $ftp_password; ?>" class="input-text" />
@@ -81,16 +81,16 @@
 								</tr>
                                                                  <tr>
                                                                     <th>
-                                                                            <label for="ftp_ftp_port"><?php _e( 'FTP Port', 'comments-import-export-woocommerce' ); ?></label>
+                                                                            <label for="ftp_ftp_port"><?php esc_html_e( 'FTP Port', 'comments-import-export-woocommerce' ); ?></label>
                                                                         </th>
                                                                         <td>
                                                                             <input type="text" name="ftp_port" id="ftp_port" placeholder="21 (default) " value="<?php if(isset($ftp_port)) echo $ftp_port; ?>" class="input-text" />
-<!--                                                                                  <p style="font-size: 12px"><?php _e('Enter your port number', 'comments-import-export-woocommerce'); ?></p>-->
+<!--                                                                                  <p style="font-size: 12px"><?php esc_html_e('Enter your port number', 'comments-import-export-woocommerce'); ?></p>-->
                                                                         </td>
                                                                 </tr>
 								<tr>
 									<th>
-										<label for="ftp_server_path"><?php _e( 'FTP Server Path', 'comments-import-export-woocommerce' ); ?></label>
+										<label for="ftp_server_path"><?php esc_html_e( 'FTP Server Path', 'comments-import-export-woocommerce' ); ?></label>
 									</th>
 									<td>
 										<input type="text" name="ftp_server_path" id="ftp_server_path"  value="<?php echo $ftp_server_path; ?>" class="input-text" />
@@ -99,7 +99,7 @@
 								
 								<tr>
 									<th>
-										<label for="use_ftps"><?php _e( 'Use FTPS', 'comments-import-export-woocommerce' ); ?></label>
+										<label for="use_ftps"><?php esc_html_e( 'Use FTPS', 'comments-import-export-woocommerce' ); ?></label>
 									</th>
 									<td>
 										<input type="checkbox" name="use_ftps" id="use_ftps" class="checkbox" <?php checked( $use_ftps, 1 ); ?> />
@@ -107,7 +107,7 @@
 								</tr>
                                                                 <tr>
                                                                         <th>
-                                                                            <label for="use_pasv"><?php _e( 'Enable Passive mode', 'comments-import-export-woocommerce' ); ?></label>
+                                                                            <label for="use_pasv"><?php esc_html_e( 'Enable Passive mode', 'comments-import-export-woocommerce' ); ?></label>
                                                                         </th>
                                                                         <td>
                                                                             <input type="checkbox" name="use_pasv" id="use_pasv" class="checkbox" <?php checked( $use_pasv, 1 ); ?> />
@@ -122,7 +122,7 @@
                         ?>
                         <tr>
                             <th>
-                                <label for="profile"><?php _e('Select a mapping file.'); ?></label>
+                                <label for="profile"><?php esc_html_e('Select a mapping file.'); ?></label>
                             </th>
                             <td>
                                 <select name="profile">
@@ -136,7 +136,7 @@
                         </tr>
                     <?php } ?>
 					<tr>
-						<th><label><?php _e( 'Delimiter', 'comments-import-export-woocommerce' ); ?></label><br/></th>
+						<th><label><?php esc_html_e( 'Delimiter', 'comments-import-export-woocommerce' ); ?></label><br/></th>
 						<td><input type="text" name="delimiter" placeholder="," size="2" /></td>
 					</tr>
 					

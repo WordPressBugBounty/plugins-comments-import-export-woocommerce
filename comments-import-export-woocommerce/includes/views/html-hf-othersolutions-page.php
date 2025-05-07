@@ -149,8 +149,8 @@ if (!defined('WPINC')) {
 <div class="wt-iew-tab-content">
 	<div class="wt_row">
 		<div clas="wt_headings">
-			<h1 class="wt_heading_1"><?php _e('More Plugins To Make Your Store Stand Out', 'comments-import-export-woocommerce'); ?></h1>
-			<h2 class="wt_heading_2"><?php _e('Check out our other plugins that are perfectly suited for WooCommerce store needs.', 'comments-import-export-woocommerce'); ?></h2>
+			<h1 class="wt_heading_1"><?php esc_html_e('More Plugins To Make Your Store Stand Out', 'comments-import-export-woocommerce'); ?></h1>
+			<h2 class="wt_heading_2"><?php esc_html_e('Check out our other plugins that are perfectly suited for WooCommerce store needs.', 'comments-import-export-woocommerce'); ?></h2>
 		</div>
 		<div class="wt_column">
 			<?php
@@ -362,14 +362,14 @@ if (!defined('WPINC')) {
 							if (isset($value['premium_url']) && ! empty($value['premium_url'])) {
 							?>
 								<div class="wt_premium_button" style="width: 100%;">
-									<a href="<?php echo esc_url($value['premium_url']); ?>" class="wt_get_premium_btn" target="_blank"><img src="<?php echo esc_url($wt_admin_img_path . '/promote_crown.png'); ?>" style="width: 10px;height: 10px;"><?php _e(' Get Premium', 'wt-import-export-for-woo'); ?></a>
+									<a href="<?php echo esc_url($value['premium_url']); ?>" class="wt_get_premium_btn" target="_blank"><img src="<?php echo esc_url($wt_admin_img_path . '/promote_crown.png'); ?>" style="width: 10px;height: 10px;"><?php esc_html_e(' Get Premium', 'wt-import-export-for-woo'); ?></a>
 								</div>
 							<?php           }
 							if (is_plugin_active($value['basic_plugin'])) {
 							?>
 								<div class="wt_installed_button">
 									<button class="wt_installed_btn">
-										<?php _e('Installed', 'wt-import-export-for-woo'); ?>
+										<?php esc_html_e('Installed', 'wt-import-export-for-woo'); ?>
 									</button>
 								</div>
 							<?php
@@ -381,7 +381,7 @@ if (!defined('WPINC')) {
 								<div class="wt_free_button<?php echo (empty($value['premium_url'])) ? ' full_width' : ''; ?>">
 									<a class="wt_free_btn_a" href="<?php echo esc_url($value['basic_url']); ?>" target="_blank">
 										<button class="wt_free_btn<?php echo (empty($value['premium_url'])) ? ' full_width' : ''; ?>">
-											<?php _e('Get Free Plugin', 'wt-import-export-for-woo'); ?>
+											<?php esc_html_e('Get Free Plugin', 'wt-import-export-for-woo'); ?>
 										</button>
 									</a>
 								</div>

@@ -149,7 +149,7 @@ class Comments_import_export_Review_Request
     {
         check_ajax_referer($this->plugin_prefix);
         if (isset($_POST['wt_review_action_type'])) {
-            $action_type = sanitize_text_field($_POST['wt_review_action_type']);
+            $action_type = sanitize_text_field(wp_unslash($_POST['wt_review_action_type']));
 
             /* current action is in allowed action list */
             if (in_array($action_type, $this->allowed_action_type_arr)) {

@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div class="market-box table-box-main">
     <?php /*<div class="getting-started-video">
-        <h2><?php _e('Watch getting started video', 'comments-import-export-woocommerce');?></h2>
+        <h2><?php esc_html_e('Watch getting started video', 'comments-import-export-woocommerce');?></h2>
     <iframe src="https://www.youtube.com/embed/L-01qI1EZWE?rel=0&showinfo=0" frameborder="0" allowfullscreen="allowfullscreen" align="center"></iframe>
     </div> */?>
     <div class="pipe-review-widget">
@@ -20,26 +20,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 		<div class="wt-comment-ierpro-mainfeatures">
 			<ul>
-				<li class="money-back"><?php _e('30 Day Money Back Guarantee'); ?></li>
-				<li class="support"><?php _e('Fast and Superior Support'); ?></li>
-				<li class="pipe-support"><?php _e('Third party plugin support'); ?></li>
+				<li class="money-back"><?php esc_html_e('30 Day Money Back Guarantee'); ?></li>
+				<li class="support"><?php esc_html_e('Fast and Superior Support'); ?></li>
+				<li class="pipe-support"><?php esc_html_e('Third party plugin support'); ?></li>
 			</ul>
 			<div class="wt-ierpro-btn-wrapper">
-				<a href="https://www.webtoffee.com/plugins/" class="wt-ierpro-blue-btn" target="_blank"><?php _e('PREMIUM PLUGINS'); ?></a>
+				<a href="https://www.webtoffee.com/plugins/" class="wt-ierpro-blue-btn" target="_blank"><?php esc_html_e('PREMIUM PLUGINS'); ?></a>
 			</div>                
 		</div>
 	</div>
 	
     <div class="wt-comment-pipe-premium-features" style="margin-top: 20px;">
         <span >
-            <h2 style="text-align: center; padding: 25px;"><?php _e('Related free plugins from WebToffee', 'comments-import-export-woocommerce');?></h2>
+            <h2 style="text-align: center; padding: 25px;"><?php esc_html_e('Related free plugins from WebToffee', 'comments-import-export-woocommerce');?></h2>
             <hr class="wt-ier-comment-hr"><!-- comment -->
 			<ul class="ticked-list">
-                <li><a href="https://wordpress.org/plugins/product-import-export-for-woo/" target="_blank" class=""><?php _e('Product Import Export for WooCommerce', 'comments-import-export-woocommerce'); ?></a> </li>                
-                <li><a href="https://wordpress.org/plugins/users-customers-import-export-for-wp-woocommerce/" target="_blank" class=""><?php _e('Import Export WordPress Users and WooCommerce Customers', 'comments-import-export-woocommerce'); ?></a> </li>
-                <li><a href="https://wordpress.org/plugins/order-import-export-for-woocommerce/" target="_blank" class=""><?php _e('Order Export & Order Import for WooCommerce', 'comments-import-export-woocommerce'); ?></a> </li>
-                <li><a href="https://wordpress.org/plugins/wp-migration-duplicator/" target="_blank" class=""><?php _e('WordPress Backup & Migration', 'comments-import-export-woocommerce'); ?></a> </li>
-                <li><a href="https://wordpress.org/plugins/webtoffee-product-feed/" target="_blank" class=""><?php _e('Product Feed for WooCommerce – Google Shopping Feed, Pinterest Feed, TikTok Ads & More', 'comments-import-export-woocommerce'); ?></a> </li>
+                <li><a href="https://wordpress.org/plugins/product-import-export-for-woo/" target="_blank" class=""><?php esc_html_e('Product Import Export for WooCommerce', 'comments-import-export-woocommerce'); ?></a> </li>                
+                <li><a href="https://wordpress.org/plugins/users-customers-import-export-for-wp-woocommerce/" target="_blank" class=""><?php esc_html_e('Import Export WordPress Users and WooCommerce Customers', 'comments-import-export-woocommerce'); ?></a> </li>
+                <li><a href="https://wordpress.org/plugins/order-import-export-for-woocommerce/" target="_blank" class=""><?php esc_html_e('Order Export & Order Import for WooCommerce', 'comments-import-export-woocommerce'); ?></a> </li>
+                <li><a href="https://wordpress.org/plugins/wp-migration-duplicator/" target="_blank" class=""><?php esc_html_e('WordPress Backup & Migration', 'comments-import-export-woocommerce'); ?></a> </li>
+                <li><a href="https://wordpress.org/plugins/webtoffee-product-feed/" target="_blank" class=""><?php esc_html_e('Product Feed for WooCommerce – Google Shopping Feed, Pinterest Feed, TikTok Ads & More', 'comments-import-export-woocommerce'); ?></a> </li>
             </ul>
                 
         

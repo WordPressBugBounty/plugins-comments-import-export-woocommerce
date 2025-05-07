@@ -6,7 +6,7 @@
   Description: Import and Export WordPress Comments From and To your Website.
   Author: WebToffee
   Author URI: https://www.webtoffee.com/
-  Version: 2.4.2
+  Version: 2.4.3
   Text Domain: comments-import-export-woocommerce
   License: GPLv3
   License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -27,7 +27,7 @@ if (!defined('HW_CMT_CSV_IM_EX')) {
 
 if (!defined('PLUGIN_VERSION')) {
 
-    define("PLUGIN_VERSION", "2.4.2");
+    define("PLUGIN_VERSION", "2.4.3");
 }
 
 define('HF_CMT_IM_EX_PATH_URL',  plugin_dir_url(__FILE__));
@@ -74,8 +74,8 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
                     include_once( 'includes/class-hf_cmt_impexpcsv-system-status-tools.php' );
                     include_once( 'includes/class-hf_cmt_impexpcsv-admin-screen.php' );
                     include_once( 'includes/importer/class-hf_cmt_impexpcsv-importer.php' );
-
                     require_once( 'includes/class-hf_cmt_impexpcsv-cron.php' );
+                    
                     $this->cron = new HW_Cmt_ImpExpCsv_Cron();
                     register_activation_hook(__FILE__, array($this->cron, 'hw_new_scheduled_cmt_export'));
                     register_deactivation_hook(__FILE__, array($this->cron, 'clear_hw_scheduled_cmt_export'));
@@ -121,7 +121,7 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
                         return;
                     }
 
-                    $wf_product_Comment_ie_msg = sanitize_text_field($_GET["hw_product_Comment_ie_msg"]);
+                    $wf_product_Comment_ie_msg = sanitize_text_field(wp_unslash($_GET["hw_product_Comment_ie_msg"]));
 
                     switch ($wf_product_Comment_ie_msg) {
                         case "1":
