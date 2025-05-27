@@ -85,7 +85,7 @@ if (!class_exists('WT_Cmt_ImpExp_Uninstall_Feedback')) :
                         <ul class="reasons">
                             <?php foreach ($reasons as $reason) { ?>
                                 <li data-type="<?php echo esc_attr($reason['type']); ?>" data-placeholder="<?php echo esc_attr($reason['placeholder']); ?>">
-                                    <label><input type="radio" name="selected-reason" value="<?php echo $reason['id']; ?>"> <?php echo $reason['text']; ?></label>
+                                    <label><input type="radio" name="selected-reason" value="<?php echo esc_attr($reason['id']); ?>"> <?php echo esc_html($reason['text']); ?></label>
                                 </li>
                             <?php } ?>
                         </ul>

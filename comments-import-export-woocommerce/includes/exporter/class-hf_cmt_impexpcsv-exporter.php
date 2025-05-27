@@ -27,11 +27,11 @@ class HW_Cmt_ImpExpCsv_Exporter
 
         if ('download_to_cmtiew_csv_hf' === $do_action) {
             if (!check_admin_referer('bulk-comments')) {
-                wp_die(__('You do not have sufficient permissions to access this page.', 'hw_csv_import_export'));
+                wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'comments-import-export-woocommerce'));
             }
         } else {
             if (!wp_verify_nonce($_nonce, 'comments-import-export-woocommerce')) {
-                wp_die(__('You do not have sufficient permissions to access this page.', 'hw_csv_import_export'));
+                wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'comments-import-export-woocommerce'));
             }
         }
         if (!function_exists('get_current_screen')) {
@@ -99,7 +99,7 @@ class HW_Cmt_ImpExpCsv_Exporter
         // Headers
         //        $all_meta_keys = array('');
         global $wpdb;
-
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $all_meta_keys = $wpdb->get_col("SELECT DISTINCT pm.meta_key FROM {$wpdb->commentmeta} AS pm LEFT JOIN {$wpdb->comments} AS p ON p.comment_ID = pm.comment_id WHERE p.comment_approved IN ( '0','1') ");
         $found_coupon_meta = array();
         // Some of the values may not be usable (e.g. arrays of arrays) but the worse
@@ -353,9 +353,9 @@ class HW_Cmt_ImpExpCsv_Exporter
 
 
             if ($use_ftps) {
-                $ftp_conn = @ftp_ssl_connect($ftp_server) or die(__("Could not connect to $ftp_server", 'comments-import-export-woocommerce'));
+                $ftp_conn = @ftp_ssl_connect($ftp_server) or die(esc_html__("Could not connect to $ftp_server", 'comments-import-export-woocommerce'));
             } else {
-                $ftp_conn = @ftp_connect($ftp_server) or die(__("Could not connect to $ftp_server", 'comments-import-export-woocommerce'));
+                $ftp_conn = @ftp_connect($ftp_server) or die(esc_html__("Could not connect to $ftp_server", 'comments-import-export-woocommerce'));
             }
             $login = @ftp_login($ftp_conn, $ftp_user, $ftp_password);
             if ($use_pasv) {

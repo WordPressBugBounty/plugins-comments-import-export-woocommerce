@@ -1,5 +1,7 @@
 <?php
 
+
+
 /**
  * WordPress Importer class for managing the import process of a CSV file
  *
@@ -187,26 +189,42 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                             var done_count = 0;
 
                             function import_rows(start_pos, end_pos) {
-
                                 var data = {
                                     action: 'product_comments_csv_import_request',
-                                    file: '<?php echo addslashes($file); ?>',
+                                    file: '<?php echo esc_js($file); ?>',
                                     mapping: '<?php echo json_encode(Wt_WWCIEP_Security_Helper::sanitize_item($_POST['map_from'], 'text_arr')); ?>',
-                                    profile: '<?php echo $this->profile; ?>',
-                                    eval_field: '<?php echo stripslashes(json_encode(Wt_WWCIEP_Security_Helper::sanitize_item($_POST['eval_field'], 'text_arr'), JSON_HEX_APOS)) ?>',
-                                    delimiter: '<?php echo $this->delimiter; ?>',
-                                    clean_before_import: '<?php echo $this->clean_before_import; ?>',
+                                    profile: '<?php echo esc_js($this->profile); ?>',
+                                    eval_field: '<?php echo esc_html(stripslashes(json_encode(Wt_WWCIEP_Security_Helper::sanitize_item($_POST['eval_field'], 'text_arr'), JSON_HEX_APOS))) ?>',
+                                    delimiter: '<?php echo esc_js($this->delimiter); ?>',
+                                    clean_before_import: '<?php echo esc_js($this->clean_before_import); ?>',
                                     start_pos: start_pos,
                                     end_pos: end_pos,
-                                    wt_nonce: '<?php echo wp_create_nonce(HW_CMT_IMP_EXP_ID) ?>'
+                                    wt_nonce: '<?php echo esc_js(wp_create_nonce(HW_CMT_IMP_EXP_ID)) ?>'
                                 };
-                                data.eval_field = $.parseJSON(data.eval_field);
+
+                                let decoded = data.eval_field.replace(/&quot;/g, '"');
+
+
+                                data.eval_field = $.parseJSON(decoded);
+
+                                <?php
+
+                                $url = add_query_arg(
+                                    [
+                                        'import_page' => sanitize_key($this->import_page),
+                                        'step'        => 3,
+                                        'merge'       => ! empty($_GET['merge']) ? 1 : 0,
+                                    ],
+                                    admin_url('admin-ajax.php')
+                                );
+
+                                ?>
+
                                 return $.ajax({
-                                    url: '<?php echo add_query_arg(array('import_page' => $this->import_page, 'step' => '3', 'merge' => !empty($_GET['merge']) ? '1' : '0'), admin_url('admin-ajax.php')); ?>',
+                                    url: <?php echo wp_json_encode(esc_url_raw($url)); ?>,
                                     data: data,
                                     type: 'POST',
                                     success: function(response) {
-                                        console.log(response);
                                         if (response) {
 
                                             try {
@@ -289,14 +307,14 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                                         $import_count++;
 
                                         // Import rows between $previous_position $position
-                            ?>rows.push([<?php echo $previous_position; ?>, <?php echo $position; ?>]);
+                            ?>rows.push([<?php echo esc_js($previous_position); ?>, <?php echo esc_js($position); ?>]);
                             <?php
                                     }
                                 }
 
                                 // Remainder
                                 if ($count > 0) {
-                            ?>rows.push([<?php echo $position; ?>, '']);
+                            ?>rows.push([<?php echo esc_js($position); ?>, '']);
                         <?php
                                     $import_count++;
                                 }
@@ -309,7 +327,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                         var regen_count = 0;
                         import_rows(data[0], data[1]);
                         $('body').on('product_comments_csv_import_request_complete', function() {
-                            if (done_count == <?php echo $import_count; ?>) {
+                            if (done_count == <?php echo wp_json_encode($import_count); ?>) {
 
                                 import_done();
 
@@ -324,21 +342,32 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                         function import_done() {
                             var data = {
                                 action: 'product_comments_csv_import_request',
-                                file: '<?php echo $file; ?>',
+                                file: '<?php echo esc_js($file); ?>',
                                 //                                processed_terms: processed_terms,
                                 processed_posts: processed_posts,
                                 post_orphans: post_orphans,
                                 //                                upsell_skus: upsell_skus,
                                 //                                crosssell_skus: crosssell_skus
-                                wt_nonce: '<?php echo wp_create_nonce(HW_CMT_IMP_EXP_ID) ?>'
+                                wt_nonce: '<?php echo esc_js(wp_create_nonce(HW_CMT_IMP_EXP_ID)) ?>'
                             };
 
+                            <?php 
+                            
+                            $raw_final_url = add_query_arg(
+                                [
+                                    'import_page' => sanitize_key( $this->import_page ),
+                                    'step'        => 4,
+                                    'merge'       => ! empty( $_GET['merge'] ) ? 1 : 0,
+                                ],
+                                admin_url( 'admin-ajax.php' )
+                            );
+                            ?>
+
                             $.ajax({
-                                url: '<?php echo add_query_arg(array('import_page' => $this->import_page, 'step' => '4', 'merge' => !empty($_GET['merge']) ? 1 : 0), admin_url('admin-ajax.php')); ?>',
+                                url: <?php echo wp_json_encode( esc_url_raw( $raw_final_url ) ); ?>,
                                 data: data,
                                 type: 'POST',
                                 success: function(response) {
-                                    console.log(response);
                                     $('#import-progress tbody').append('<tr class="complete"><td colspan="5">' + response + '</td></tr>');
                                     $('.importer-loading').hide();
                                 }
@@ -519,7 +548,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
             //if(count(array_intersect_key ( $mapping_from_db[0] , $row)) ==  count($mapping_from_db[0])){	
             $reset_action = 'admin.php?clearmapping=1&amp;profile=' . $this->profile . '&amp;import=' . $this->import_page . '&amp;step=1&amp;merge=' . (!empty($_GET['merge']) ? 1 : 0) . '&amp;file_url=' . $this->file_url . '&amp;delimiter=' . $this->delimiter . '&amp;merge_empty_cells=' . $this->merge_empty_cells . '&amp;file_id=' . $this->id . '';
             $reset_action = esc_attr(wp_nonce_url($reset_action, 'import-upload'));
-            echo '<h3>' . __('Columns are pre-selected using the Mapping file: "<b style="color:gray">' . $this->profile . '</b>".  <a href="' . $reset_action . '"> Delete</a> this mapping file.', 'comments-import-export-woocommerce') . '</h3>';
+            echo '<h3>' . esc_html__('Columns are pre-selected using the Mapping file: "<b style="color:gray">' . $this->profile . '</b>".  <a href="' . $reset_action . '"> Delete</a> this mapping file.', 'comments-import-export-woocommerce') . '</h3>';
             $saved_mapping = $mapping_from_db[0];
             $saved_evaluation = $mapping_from_db[1];
             //}	
@@ -540,15 +569,18 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
         if (function_exists('WC')) {
             global $woocommerce;
         }
-        if ($this->clean_before_import == 1) {
 
+
+        if ($this->clean_before_import == 1) {
             $deletequery = "TRUNCATE TABLE wp_comments";
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             if (!$wpdb->query($deletequery)) {
-                $this->add_import_result('failed', 'Didn`t able to clean the previous comments', 'Didn`t able to clean the previous comments', '-', '');
+                $this->add_import_result('failed', esc_html__('Didn`t able to clean the previous comments', 'comments-import-export-woocommerce'), esc_html__('Didn`t able to clean the previous comments', 'comments-import-export-woocommerce'), '-', '');
                 return;
-            } else {
             }
         }
+
+
 
         wp_suspend_cache_invalidation(true);
 
@@ -663,7 +695,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                     $query .= " AND $key='$value'";
                 }
             }
-
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $posts_that_exist = $wpdb->get_col($wpdb->prepare($query, $id));
             if (!$posts_that_exist) {
                 return true;
@@ -677,6 +709,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                     $query .= " AND $key='$value'";
                 }
             }
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $posts_that_exist = $wpdb->get_col($wpdb->prepare($query, $id));
 
             if (!$posts_that_exist) {
@@ -726,6 +759,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
     {
         global $wpdb;
         $query = "SELECT comment_ID FROM $wpdb->comments WHERE comment_ID = %d AND comment_approved != 'trash' ";
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $posts_that_exist = $wpdb->get_col($wpdb->prepare($query, $id));
         if ($posts_that_exist) {
             foreach ($posts_that_exist as $post_exists) {
@@ -739,9 +773,8 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
     public function get_last_comment_id()
     {
         global $wpdb;
-        //        $query = "SELECT MAX(comment_ID) FROM $wpdb->comments";
-        //        $results = $wpdb->get_var($query);
-        //        return $results + 1;
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $get_id = $wpdb->get_row("SHOW TABLE STATUS LIKE '" . $wpdb->prefix . "comments'");
         $last_id = $get_id->Auto_increment;
         return $last_id;
@@ -865,6 +898,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
             }
             if (sizeof($postdata) > 1) {
                 global $wpdb;
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $result = $wpdb->update('wp_comments', $postdata, array('comment_ID' => $post_id));
             }
             if (!empty($post['postmeta']) && is_array($post['postmeta'])) { //update data in commentmeta table
@@ -923,6 +957,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
             if (isset($post['comment_ID']) && !empty($post['comment_ID'])) {
                 if (sizeof($postdata) > 1) {
                     global $wpdb;
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                     $updated = $wpdb->update('wp_comments', $postdata, array('comment_ID' => $post['comment_ID']));
                     if (!$updated) {
                         if (!empty($post['comment_ID'])) {
@@ -944,8 +979,8 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
             unset($comment_parent_session);
 
             if ($cmd_type === 'woodiscuz') {
-
                 global $wpdb;
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $wpdb->insert($wpdb->commentmeta, array('comment_ID' => $post_id, 'meta_key' => 'verified', 'meta_value' => '1'));
             }
             if (!empty($post['postmeta']) && is_array($post['postmeta'])) { //insert comment meta to wp_commentmeta table
@@ -1272,10 +1307,18 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
 
 
     // Display import page title
+    // public function header()
+    // {
+    //     echo esc_html('<div class="wrap"><div class="icon32" id="icon-woocommerce-importer"><br></div>');
+    //     echo esc_html('<h2>' . (empty($_GET['merge']) ? esc_html__('Import', 'comments-import-export-woocommerce') : esc_html__('Merge WordPress Comments', 'comments-import-export-woocommerce')) . '</h2>');
+
+    // }
+
+    // Display import page title
     public function header()
     {
         echo '<div class="wrap"><div class="icon32" id="icon-woocommerce-importer"><br></div>';
-        echo '<h2>' . (empty($_GET['merge']) ? __('Import', 'comments-import-export-woocommerce') : __('Merge WordPress Comments', 'comments-import-export-woocommerce')) . '</h2>';
+        echo '<h2>' . (empty($_GET['merge']) ? esc_html__('Import', 'comments-import-export-woocommerce') : esc_html__('Merge WordPress Comments', 'comments-import-export-woocommerce')) . '</h2>';
     }
 
     // Close div.wrap

@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div id="tab-help" class="coltwo-col panel help-guide">
             <div class="cols">
                 <div class="inner-panel" style="">
-                    <img src="<?php echo HF_CMT_IM_EX_PATH_URL . '/images/setup.png'; ?>"/>
+                    <img src="<?php echo esc_url(HF_CMT_IM_EX_PATH_URL . '/images/setup.png'); ?>"/>
                     <h3><?php esc_html_e('How-to-setup', 'comments-import-export-woocommerce'); ?></h3>
                     <p style=""><?php esc_html_e('Read the set-up guide to get started with the plugin', 'comments-import-export-woocommerce'); ?></p>
                     <a href="https://www.webtoffee.com/setting-up-wordpress-woocommerce-comments-import-export-plugin/" target="_blank" class="button button-primary">
@@ -35,14 +35,14 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </div>
 
                 <div class="inner-panel" style="">
-                    <img src="<?php echo HF_CMT_IM_EX_PATH_URL . '/images/documentation.png'; ?>"/>
+                    <img src="<?php echo esc_url(HF_CMT_IM_EX_PATH_URL . '/images/documentation.png'); ?>"/>
                     <h3><?php esc_html_e('Documentation', 'comments-import-export-woocommerce'); ?></h3>
                     <p style=""><?php esc_html_e('Refer to our documentation to set and get started', 'comments-import-export-woocommerce'); ?></p>
                     <a target="_blank" href="https://www.webtoffee.com/category/documentation/product-import-export-plugin-for-woocommerce/" class="button-primary"><?php esc_html_e('Documentation', 'wf_csv_import_export'); ?></a> 
                 </div>
 
                 <div class="inner-panel" style="">
-                    <img src="<?php echo HF_CMT_IM_EX_PATH_URL . '/images/support.png'; ?>"/>
+                    <img src="<?php echo esc_url(HF_CMT_IM_EX_PATH_URL . '/images/support.png'); ?>"/>
                     <h3><?php esc_html_e('Support', 'comments-import-export-woocommerce'); ?></h3>
                     <p style=""><?php esc_html_e('We would love to help you on any queries or issues.', 'comments-import-export-woocommerce'); ?></p>
                     <a href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/" target="_blank" class="button button-primary">

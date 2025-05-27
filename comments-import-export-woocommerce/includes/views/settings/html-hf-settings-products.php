@@ -41,7 +41,7 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
 }
 ?>
 <div class="tool-box bg-white p-20p pipe-view">
-    <form action="<?php echo admin_url('admin.php?page=hw_cmt_csv_im_ex&action=settings'); ?>" method="post">
+    <form action="<?php echo esc_url(admin_url('admin.php?page=hw_cmt_csv_im_ex&action=settings')); ?>" method="post">
                 <?php wp_nonce_field(HW_CMT_IMP_EXP_ID) ?>
 
         <table class="form-table">
@@ -63,7 +63,7 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                     <label for="ftp_server"><?php esc_html_e('FTP Server Host/IP', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
-                    <input type="text" name="ftp_server" id="ftp_server" placeholder="<?php esc_html_e('XXX.XXX.XXX.XXX', 'comments-import-export-woocommerce'); ?>" value="<?php echo $ftp_server; ?>" class="input-text" />
+                    <input type="text" name="ftp_server" id="ftp_server" placeholder="<?php esc_html_e('XXX.XXX.XXX.XXX', 'comments-import-export-woocommerce'); ?>" value="<?php echo esc_attr($ftp_server); ?>" class="input-text" />
                 </td>
             </tr>
             <tr>
@@ -71,7 +71,7 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                     <label for="ftp_user"><?php esc_html_e('FTP User Name', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
-                    <input type="text" name="ftp_user" id="ftp_user"  value="<?php echo $ftp_user; ?>" class="input-text" />
+                    <input type="text" name="ftp_user" id="ftp_user"  value="<?php echo esc_attr($ftp_user); ?>" class="input-text" />
                 </td>
             </tr>
             <tr>
@@ -79,7 +79,7 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                     <label for="ftp_password"><?php esc_html_e('FTP Password', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
-                    <input type="password" name="ftp_password" id="ftp_password"  value="<?php echo $ftp_password; ?>" class="input-text" />
+                    <input type="password" name="ftp_password" id="ftp_password"  value="<?php echo esc_attr($ftp_password); ?>" class="input-text" />
                 </td>
             </tr>
              <tr>
@@ -87,7 +87,7 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                     <label for="ftp_port"><?php esc_html_e('FTP Port', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
-                    <input type="text" name="ftp_port" id="ftp_port" placeholder="21 (default) " value="<?php if(isset($ftp_port)) echo $ftp_port; ?>" class="input-text" />
+                    <input type="text" name="ftp_port" id="ftp_port" placeholder="21 (default) " value="<?php if(isset($ftp_port)) echo esc_attr($ftp_port); ?>" class="input-text" />
 <!--                  <p style="font-size: 12px"><?php esc_html_e('Enter your port number', 'comments-import-export-woocommerce'); ?></p>-->
                 </td>
             </tr>
@@ -114,7 +114,7 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                     <label for="export_ftp_path"><?php esc_html_e('Export Path', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
-                    <input type="text" name="export_ftp_path" id="export_ftp_path"  value="<?php echo $export_ftp_path; ?>"/>
+                    <input type="text" name="export_ftp_path" id="export_ftp_path"  value="<?php echo esc_attr($export_ftp_path); ?>"/>
 
                 </td>
             </tr>
@@ -124,7 +124,7 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                     <label for="export_ftp_file_name"><?php esc_html_e('Export Filename', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
-                    <input type="text" name="export_ftp_file_name" id="export_ftp_file_name"  value="<?php echo $export_ftp_file_name; ?>" placeholder="For example sample.csv"/>
+                    <input type="text" name="export_ftp_file_name" id="export_ftp_file_name"  value="<?php echo esc_attr($export_ftp_file_name); ?>" placeholder="<?php echo esc_attr__('For example sample.csv', 'comments-import-export-woocommerce'); ?>"/>
 
                 </td>
             </tr>
@@ -136,8 +136,8 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                 </th>
                 <td>
                     <select class="" style="" id="auto_export" name="auto_export">
-                        <option <?php if ($auto_export === 'Disabled') echo 'selected'; ?> value="Disabled"><?php esc_html_e('Disabled', 'comments-import-export-woocommerce'); ?></option>
-                        <option <?php if ($auto_export === 'Enabled') echo 'selected'; ?> value="Enabled"><?php esc_html_e('Enabled', 'comments-import-export-woocommerce'); ?></option>
+                        <option <?php selected($auto_export, 'Disabled'); ?> value="Disabled"><?php esc_html_e('Disabled', 'comments-import-export-woocommerce'); ?></option>
+                        <option <?php selected($auto_export, 'Enabled'); ?> value="Enabled"><?php esc_html_e('Enabled', 'comments-import-export-woocommerce'); ?></option>
                     </select>
                 </td>
             </tr>
@@ -147,8 +147,8 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                         <label for="auto_export_start_time"><?php esc_html_e('Export Start Time', 'comments-import-export-woocommerce'); ?></label>
                     </th>
                     <td>
-                        <input type="text" name="auto_export_start_time" id="auto_export_start_time"  value="<?php echo $auto_export_start_time; ?>"/>
-                        <span class="description"><?php echo sprintf(__('Local time is <code>%s</code>.', 'comments-import-export-woocommerce'), date_i18n($timefor)) . ' ' . $scheduled_desc; ?></span>
+                        <input type="text" name="auto_export_start_time" id="auto_export_start_time"  value="<?php echo esc_attr($auto_export_start_time); ?>"/>
+                        <span class="description"><?php echo sprintf(esc_html__('Local time is <code>%s</code>.', 'comments-import-export-woocommerce'), esc_html(date_i18n($timefor))) . ' ' . esc_html($scheduled_desc); ?></span>
                         <br/>
                         <span class="description"><?php esc_html_e('<code>Enter like 6:18pm or 12:27am</code>', 'comments-import-export-woocommerce'); ?></span>
                     </td>
@@ -158,7 +158,7 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                         <label for="auto_export_interval"><?php esc_html_e('Export Interval [ Minutes ]', 'comments-import-export-woocommerce'); ?></label>
                     </th>
                     <td>
-                        <input type="text" name="auto_export_interval" id="auto_export_interval"  value="<?php echo $auto_export_interval; ?>"  />
+                        <input type="text" name="auto_export_interval" id="auto_export_interval"  value="<?php echo esc_attr($auto_export_interval); ?>"  />
                     </td>
                 </tr>
             </tbody>
@@ -173,8 +173,8 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                 </th>
                 <td>
                     <select class="" style="" id="auto_import" name="auto_import">
-                        <option <?php if ($auto_import === 'Disabled') echo 'selected'; ?> value="Disabled"><?php esc_html_e('Disabled', 'comments-import-export-woocommerce'); ?></option>
-                        <option <?php if ($auto_import === 'Enabled') echo 'selected'; ?> value="Enabled"><?php esc_html_e('Enabled', 'comments-import-export-woocommerce'); ?></option>
+                        <option <?php selected($auto_import, 'Disabled'); ?> value="Disabled"><?php esc_html_e('Disabled', 'comments-import-export-woocommerce'); ?></option>
+                        <option <?php selected($auto_import, 'Enabled'); ?> value="Enabled"><?php esc_html_e('Enabled', 'comments-import-export-woocommerce'); ?></option>
                     </select>
                 </td>
             </tr>
@@ -184,7 +184,7 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                         <label for="ftp_server_path"><?php esc_html_e('FTP Server Path', 'comments-import-export-woocommerce'); ?></label>
                     </th>
                     <td>
-                        <input type="text" name="ftp_server_path" id="ftp_server_path"  value="<?php echo $ftp_server_path; ?>" class="input-text" />
+                        <input type="text" name="ftp_server_path" id="ftp_server_path"  value="<?php echo esc_attr($ftp_server_path); ?>" class="input-text" />
                     </td>
                 </tr>
                 <tr>
@@ -192,8 +192,8 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                         <label for="auto_import_start_time"><?php esc_html_e('Import Start Time', 'comments-import-export-woocommerce'); ?></label>
                     </th>
                     <td>
-                        <input type="text" name="auto_import_start_time" id="auto_export_start_time"  value="<?php echo $auto_import_start_time; ?>"/>
-                        <span class="description"><?php echo sprintf(__('Local time is <code>%s</code>.', 'comments-import-export-woocommerce'), date_i18n($timefor)) . ' ' . $scheduled_import_desc; ?></span>
+                        <input type="text" name="auto_import_start_time" id="auto_export_start_time"  value="<?php echo esc_attr($auto_import_start_time); ?>"/>
+                        <span class="description"><?php echo sprintf(esc_html__('Local time is <code>%s</code>.', 'comments-import-export-woocommerce'), esc_html(date_i18n($timefor))) . ' ' . esc_html($scheduled_import_desc); ?></span>
                         <br/>
                         <span class="description"><?php esc_html_e('<code>Enter like 6:18pm or 12:27am</code>', 'comments-import-export-woocommerce'); ?></span>
                     </td>
@@ -203,7 +203,7 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                         <label for="auto_import_interval"><?php esc_html_e('Import Interval [ Minutes ]', 'comments-import-export-woocommerce'); ?></label>
                     </th>
                     <td>
-                        <input type="text" name="auto_import_interval" id="auto_export_interval"  value="<?php echo $auto_import_interval; ?>"  />
+                        <input type="text" name="auto_import_interval" id="auto_export_interval"  value="<?php echo esc_attr($auto_import_interval); ?>"  />
                     </td>
                 </tr>
                 <tr>
@@ -229,7 +229,7 @@ if (!empty($mapping_from_db)) {
                             <select name="auto_import_profile">
                                 <option value="">--Select--</option>
     <?php foreach ($mapping_from_db as $key => $value) { ?>
-                                    <option value="<?php echo $key; ?>" <?php selected($key, $auto_import_profile); ?>><?php echo $key; ?></option>
+                                    <option value="<?php echo esc_attr($key); ?>" <?php selected($key, $auto_import_profile); ?>><?php echo esc_html($key); ?></option>
 
                                 <?php } ?>
                             </select>

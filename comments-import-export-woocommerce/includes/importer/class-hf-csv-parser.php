@@ -201,6 +201,7 @@ class HW_CSV_Parser
 						SELECT comment_ID
 					    FROM $wpdb->comments
 					    WHERE $wpdb->comments = $post_id");
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 					$found_product_id = $wpdb->get_var($db_query);
 					if (! $found_product_id) {
 						$HW_CSV_Comments_Import->log->add('csv-import', sprintf(__('> > Skipped. Cannot find product comments with ID %s. Importing instead.', 'comments-import-export-woocommerce'), $item['ID']));
@@ -309,9 +310,11 @@ class HW_CSV_Parser
 	{
 		global $wpdb;
 		$id = $product['comment_ID'];
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$posts_that_exist = $wpdb->get_var($wpdb->prepare("SELECT comment_ID FROM $wpdb->comments WHERE comment_ID = %d ", $id));
 		$return = '';
 		if (!$posts_that_exist) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$inserted_id = $wpdb->insert('wp_comments', array('comment_ID' =>  $id, 'comment_type' => 'comment'));
 			if ($inserted_id) {
 				$return = $id;

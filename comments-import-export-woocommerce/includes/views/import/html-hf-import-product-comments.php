@@ -6,7 +6,7 @@
         $merge_url = admin_url('admin.php?import=product_comments_csv&merge=1');
         $import_url = admin_url('admin.php?import=product_comments_csv');
         ?>
-        <a class="button button-primary" id="mylink" href="<?php echo admin_url('admin.php?import=product_comments_csv'); ?>"><?php esc_html_e('Import Comments', 'comments-import-export-woocommerce'); ?></a>
+        <a class="button button-primary" id="mylink" href="<?php echo esc_url(admin_url('admin.php?import=product_comments_csv')); ?>"><?php esc_html_e('Import Comments', 'comments-import-export-woocommerce'); ?></a>
         &nbsp;
         <input type="checkbox" id="merge" value="0"><?php esc_html_e('Merge comments if exists', 'comments-import-export-woocommerce'); ?> <br>
     </p>
@@ -14,9 +14,9 @@
 <script type="text/javascript">
     jQuery('#merge').click(function () {
         if (this.checked) {
-            jQuery("#mylink").attr("href", '<?php echo $merge_url ?>');
+            jQuery("#mylink").attr("href", '<?php echo esc_url($merge_url); ?>');
         } else {
-            jQuery("#mylink").attr("href", '<?php echo $import_url ?>');
+            jQuery("#mylink").attr("href", '<?php echo esc_url($import_url); ?>');
         }
     });
 </script>

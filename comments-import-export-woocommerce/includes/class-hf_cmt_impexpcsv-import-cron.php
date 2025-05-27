@@ -195,7 +195,7 @@ class HW_Cmt_ImpExpCsv_ImportCron {
         if ($success) {
             $this->file_url = ABSPATH . $local_file;
         } else {
-            die($this->error_message);
+            die(esc_html($this->error_message));
         }
 
         return true;

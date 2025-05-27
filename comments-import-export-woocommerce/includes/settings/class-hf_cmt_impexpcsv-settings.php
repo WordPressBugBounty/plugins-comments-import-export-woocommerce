@@ -13,11 +13,11 @@ class HW_Cmt_ImpExpCsv_Settings {
 		$_nonce = isset($_POST['_wpnonce']) ? sanitize_text_field(wp_unslash($_POST['_wpnonce'])) : '';
 
 		if ( ! wp_verify_nonce( $_nonce, HW_CMT_IMP_EXP_ID ) ) {
-			wp_die( esc_html__('You do not have sufficient permissions to access this page.', 'hw_csv_import_export') );
+			wp_die( esc_html__('You do not have sufficient permissions to access this page.', 'comments-import-export-woocommerce') );
 		}
 
 		if ( ! current_user_can('manage_options') ) {
-			wp_die( esc_html__('You do not have permission to save these settings.', 'hw_csv_import_export') );
+			wp_die( esc_html__('You do not have permission to save these settings.', 'comments-import-export-woocommerce') );
 		}
 
 		$ftp_server     = ! empty($_POST['ftp_server']) ? sanitize_text_field(wp_unslash($_POST['ftp_server'])) : '';

@@ -524,9 +524,9 @@ msgstr ""
 #: includes/importer/views/html-hf-import-options.php:22
 #: includes/importer/views/html-hf-import-options.php:24
 msgid ""
-"Assign constant value HikeFoce to comment_author:</br>=HikeFoce</br>Append a "
-"value By HikeFoce to comments_content:</br>&By HikeFoce</br>Prepend a value "
-"HikeFoce to comments_content:</br>&HikeFoce [VAL]."
+"Assign constant value Webtoffee to comment_author:</br>=Webtoffee</br>Append a "
+"value By Webtoffee to comments_content:</br>&By Webtoffee</br>Prepend a value "
+"Webtoffee to comments_content:</br>&Webtoffee [VAL]."
 msgstr ""
 
 #: includes/importer/views/html-hf-import-options.php:66

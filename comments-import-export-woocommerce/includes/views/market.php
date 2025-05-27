@@ -10,13 +10,13 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div> */?>
     <div class="pipe-review-widget">
         <?php
-        echo sprintf(__('<div class=""><p><i>If you like the plugin please leave us a %1$s review!</i><p></div>', 'comments-import-export-woocommerce'), '<a href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/reviews#new-post" target="_blank" class="xa-pipe-rating-link" data-reviewed="' . esc_attr__('Thanks for the review.', 'comments-import-export-woocommerce') . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>');
+        echo  sprintf(wp_kses_post('<div class=""><p><i>If you like the plugin please leave us a %1$s review!</i><p></div>', 'comments-import-export-woocommerce'), '<a href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/reviews#new-post" target="_blank" class="xa-pipe-rating-link" data-reviewed="' . esc_attr__('Thanks for the review.', 'comments-import-export-woocommerce') . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>');
         ?>
     </div>
 	
 	<div class="wt-ierpro-header wt-comment-pipe-premium-features">
 		<div class="wt-comment-ierpro-name">
-			<img src="<?php echo HF_CMT_IM_EX_PATH_URL. 'images/wt-crown-gold.png'; ?>" alt="featured img" width="91" height="65">			
+			<img src="<?php echo esc_url(HF_CMT_IM_EX_PATH_URL. 'images/wt-crown-gold.png'); ?>" alt="featured img" width="91" height="65">			
 		</div>
 		<div class="wt-comment-ierpro-mainfeatures">
 			<ul>

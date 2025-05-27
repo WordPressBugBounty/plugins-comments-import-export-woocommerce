@@ -2028,7 +2028,7 @@ class Net_SFTP extends Net_SSH2
                 break;
             case $mode & NET_SFTP_LOCAL_FILE:
                 if (!is_file($data)) {
-                    user_error("$data is not a valid file");
+                    user_error(esc_html("$data is not a valid file"));
                     return false;
                 }
                 $fp = @fopen($data, 'rb');
@@ -2992,7 +2992,7 @@ class Net_SFTP extends Net_SSH2
             $packet_type = '-> ' . $this->packet_types[$type] .
                            ' (' . round($stop - $start, 4) . 's)';
             if (NET_SFTP_LOGGING == NET_SFTP_LOG_REALTIME) {
-                echo "<pre>\r\n" . $this->_format_log(array($data), array($packet_type)) . "\r\n</pre>\r\n";
+                echo esc_html("<pre>\r\n" . $this->_format_log(array($data), array($packet_type)) . "\r\n</pre>\r\n");
                 flush();
                 ob_flush();
             } else {
@@ -3071,7 +3071,7 @@ class Net_SFTP extends Net_SSH2
             $packet_type = '<- ' . $this->packet_types[$this->packet_type] .
                            ' (' . round($stop - $start, 4) . 's)';
             if (NET_SFTP_LOGGING == NET_SFTP_LOG_REALTIME) {
-                echo "<pre>\r\n" . $this->_format_log(array($packet), array($packet_type)) . "\r\n</pre>\r\n";
+                echo esc_html("<pre>\r\n" . $this->_format_log(array($packet), array($packet_type)) . "\r\n</pre>\r\n");
                 flush();
                 ob_flush();
             } else {

@@ -1,7 +1,7 @@
 <div class="tool-box bg-white p-20p pipe-view">
     <h3 class="title"><?php esc_html_e('Export Comments in CSV Format:', 'comments-import-export-woocommerce'); ?></h3>
     <p><?php esc_html_e('Export and download your Comments in CSV format. This file can be used to import Comments back into your Woocommerce shop.', 'comments-import-export-woocommerce'); ?></p>
-    <form action="<?php echo admin_url('admin.php?page=hw_cmt_csv_im_ex&action=export'); ?>" method="post">
+    <form action="<?php echo esc_url(admin_url('admin.php?page=hw_cmt_csv_im_ex&action=export')); ?>" method="post">
     <?php wp_nonce_field('comments-import-export-woocommerce') ?>
 
         <table class="form-table">
@@ -67,7 +67,7 @@
                             );
                             $products   = get_posts($args);
                             foreach ($products as $product) {
-                                echo '<option value="' . $product->ID . '">' . $product->post_title . '</option>';
+                                echo '<option value="' . esc_attr($product->ID) . '">' . esc_html($product->post_title) . '</option>';
                             }
                         ?>
                     </select>
@@ -94,7 +94,7 @@
                             );
                             $articles   = get_posts($args);
                             foreach ($articles as $product) {
-                                echo '<option value="' . $product->ID . '">' . $product->post_title . '</option>';
+                                echo '<option value="' . esc_attr($product->ID) . '">' . esc_html($product->post_title) . '</option>';
                             }
                         ?>
                     </select>
@@ -127,11 +127,11 @@
                 <?php foreach ($post_columns as $pkey => $pcolumn) {
                             $ena=($pkey =='comment_alter_id')?'style="display:none;"':'';
                          ?>
-            <tr <?php echo $ena; ?> >
+            <tr <?php echo esc_attr($ena); ?> >
                 <td>
                     
-                    <input name= "columns[<?php echo $pkey; ?>]" type="checkbox"  value="<?php echo $pkey; ?>" checked>
-                    <label for="columns[<?php echo $pkey; ?>]"><?php esc_html_e($pcolumn, 'comments-import-export-woocommerce'); ?></label>
+                    <input name= "columns[<?php echo esc_attr($pkey); ?>]" type="checkbox"  value="<?php echo esc_attr($pkey); ?>" checked>
+                    <label for="columns[<?php echo esc_attr($pkey); ?>]"><?php esc_html_e($pcolumn, 'comments-import-export-woocommerce'); ?></label>
                 </td>
                 <td>
                     <?php 
@@ -140,7 +140,7 @@
                             $tmpkey = ltrim($pkey, '_');
                         }
                     ?>
-                     <input type="text" name="columns_name[<?php echo $pkey; ?>]"  value="<?php echo $tmpkey; ?>" class="input-text" />
+                     <input type="text" name="columns_name[<?php echo esc_attr($pkey); ?>]"  value="<?php echo esc_attr($tmpkey); ?>" class="input-text" />
                 </td>
             </tr>
                 <?php } ?>

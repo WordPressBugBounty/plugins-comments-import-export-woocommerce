@@ -1155,7 +1155,7 @@ class Net_SSH2
             $this->fsock = @fsockopen($this->host, $this->port, $errno, $errstr, $this->curTimeout == 0 ? 100000 : $this->curTimeout);
             if (!$this->fsock) {
                 $host = $this->host . ':' . $this->port;
-                user_error(rtrim("Cannot connect to $host. Error $errno. $errstr"));
+                user_error(esc_html(rtrim("Cannot connect to $host. Error $errno. $errstr")));
                 return false;
             }
             $elapsed = strtok(microtime(), ' ') + strtok('') - $start;
@@ -1228,7 +1228,7 @@ class Net_SSH2
         }
 
         if (version_compare($matches[1], '1.99', '<')) {
-            user_error("Cannot connect to SSH $matches[1] servers");
+            user_error(esc_html("Cannot connect to SSH $matches[1] servers"));
             return false;
         }
 
@@ -4008,7 +4008,7 @@ class Net_SSH2
                         $start = '<pre>';
                         $stop = '</pre>';
                 }
-                echo $start . $this->_format_log(array($message), array($message_number)) . $stop;
+                echo esc_html($start) . esc_html($this->_format_log(array($message), array($message_number))) . esc_html($stop);
                 @flush();
                 @ob_flush();
                 break;

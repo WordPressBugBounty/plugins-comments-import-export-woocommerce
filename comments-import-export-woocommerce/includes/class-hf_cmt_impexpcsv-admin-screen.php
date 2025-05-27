@@ -35,7 +35,8 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
             $action_general = 'download_comment_csv';
             $url_general = wp_nonce_url(admin_url('admin-ajax.php?action=comment_export_to_csv_single&comment_ID=' . $comment_ID), 'comments-import-export-woocommerce');
             $name_general = __('Download to CSV', 'comments-import-export-woocommerce');
-            printf('<a class="button tips %s" href="%s" data-tip="%s">%s</a>', $action_general, esc_url($url_general), $name_general, $name_general);
+            printf('<a class="button tips %s" href="%s" data-tip="%s">%s</a>',  esc_attr($action_general), esc_url($url_general), esc_attr($name_general), esc_html($name_general));
+
         }
     }
 
@@ -43,7 +44,7 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
         
         $nonce = sanitize_text_field(wp_unslash($_GET['_wpnonce']));
         if (!wp_verify_nonce($nonce,'comments-import-export-woocommerce') || !HW_Product_Comments_Import_Export_CSV::hf_user_permission()) {
-            wp_die(__('You do not have sufficient permissions to access this page.', 'hw_csv_import_export'));
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'comments-import-export-woocommerce'));
         }
 
         $comment_ID = !empty($_GET['comment_ID']) ? absint($_GET['comment_ID']) : '';
@@ -149,7 +150,7 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
      */
     public function process_product_reviews_bulk_actions() {        
         if (!HW_Product_Comments_Import_Export_CSV::hf_user_permission()) {
-            wp_die(__('You do not have sufficient permissions to access this page.', 'hw_csv_import_export'));
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'comments-import-export-woocommerce'));
         }
         
         $action = $_REQUEST['action'];

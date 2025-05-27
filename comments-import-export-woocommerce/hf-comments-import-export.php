@@ -6,7 +6,7 @@
   Description: Import and Export WordPress Comments From and To your Website.
   Author: WebToffee
   Author URI: https://www.webtoffee.com/
-  Version: 2.4.3
+  Version: 2.4.4
   Text Domain: comments-import-export-woocommerce
   License: GPLv3
   License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -27,7 +27,7 @@ if (!defined('HW_CMT_CSV_IM_EX')) {
 
 if (!defined('PLUGIN_VERSION')) {
 
-    define("PLUGIN_VERSION", "2.4.3");
+    define("PLUGIN_VERSION", "2.4.4");
 }
 
 define('HF_CMT_IM_EX_PATH_URL',  plugin_dir_url(__FILE__));
@@ -125,13 +125,13 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
 
                     switch ($wf_product_Comment_ie_msg) {
                         case "1":
-                        echo '<div class="update"><p>' . __('Successfully uploaded via FTP.', 'comments-import-export-woocommerce') . '</p></div>';
+                        echo '<div class="update"><p>' . esc_html('Successfully uploaded via FTP.', 'comments-import-export-woocommerce') . '</p></div>';
                         break;
                         case "2":
-                        echo '<div class="error"><p>' . __('Error while uploading via FTP.', 'comments-import-export-woocommerce') . '</p></div>';
+                        echo '<div class="error"><p>' . esc_html('Error while uploading via FTP.', 'comments-import-export-woocommerce') . '</p></div>';
                         break;
                         case "3":
-                        echo '<div class="error"><p>' . __('Please choose the file in CSV format either using Method 1 or Method 2.', 'comments-import-export-woocommerce') . '</p></div>';
+                        echo '<div class="error"><p>' . esc_html('Please choose the file in CSV format either using Method 1 or Method 2.', 'comments-import-export-woocommerce') . '</p></div>';
                         break;
                     }
                 }
@@ -214,7 +214,7 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
                     if (in_array($screen->id, $allowed_screen_ids) || (isset($_GET['page']) && $_GET['page'] == 'hw_cmt_csv_im_ex')|| (isset($_GET['import']) && $_GET['import'] == 'product_comments_csv')) {
                         if (!get_option('wcie_wt_plugin_reviewed')) {
                             $footer_text = sprintf(
-                                    __('If you like the plugin please leave us a %1$s review.', 'comments-import-export-woocommerce'), '<a href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/reviews#new-post" target="_blank" class="wt-review-link" data-rated="' . esc_attr__('Thanks :)', 'comments-import-export-woocommerce') . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
+                                    wp_kses_post('If you like the plugin please leave us a %1$s review.', 'comments-import-export-woocommerce'), '<a href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/reviews#new-post" target="_blank" class="wt-review-link" data-rated="' . esc_attr__('Thanks :)', 'comments-import-export-woocommerce') . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
                             );
 
                             $user_js = "jQuery( 'a.wt-review-link' ).click( function() {
@@ -222,7 +222,7 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
                                                            jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );
                                                    });";
                             $js = "<!-- User Import JavaScript -->\n<script type=\"text/javascript\">\njQuery(function($) { $user_js });\n</script>\n";
-                            echo $js;
+                            // echo $js;
                         } else {
                             $footer_text = __('Thank you for your review.', 'comments-import-export-woocommerce');
                         }
@@ -254,7 +254,7 @@ function wt_comments_import_export_woocommerce_update_message( $data, $response 
     {
         printf(
         '<div class="update-message wt-update-message">%s</div>',
-           $data['upgrade_notice']
+           wp_kses_post($data['upgrade_notice'])
         );
     }
 }
