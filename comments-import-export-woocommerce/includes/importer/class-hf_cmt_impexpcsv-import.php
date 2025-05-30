@@ -13,15 +13,6 @@ if (!class_exists('WP_Importer'))
 
 $posti_id = '';
 
-if (!class_exists('HW_Product_Comments_Import_Export_CSV')) {
-    class HW_Product_Comments_Import_Export_CSV
-    {
-        public static function hf_user_permission()
-        {
-            return current_user_can('manage_woocommerce');
-        }
-    }
-}
 
 class HW_Cmt_ImpExpCsv_Import extends WP_Importer
 {
@@ -114,7 +105,6 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
         }
 
         $step = empty($_GET['step']) ? 0 : absint($_GET['step']);
-
         switch ($step) {
             case 0:
                 $this->header();
@@ -383,7 +373,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
             case 3:
                 // Strict nonce and permission check
                 $nonce = isset($_POST['wt_nonce']) ? sanitize_text_field($_POST['wt_nonce']) : '';
-                if (!wp_verify_nonce($nonce, HW_CMT_IMP_EXP_ID) || !current_user_can('manage_woocommerce')) {
+                if (!wp_verify_nonce($nonce, HW_CMT_IMP_EXP_ID) || !HW_Product_Comments_Import_Export_CSV::hf_user_permission()) {
                     wp_die(esc_html__('Access Denied', 'comments-import-export-woocommerce'));
                 }
 
@@ -431,7 +421,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
             case 4:
                 // Strict nonce and permission check
                 $nonce = isset($_POST['wt_nonce']) ? sanitize_text_field($_POST['wt_nonce']) : '';
-                if (!wp_verify_nonce($nonce, HW_CMT_IMP_EXP_ID) || !current_user_can('manage_woocommerce')) {
+                if (!wp_verify_nonce($nonce, HW_CMT_IMP_EXP_ID) || !HW_Product_Comments_Import_Export_CSV::hf_user_permission()) {
                     wp_die(esc_html__('Access Denied', 'comments-import-export-woocommerce'));
                 }
 
@@ -559,6 +549,8 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
         include('views/html-hf-import-options.php');
     }
 
+
+    
     /**
      * The main controller for the actual import stage.
      */

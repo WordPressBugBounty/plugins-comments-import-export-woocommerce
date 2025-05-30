@@ -14,7 +14,7 @@
 <script type="text/javascript">
     jQuery('#merge').click(function () {
         if (this.checked) {
-            jQuery("#mylink").attr("href", '<?php echo esc_url($merge_url); ?>');
+            jQuery("#mylink").attr("href", '<?php echo esc_url_raw($merge_url); ?>');
         } else {
             jQuery("#mylink").attr("href", '<?php echo esc_url($import_url); ?>');
         }

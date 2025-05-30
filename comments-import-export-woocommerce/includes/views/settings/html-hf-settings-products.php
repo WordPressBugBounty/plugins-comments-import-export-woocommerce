@@ -148,9 +148,9 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                     </th>
                     <td>
                         <input type="text" name="auto_export_start_time" id="auto_export_start_time"  value="<?php echo esc_attr($auto_export_start_time); ?>"/>
-                        <span class="description"><?php echo sprintf(esc_html__('Local time is <code>%s</code>.', 'comments-import-export-woocommerce'), esc_html(date_i18n($timefor))) . ' ' . esc_html($scheduled_desc); ?></span>
+                        <span class="description"><?php echo sprintf(wp_kses_post('Local time is <code>%s</code>.', 'comments-import-export-woocommerce'), esc_html(date_i18n($timefor))) . ' ' . esc_html($scheduled_desc); ?></span>
                         <br/>
-                        <span class="description"><?php esc_html_e('<code>Enter like 6:18pm or 12:27am</code>', 'comments-import-export-woocommerce'); ?></span>
+                        <span class="description"><?php echo wp_kses_post('<code>Enter like 6:18pm or 12:27am</code>', 'comments-import-export-woocommerce'); ?></span>
                     </td>
                 </tr>
                 <tr>
