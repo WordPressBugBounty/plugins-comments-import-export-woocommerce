@@ -26,7 +26,7 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
     }
 
     public function custom_comment_columns($columns) {
-        $columns['comment_export_to_csv'] = __('Export');
+        $columns['comment_export_to_csv'] = __('Export', 'comments-import-export-woocommerce');
         return $columns;
     }
 
@@ -42,12 +42,12 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
 
     public function process_ajax_export_single_comment() {
         
-        $nonce = sanitize_text_field(wp_unslash($_GET['_wpnonce']));
-        if (!wp_verify_nonce($nonce,'comments-import-export-woocommerce') || !HW_Product_Comments_Import_Export_CSV::hf_user_permission()) {
+        $nonce = isset($_GET['_wpnonce']) ? sanitize_text_field(wp_unslash($_GET['_wpnonce'])) : '';
+        if (!empty($nonce) && !wp_verify_nonce($nonce,'comments-import-export-woocommerce') || !HW_Product_Comments_Import_Export_CSV::hf_user_permission()) {
             wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'comments-import-export-woocommerce'));
         }
 
-        $comment_ID = !empty($_GET['comment_ID']) ? absint($_GET['comment_ID']) : '';
+        $comment_ID = !empty($_GET['comment_ID']) ? absint(wp_unslash($_GET['comment_ID'])) : '';
         if (!$comment_ID) {
             die;
         }
@@ -92,19 +92,29 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
     public function admin_scripts() {
         $screen = get_current_screen();
         $allowed_creen_id = array('comments_page_hw_cmt_csv_im_ex',);
-        if (in_array($screen->id, $allowed_creen_id) || (isset($_GET['import']) && $_GET['import'] == 'product_comments_csv')) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification not needed.
+        $import = isset($_GET['import']) ? sanitize_text_field(wp_unslash($_GET['import'])) : ''; // @codingStandardsIgnoreLine.
+        if (in_array($screen->id, $allowed_creen_id) || ($import == 'product_comments_csv')) {
             if ( function_exists( 'WC' ) ) {
                 $wc_path = self::hw_get_wc_path();            
-                wp_enqueue_style('woocommerce_admin_styles', $wc_path . '/assets/css/admin.css');
+                wp_enqueue_style('woocommerce_admin_styles', $wc_path . '/assets/css/admin.css', array(), WBTE_CMT_IMP_EXP_VERSION);
                 wp_enqueue_script('wc-enhanced-select');
             }else{
-                wp_enqueue_style('woocommerce-cmt-select2-css', plugins_url(basename(plugin_dir_path(HW_CMT_ImpExpCsv_FILE)) . '/styles/select2.css', basename(__FILE__)), '', PLUGIN_VERSION, '');
-                wp_enqueue_script('woocommerce-cmt-select2-js', plugins_url(basename(plugin_dir_path(HW_CMT_ImpExpCsv_FILE)) . '/js/select2.js', basename(__FILE__)), array(), PLUGIN_VERSION, true);
+                wp_enqueue_style('woocommerce-cmt-select2-css', plugins_url(basename(plugin_dir_path(HW_CMT_ImpExpCsv_FILE)) . '/styles/select2.css', basename(__FILE__)), '', WBTE_CMT_IMP_EXP_VERSION, '');
+                wp_enqueue_script('woocommerce-cmt-select2-js', plugins_url(basename(plugin_dir_path(HW_CMT_ImpExpCsv_FILE)) . '/js/select2.js', basename(__FILE__)), array(), WBTE_CMT_IMP_EXP_VERSION, true);
             }
-            wp_enqueue_style('woocommerce-product-csv-importer1', plugins_url(basename(plugin_dir_path(HW_CMT_ImpExpCsv_FILE)) . '/styles/wf-style.css', basename(__FILE__)), '', PLUGIN_VERSION, 'screen');
-            wp_enqueue_style('woocommerce-product-csv-importer3', plugins_url(basename(plugin_dir_path(HW_CMT_ImpExpCsv_FILE)) . '/styles/jquery-ui.css', basename(__FILE__)), '', PLUGIN_VERSION, 'screen');
-            wp_enqueue_script('woocommerce-product-csv-importer2', plugins_url(basename(plugin_dir_path(HW_CMT_ImpExpCsv_FILE)) . '/js/product-rev-csv-import-export-for-woocommerce.min.js', basename(__FILE__)), '', PLUGIN_VERSION, 'screen');            
+            wp_enqueue_style('woocommerce-product-csv-importer1', plugins_url(basename(plugin_dir_path(HW_CMT_ImpExpCsv_FILE)) . '/styles/wf-style.css', basename(__FILE__)), '', WBTE_CMT_IMP_EXP_VERSION, 'screen');
+            wp_enqueue_style('woocommerce-product-csv-importer3', plugins_url(basename(plugin_dir_path(HW_CMT_ImpExpCsv_FILE)) . '/styles/jquery-ui.css', basename(__FILE__)), '', WBTE_CMT_IMP_EXP_VERSION, 'screen');
+            wp_enqueue_script('woocommerce-product-csv-importer2', plugins_url(basename(plugin_dir_path(HW_CMT_ImpExpCsv_FILE)) . '/js/product-rev-csv-import-export-for-woocommerce.min.js', basename(__FILE__)), '', WBTE_CMT_IMP_EXP_VERSION, 'screen');            
             wp_enqueue_script('jquery-ui-datepicker');
+            
+            wp_localize_script(
+                'woocommerce-product-csv-importer2', 
+                'wbtfe_comment_imp_exp_params', 
+                array('messages' => array(
+                    'no_file_selected' => esc_html__( 'Please select a file to import', 'comments-import-export-woocommerce' ),
+                ))
+            );
         }
     }
 
@@ -114,7 +124,8 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
 	public function output() {
 
 		$tab = 'import';
-		$curent_tab = !empty($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : '';
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification not needed.
+		$curent_tab = !empty($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : ''; // @codingStandardsIgnoreLine.
 		if ($curent_tab) {
 			if ('settings' == $curent_tab) {
 				$tab = 'settings';
@@ -136,7 +147,7 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
         ?>
         <script type="text/javascript">
             jQuery(document).ready(function ($) {
-                var $downloadToCSV = $('<option>').val('download_to_cmtiew_csv_hf').text('<?php esc_html__('Download as CSV', 'comments-import-export-woocommerce') ?>');
+                var $downloadToCSV = $('<option>').val('download_to_cmtiew_csv_hf').text('<?php esc_html_e('Download as CSV', 'comments-import-export-woocommerce') ?>');
                 $('select[name^="action"]').append($downloadToCSV);
             });
         </script>
@@ -152,19 +163,22 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
         if (!HW_Product_Comments_Import_Export_CSV::hf_user_permission()) {
             wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'comments-import-export-woocommerce'));
         }
-        
-        $action = $_REQUEST['action'];
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification is performing in the HW_Cmt_ImpExpCsv_Exporter::do_export() method.
+        $action = isset($_REQUEST['action']) ? sanitize_text_field(wp_unslash($_REQUEST['action'])) : ''; // @codingStandardsIgnoreLine.
         if (!in_array($action, array('download_to_cmtiew_csv_hf')))
             return;
 
-        if (isset($_REQUEST['delete_comments'])) {
-            $cmt_ids = array_map('absint', $_REQUEST['delete_comments']);
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification is performing in the HW_Cmt_ImpExpCsv_Exporter::do_export() method.
+        $delete_comments = isset($_REQUEST['delete_comments']) ? wp_unslash($_REQUEST['delete_comments']) : ''; // @codingStandardsIgnoreLine.
+        if (!empty($delete_comments)) {
+            $cmt_ids = array_map('absint', $delete_comments);
         }
         if (empty($cmt_ids)) {
             return;
         }
         // give an unlimited timeout if possible
-        @set_time_limit(0);
+        // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged, WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_set_time_limit
+        @set_time_limit(0); // @codingStandardsIgnoreLine.
 
         if ($action == 'download_to_cmtiew_csv_hf') {
             include_once( 'exporter/class-hf_cmt_impexpcsv-exporter.php' );

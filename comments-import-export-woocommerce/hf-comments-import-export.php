@@ -1,15 +1,15 @@
 <?php
 
-/*
-  Plugin Name: WordPress Comments Import & Export
-  Plugin URI: https://wordpress.org/plugins/comments-import-export-woocommerce/
-  Description: Import and Export WordPress Comments From and To your Website.
-  Author: WebToffee
-  Author URI: https://www.webtoffee.com/
-  Version: 2.4.5
-  Text Domain: comments-import-export-woocommerce
-  License: GPLv3
-  License URI: https://www.gnu.org/licenses/gpl-3.0.html
+/**
+ * Plugin Name: Comments Import & Export
+ * Plugin URI: https://wordpress.org/plugins/comments-import-export-woocommerce/
+ * Description: Import and Export WordPress Comments From and To your Website.
+ * Author: WebToffee
+ * Author URI: https://www.webtoffee.com/
+ * Version: 2.4.6
+ * Text Domain: comments-import-export-woocommerce
+ * License: GPLv3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  */
 
 if (!defined('WPINC')) {
@@ -25,9 +25,9 @@ if (!defined('HW_CMT_CSV_IM_EX')) {
     define("HW_CMT_CSV_IM_EX", "hw_cmt_csv_im_ex");
 }
 
-if (!defined('PLUGIN_VERSION')) {
+if (!defined('WBTE_CMT_IMP_EXP_VERSION')) {
 
-    define("PLUGIN_VERSION", "2.4.5");
+    define("WBTE_CMT_IMP_EXP_VERSION", "2.4.6");
 }
 
 define('HF_CMT_IM_EX_PATH_URL',  plugin_dir_url(__FILE__));
@@ -63,7 +63,6 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
 
                     add_filter('woocommerce_screen_ids', array($this, 'woocommerce_screen_ids'));
                     add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'hw_plugin_action_links'));
-                    add_action('init', array($this, 'load_plugin_textdomain'));
                     add_action('init', array($this, 'catch_export_request'), 20);
                     add_action('init', array($this, 'catch_save_settings'), 20);
                     add_action('admin_init', array($this, 'register_importers'));
@@ -93,8 +92,6 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
                     // uninstall feedback catch
                     include_once 'includes/class-wf-cmt_impexp-plugin-uninstall-feedback.php';
                     
-                    // WT Security Helper
-                    include_once ('includes/class-wt-security-helper.php');
                     // review request
                     include_once 'includes/class-wt-cmt_impexp-plugin-review-request.php';
                 }
@@ -114,24 +111,22 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
                 }
 
                 function hw_product_comments_ie_admin_notice() {
-                    global $pagenow;
-                    global $post;
 
-                    if (!isset($_GET["hw_product_Comment_ie_msg"]) && empty($_GET["hw_product_Comment_ie_msg"])) {
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification not needed.
+                    $wf_product_Comment_ie_msg = isset($_GET["hw_product_Comment_ie_msg"]) ? sanitize_text_field(wp_unslash($_GET["hw_product_Comment_ie_msg"])) : ''; // @codingStandardsIgnoreLine.
+                    if (empty($wf_product_Comment_ie_msg)) {
                         return;
                     }
 
-                    $wf_product_Comment_ie_msg = sanitize_text_field(wp_unslash($_GET["hw_product_Comment_ie_msg"]));
-
                     switch ($wf_product_Comment_ie_msg) {
                         case "1":
-                        echo '<div class="update"><p>' . esc_html('Successfully uploaded via FTP.', 'comments-import-export-woocommerce') . '</p></div>';
+                        echo '<div class="update"><p>' . esc_html__('Successfully uploaded via FTP.', 'comments-import-export-woocommerce') . '</p></div>';
                         break;
                         case "2":
-                        echo '<div class="error"><p>' . esc_html('Error while uploading via FTP.', 'comments-import-export-woocommerce') . '</p></div>';
+                        echo '<div class="error"><p>' . esc_html__('Error while uploading via FTP.', 'comments-import-export-woocommerce') . '</p></div>';
                         break;
                         case "3":
-                        echo '<div class="error"><p>' . esc_html('Please choose the file in CSV format either using Method 1 or Method 2.', 'comments-import-export-woocommerce') . '</p></div>';
+                        echo '<div class="error"><p>' . esc_html__('Please choose the file in CSV format either using Method 1 or Method 2.', 'comments-import-export-woocommerce') . '</p></div>';
                         break;
                     }
                 }
@@ -145,18 +140,15 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
                 }
 
                 /**
-                 * Handle localisation
-                 */
-                public function load_plugin_textdomain() {
-                    load_plugin_textdomain('comments-import-export-woocommerce', false, dirname(plugin_basename(__FILE__)) . '/lang/');
-                }
-
-                /**
                  * Catches an export request and exports the data. This class is only loaded in admin.
                  */
                 public function catch_export_request() {
-                    if (!empty($_GET['action']) && !empty($_GET['page']) && $_GET['page'] == 'hw_cmt_csv_im_ex') {
-                        switch ($_GET['action']) {
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification not needed.
+                    $action = isset($_GET['action']) ? sanitize_text_field(wp_unslash($_GET['action'])) : ''; // @codingStandardsIgnoreLine.
+                    $page = isset($_GET['page']) ? sanitize_text_field(wp_unslash($_GET['page'])) : ''; // @codingStandardsIgnoreLine.
+                    
+                    if (!empty($action) && !empty($page) && $page == 'hw_cmt_csv_im_ex') {
+                        switch ($action) {
                             case "export" :
                             $user_ok = self::hf_user_permission();
                             if ($user_ok) {
@@ -171,8 +163,11 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
                 }
 
                 public function catch_save_settings() {
-                    if (!empty($_GET['action']) && !empty($_GET['page']) && $_GET['page'] == 'hw_cmt_csv_im_ex') {
-                        switch ($_GET['action']) {
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification not needed.
+                    $action = isset($_GET['action']) ? sanitize_text_field(wp_unslash($_GET['action'])) : ''; // @codingStandardsIgnoreLine.
+                    $page = isset($_GET['page']) ? sanitize_text_field(wp_unslash($_GET['page'])) : ''; // @codingStandardsIgnoreLine.
+                    if (!empty($action) && !empty($page) && $page == 'hw_cmt_csv_im_ex') {
+                        switch ($action) {
                             case "settings" :
                             include_once( 'includes/settings/class-hf_cmt_impexpcsv-settings.php' );
                             HW_Cmt_ImpExpCsv_Settings::save_settings();
@@ -209,20 +204,27 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
                     if (!self::hf_user_permission()) {
                         return $footer_text;
                     }
+
                     $screen = get_current_screen();
                     $allowed_screen_ids = array('comments_page_hw_cmt_csv_im_ex');
-                    if (in_array($screen->id, $allowed_screen_ids) || (isset($_GET['page']) && $_GET['page'] == 'hw_cmt_csv_im_ex')|| (isset($_GET['import']) && $_GET['import'] == 'product_comments_csv')) {
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification not needed.
+                    $page = isset($_GET['page']) ? sanitize_text_field(wp_unslash($_GET['page'])) : ''; // @codingStandardsIgnoreLine.
+                    $import = isset($_GET['import']) ? sanitize_text_field(wp_unslash($_GET['import'])) : ''; // @codingStandardsIgnoreLine.
+                    
+                    if (in_array($screen->id, $allowed_screen_ids) || ($page == 'hw_cmt_csv_im_ex')|| ($import == 'product_comments_csv')) {
+                        
                         if (!get_option('wcie_wt_plugin_reviewed')) {
-                            $footer_text = sprintf(
-                                    wp_kses_post('If you like the plugin please leave us a %1$s review.', 'comments-import-export-woocommerce'), '<a href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/reviews#new-post" target="_blank" class="wt-review-link" data-rated="' . esc_attr__('Thanks :)', 'comments-import-export-woocommerce') . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
-                            );
+                            
+                            $footer_text = wp_kses_post(sprintf(
+                                // Translators: %1$s is the link to the plugin review page with 5 stars symbol.
+                                __('If you like the plugin please leave us a %1$s review.', 'comments-import-export-woocommerce'), '<a href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/reviews#new-post" target="_blank" class="wt-review-link" data-rated="' . esc_attr__('Thanks :)', 'comments-import-export-woocommerce') . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
+                            ));
 
-                            $user_js = "jQuery( 'a.wt-review-link' ).click( function() {
-                                                           jQuery.post( '" . admin_url("admin-ajax.php") . "', { action: 'wcie_wt_review_plugin' } );
-                                                           jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );
-                                                   });";
-                            $js = "<!-- User Import JavaScript -->\n<script type=\"text/javascript\">\njQuery(function($) { $user_js });\n</script>\n";
-                            // echo $js;
+                            // $user_js = "jQuery( 'a.wt-review-link' ).on( 'click', function() {
+                            //                jQuery.post( '" . esc_url(admin_url("admin-ajax.php")) . "', { action: 'wcie_wt_review_plugin' } );
+                            //                jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );
+                            //             });";
+                            // $js = "<!-- User Import JavaScript -->\n<script type=\"text/javascript\">\njQuery(function($) { " . esc_js( $user_js ) . "});\n</script>\n";
                         } else {
                             $footer_text = __('Thank you for your review.', 'comments-import-export-woocommerce');
                         }

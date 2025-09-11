@@ -29,6 +29,7 @@ class HW_Cmt_ImpExpCsv_ImportCron {
             if ($import_interval) {
                 $schedules['import_interval'] = array(
                     'interval' => (int) $import_interval * 60,
+                    // translators: %d is the interval
                     'display' => sprintf(__('Every %d minutes', 'comments-import-export-woocommerce'), (int) $import_interval)
                 );
             }
@@ -37,8 +38,8 @@ class HW_Cmt_ImpExpCsv_ImportCron {
     }
 
     public function hw_new_scheduled_cmt_import() {
-        if ($this->imports_enabled) {
-            if (!wp_next_scheduled('hw_cmt_csv_im_ex_auto_import_products')) {
+        if ($this->imports_enabled) { 
+            if ( ! wp_next_scheduled('hw_cmt_csv_im_ex_auto_import_products') ) {
                 $start_time = $this->settings['auto_import_start_time'];
                 $current_time = current_time('timestamp');
                 if ($start_time) {
@@ -70,43 +71,22 @@ class HW_Cmt_ImpExpCsv_ImportCron {
 
     public function hw_scheduled_import_products() {
 
-        //error_log("test run by wp-cron" , 3 , ABSPATH . '/wp-content/uploads/wc-logs/my-cron-log.txt');
         define( 'WP_LOAD_IMPORTERS', true );
         HW_Cmt_ImpExpCsv_ImportCron::product_importer();
       
-    
-          //  echo '<pre>';print_r($GLOBALS['HW_CSV_Comments_Import']);exit;
         if($this->handle_ftp_for_autoimport()){
-
-
-//            if($this->settings['auto_import_profile']!== ''){
-//				$profile_array = get_option('hw_prod_csv_imp_exp_mapping');
-//				$mapping = $profile_array[$this->settings['auto_import_profile']][0];
-//                                $eval_field = $profile_array[$this->settings['auto_import_profile']][1];
-//                                $start_pos = 0;
-//                                $end_pos = '';
-//                                
-//            }else{
-//                $this->error_message = 'Please set a mapping profile';
-//                $GLOBALS['HW_CSV_Comments_Import']->log->add( 'csv-import', __( 'Failed processing import. Reason:'.$this->error_message, 'comments-import-export-woocommerce' ) );
-//            }
-        if($this->settings['auto_import_merge']){ $_GET['merge'] = 1; } else { $_GET['merge'] = 0; }    
+            if($this->settings['auto_import_merge']){ $_GET['merge'] = 1; } else { $_GET['merge'] = 0; }    
           
-        //echo wp_next_scheduled('hw_cmt_csv_im_ex_auto_import_products').'<br/>';
-        //echo date('Y-m-d H:i:s' , wp_next_scheduled('hw_cmt_csv_im_ex_auto_import_products'));
-        //echo $_GET['merge'];exit;
-//        echo $this->file_url;die;
-        $GLOBALS['HW_CSV_Comments_Import']->import_start( $this->file_url, $mapping, $start_pos, $end_pos, $eval_field );
-	$GLOBALS['HW_CSV_Comments_Import']->import();
-	$GLOBALS['HW_CSV_Comments_Import']->import_end();
+
+            $GLOBALS['HW_CSV_Comments_Import']->import_start( $this->file_url, array(), 0, null, array() );
+            $GLOBALS['HW_CSV_Comments_Import']->import();
+            $GLOBALS['HW_CSV_Comments_Import']->import_end();
         
-        //do_action('hw_new_scheduled_cmt_import');
-        //wp_clear_scheduled_hook('hw_cmt_csv_im_ex_auto_import_products');
-        //do_action('hw_new_scheduled_cmt_import');
         
-        die();
+            die();
         }else{
-            $GLOBALS['HW_CSV_Comments_Import']->log->add( 'csv-import', __( 'Fetching file failed. Reason:'.$this->error_message, 'comments-import-export-woocommerce' ) );
+            // translators: %s is the error message
+            $GLOBALS['HW_CSV_Comments_Import']->log->add( 'csv-import', sprintf( __('Fetching file failed. Reason: %s', 'comments-import-export-woocommerce'), $this->error_message ) );
         }
         
     }
@@ -138,6 +118,9 @@ class HW_Cmt_ImpExpCsv_ImportCron {
         
         $this->error_message = "";
         $success = false;
+
+        // Include SFTP addon.
+        include_once(plugin_dir_path(__FILE__) . 'vendor/sftp-modules/sftp.php');
 
 //                if ($use_pasv)
             // if have SFTP Add-on for Import Export for WooCommerce 
@@ -212,29 +195,12 @@ class HW_Cmt_ImpExpCsv_ImportCron {
 		// includes
 		require_once 'importer/class-hf_cmt_impexpcsv-import.php';
 		require_once 'importer/class-hf-csv-parser.php';
-//                 echo "ddddd";die;
-//                if (!class_exists('WC_Logger')) {
-//                $class_wc_logger = ABSPATH . 'wp-content/plugins/woocommerce/includes/class-wc-logger.php';
-//                if (file_exists($class_wc_logger)) {
-//                require $class_wc_logger;
-//                }
-//                
-//                }
-//                else
-//                {
-//                $class_wc_logger = ABSPATH . 'wp-content/plugins/comments-import-export-woocommerce/includes/WP_Logging.php';
-//                if (file_exists($class_wc_logger)) {
-//                require $class_wc_logger;
-//                }
-//                }
                 
-                $class_wc_logger = ABSPATH . 'wp-includes/pluggable.php';
-//                require_once($class_wc_logger);
-//                wp_set_current_user(1); // escape user access check while running cron
+        $class_wc_logger = ABSPATH . 'wp-includes/pluggable.php';
                 
 		$GLOBALS['HW_CSV_Comments_Import'] = new HW_Cmt_ImpExpCsv_Import();
-                $GLOBALS['HW_CSV_Comments_Import']->import_page = 'comments_csv_cron';
-                $GLOBALS['HW_CSV_Comments_Import']->delimiter = ','; // need to give option in settingn , if some queries are coming
+        $GLOBALS['HW_CSV_Comments_Import']->import_page = 'comments_csv_cron';
+        $GLOBALS['HW_CSV_Comments_Import']->delimiter = ','; // need to give option in settingn , if some queries are coming
 	}
 
     

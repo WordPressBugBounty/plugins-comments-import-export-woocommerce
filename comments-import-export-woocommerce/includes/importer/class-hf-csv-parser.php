@@ -48,13 +48,16 @@ class HW_CSV_Parser
 		$enc = mb_detect_encoding($file, 'UTF-8, ISO-8859-1', true);
 		if ($enc)
 			setlocale(LC_ALL, 'en_US.' . $enc);
-		@ini_set('auto_detect_line_endings', true);
+		// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged, WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_set
+		@ini_set('auto_detect_line_endings', true); // @codingStandardsIgnoreLine.
 
 		$parsed_data = array();
 		$raw_headers = array();
 
 		// Put all CSV data into an associative array
-		if (($handle = fopen($file, "r")) !== FALSE) {
+		// PHPCS ignore reason: Direct read is intentional for CSV parsing.
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+		if (($handle = fopen($file, "r")) !== FALSE) { // @codingStandardsIgnoreLine.
 
 			$header   = fgetcsv($handle, 0, $delimiter, '"', '"');
 			if ($start_pos != 0)
@@ -106,7 +109,9 @@ class HW_CSV_Parser
 				if ($end_pos && $position >= $end_pos)
 					break;
 			}
-			fclose($handle);
+			// PHPCS ignore reason: Direct read is intentional for CSV parsing.
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
+			fclose($handle); // @codingStandardsIgnoreLine.
 		}
 		return array($parsed_data, $raw_headers, $position);
 	}
@@ -163,8 +168,21 @@ class HW_CSV_Parser
 
 		if (!isset($item['comment_post_ID']) || $item['comment_post_ID'] == '') {
 			if (isset($item['comment_post_title']) && $item['comment_post_title'] != '') {
-				$comment_post = get_page_by_title($item['comment_post_title'], OBJECT, 'post');
-				$pid = $comment_post ? $comment_post->ID : '';
+				$comment_post = null;
+				$query = new WP_Query( array(
+					'post_type'      => 'post',
+					'title'          => $item['comment_post_title'],
+					'posts_per_page' => 1,
+					'post_status'    => 'any',
+				) );
+
+				if ( $query->have_posts() ) {
+					$comment_post = $query->posts[0]; // first matched post object
+				}
+
+				wp_reset_postdata();
+
+				$pid = ! empty( $comment_post ) ? $comment_post->ID : '';
 				$item['comment_post_ID'] = $pid;
 			} elseif (isset($item['comment_post_name']) && $item['comment_post_name'] != '') {
 				$comment_post = get_page_by_path($item['comment_post_name'], OBJECT, 'post');
@@ -174,7 +192,8 @@ class HW_CSV_Parser
 		}
 
 		// Merging
-		$merging = (! empty($_GET['merge']) && $_GET['merge']) ? true : false;
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification already done in the dispatch() method.
+		$merging = (! empty($_GET['merge']) ); // @codingStandardsIgnoreLine.
 		$post_id = (! empty($item['comment_ID'])) ? $item['comment_ID'] : 0;
 		$post_id = (! empty($item['post_id'])) ? $item['post_id'] : $post_id;
 		if ($merging) {
@@ -182,11 +201,13 @@ class HW_CSV_Parser
 			$product['merging'] = true;
 
 			if (function_exists('WC')) {
+				// translators: %s is the row number
 				$HW_CSV_Comments_Import->log->add('csv-import', sprintf(__('> Row %s - preparing for merge.', 'comments-import-export-woocommerce'), $this->row));
 			}
 			// Required fields
 			if (! $post_id) {
 				if (function_exists('WC')) {
+					// translators: %s is the row number
 					$HW_CSV_Comments_Import->log->add('csv-import', __('> > Cannot merge without id. Importing instead.', 'comments-import-export-woocommerce'));
 				}
 				$merging = false;
@@ -197,19 +218,15 @@ class HW_CSV_Parser
 					$post_db_type = $this->post_defaults['post_type'];
 					$post_pass_type = '"' . $post_db_type . '"';
 					// Check product to merge exists
-					$db_query = $wpdb->prepare("
-						SELECT comment_ID
-					    FROM $wpdb->comments
-					    WHERE $wpdb->comments = $post_id");
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-					$found_product_id = $wpdb->get_var($db_query);
+					$found_product_id = $wpdb->get_var($wpdb->prepare("SELECT comment_ID FROM {$wpdb->comments} WHERE comment_post_ID = %d", $post_id)); // @codingStandardsIgnoreLine.
 					if (! $found_product_id) {
-						$HW_CSV_Comments_Import->log->add('csv-import', sprintf(__('> > Skipped. Cannot find product comments with ID %s. Importing instead.', 'comments-import-export-woocommerce'), $item['ID']));
+						// translators: %s is the product id
+						$HW_CSV_Comments_Import->log->add('csv-import', sprintf(__('> > Skipped. Cannot find product comments with ID %s. Importing instead.', 'comments-import-export-woocommerce'), $post_id));
 						$merging = false;
 					} else {
-
 						$post_id = $found_product_id;
-
+						// translators: %s is the product id
 						$HW_CSV_Comments_Import->log->add('csv-import', sprintf(__('> > Found product comments with ID %s.', 'comments-import-export-woocommerce'), $post_id));
 					}
 				}
@@ -221,6 +238,7 @@ class HW_CSV_Parser
 
 			$product['merging'] = false;
 			if (function_exists('WC')) {
+				// translators: %s is the row number
 				$HW_CSV_Comments_Import->log->add('csv-import', sprintf(__('> Row %s - preparing for import.', 'comments-import-export-woocommerce'), $this->row));
 			}
 			// Required fields

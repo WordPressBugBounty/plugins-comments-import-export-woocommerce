@@ -49,7 +49,6 @@
                                 'posts_per_page' => -1,
                                 'post_type' => 'Product',
                                 'post_status' => 'publish',
-                                'suppress_filters' => true
                             );
                             $products = get_posts($args);
                             foreach ($products as $product) {
@@ -76,7 +75,6 @@
                                 'posts_per_page' => -1,
                                 'post_type' => 'Post',
                                 'post_status' => 'publish',
-                                'suppress_filters' => true
                             );
                             $articles = get_posts($args);
                             foreach ($articles as $product) {
@@ -91,7 +89,6 @@
                                 'posts_per_page' => -1,
                                 'post_type' => 'Post',
                                 'post_status' => 'publish',
-                                'suppress_filters' => true
                             );
                             $articles = get_posts($args);
                             foreach ($articles as $product) {
@@ -134,7 +131,7 @@
                         <td>
 
                             <input name= "columns[<?php echo esc_attr($pkey); ?>]" type="checkbox"  value="<?php echo esc_attr($pkey); ?>" checked>
-                            <label for="columns[<?php echo esc_attr($pkey); ?>]"><?php esc_html_e($pcolumn, 'comments-import-export-woocommerce'); ?></label>
+                            <label for="columns[<?php echo esc_attr($pkey); ?>]"><?php echo esc_html($pcolumn); ?></label>
                         </td>
                         <td>
                             <?php

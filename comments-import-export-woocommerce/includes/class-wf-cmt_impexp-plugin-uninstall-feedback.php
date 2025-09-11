@@ -198,7 +198,8 @@ if (!class_exists('WT_Cmt_ImpExp_Uninstall_Feedback')) :
                                 data: {
                                     action: 'cmtimport_submit_uninstall_reason',
                                     reason_id: (0 === $radio.length) ? 'none' : $radio.val(),
-                                    reason_info: (0 !== $input.length) ? $input.val().trim() : ''
+                                    reason_info: (0 !== $input.length) ? $input.val().trim() : '',
+                                    _wpnonce: '<?php echo esc_js(wp_create_nonce('cmtimport_submit_uninstall_reason')); ?>'
                                 },
                                 beforeSend: function () {
                                     button.addClass('disabled');
@@ -219,11 +220,13 @@ if (!class_exists('WT_Cmt_ImpExp_Uninstall_Feedback')) :
 
             global $wpdb;
 
-            if (!isset($_POST['reason_id'])) {
+            if ( ! empty($_POST['_wpnonce']) && ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'cmtimport_submit_uninstall_reason')) {
                 wp_send_json_error();
             }
 
-
+            if (!isset($_POST['reason_id'])) {
+                wp_send_json_error();
+            }
 
             $data = array(
                 'reason_id' => sanitize_text_field(wp_unslash($_POST['reason_id'])),
@@ -232,8 +235,8 @@ if (!class_exists('WT_Cmt_ImpExp_Uninstall_Feedback')) :
                 'date' => gmdate("M d, Y h:i:s A"),
                 'url' => '',
                 'user_email' => '',
-                'reason_info' => isset($_REQUEST['reason_info']) ? trim(stripslashes($_REQUEST['reason_info'])) : '',
-                'software' => $_SERVER['SERVER_SOFTWARE'],
+                'reason_info' => isset($_REQUEST['reason_info']) ? sanitize_textarea_field(wp_unslash($_REQUEST['reason_info'])) : '',
+                'software' => isset($_SERVER['SERVER_SOFTWARE']) ? sanitize_text_field(wp_unslash($_SERVER['SERVER_SOFTWARE'])) : '',
                 'php_version' => phpversion(),
                 'mysql_version' => $wpdb->db_version(),
                 'wp_version' => get_bloginfo('version'),

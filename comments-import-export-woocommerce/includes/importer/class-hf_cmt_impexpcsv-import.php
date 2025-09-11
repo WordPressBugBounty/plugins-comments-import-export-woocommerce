@@ -30,15 +30,15 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
     // Results
     var $import_results = array();
     var $new_id = array();
+    var $clean_before_import = 0;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-
         if (function_exists('WC')) {
-            if (WC()->version < '2.7.0') {
+            if ( version_compare( WC()->version, '2.7.0', '<' ) ) {
                 $this->log = new WC_Logger();
             } else {
                 $this->log = wc_get_logger();
@@ -50,7 +50,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
 
     public function hf_log_data_change($content = 'csv-import', $data = '')
     {
-        if (WC()->version < '2.7.0') {
+        if ( version_compare( WC()->version, '2.7.0', '<' ) ) {
             $this->log->add($content, $data);
         } else {
             $context = array('source' => $content);
@@ -81,19 +81,55 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
         if (function_exists('WC')) {
             global $woocommerce;
         }
+
+        // Nonce validations.
+        $step = isset( $_GET['step'] ) ? absint( wp_unslash( $_GET['step'] ) ) : 0;
+        switch ($step) {
+            case 1:
+                check_admin_referer('import-upload');
+                break;
+
+            case 2:
+                check_admin_referer('import-options');
+                break;
+
+            case 3:
+            case 4:
+                // Strict nonce and permission check
+                check_admin_referer( HW_CMT_IMP_EXP_ID, 'wt_nonce' );
+                if ( ! HW_Product_Comments_Import_Export_CSV::hf_user_permission() ) {
+                    wp_die(
+                        esc_html__( 'Access Denied', 'comments-import-export-woocommerce' ),
+                        esc_html__( 'Error', 'comments-import-export-woocommerce' ),
+                        array( 'response' => 403 )
+                    );
+                }
+                break;
+        }
+
+
         add_action('init', array($this, 'hf_cmt_im_ex_StartSession'), 1);
 
-        // Sanitize and validate delimiter
-        $this->delimiter = !empty($_POST['delimiter']) ?
-            sanitize_text_field(stripslashes(trim($_POST['delimiter']))) : (!empty($_GET['delimiter']) ?
-                sanitize_text_field(stripslashes(trim($_GET['delimiter']))) :
-                ',');
+        // Delimiter (default: comma)
+        if ( isset( $_POST['delimiter'] ) ) {
+            $delimiter = sanitize_text_field( wp_unslash( $_POST['delimiter'] ) );
+        } elseif ( isset( $_GET['delimiter'] ) ) {
+            $delimiter = sanitize_text_field( wp_unslash( $_GET['delimiter'] ) );
+        } else {
+            $delimiter = ',';
+        }
 
-        // Sanitize and validate profile
-        $this->profile = !empty($_POST['profile']) ?
-            sanitize_text_field(stripslashes(trim($_POST['profile']))) : (!empty($_GET['profile']) ?
-                sanitize_text_field(stripslashes(trim($_GET['profile']))) :
-                '');
+        // Ensure it's a single character
+        $this->delimiter = substr( $delimiter, 0, 1 );
+
+        // Profile (default: empty string)
+        if ( isset( $_POST['profile'] ) ) {
+            $this->profile = sanitize_text_field( wp_unslash( $_POST['profile'] ) );
+        } elseif ( isset( $_GET['profile'] ) ) {
+            $this->profile = sanitize_text_field( wp_unslash( $_GET['profile'] ) );
+        } else {
+            $this->profile = '';
+        }
 
         if (!$this->delimiter)
             $this->delimiter = ',';
@@ -113,38 +149,49 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
             case 1:
                 $this->header();
 
-                check_admin_referer('import-upload');
-
                 if (!empty($_GET['file_url']))
-                    $this->file_url = esc_attr($_GET['file_url']);
-                if (!empty($_GET['file_id']))
-                    $this->id = absint($_GET['file_id']);
+                    $this->file_url = isset( $_GET['file_url'] ) ? sanitize_text_field( wp_unslash( $_GET['file_url'] ) ) : '';
 
-                if (!empty($_GET['clearmapping']) || $this->handle_upload())
+                if (!empty($_GET['file_id']))
+                    $this->id = isset( $_GET['file_id'] ) ? absint( wp_unslash( $_GET['file_id'] ) ) : 0;
+
+                if ( ! empty( $_GET['clearmapping'] ) || $this->handle_upload() ) {
                     $this->import_options();
-                else
-                    //esc_html_e( 'Error with handle_upload!', 'comments-import-export-woocommerce' );
-                    wp_redirect(wp_get_referer() . '&hw_product_comment_ie_msg=3');
+                }
                 exit;
                 break;
             case 2:
                 $this->header();
 
-                check_admin_referer('import-options');
-
-                $this->id = absint($_POST['import_id']);
+                $this->id = isset( $_POST['import_id'] ) ? absint( wp_unslash( $_POST['import_id'] ) ) : 0;
 
                 if ($this->file_url_import_enabled)
-                    $this->file_url = esc_attr($_POST['import_url']);
-                if ($this->id)
-                    $file = get_attached_file($this->id);
-                else if ($this->file_url_import_enabled)
-                    $file = ABSPATH . $this->file_url;
+                    $this->file_url = isset( $_POST['import_url'] ) ? sanitize_text_field( wp_unslash( $_POST['import_url'] ) ) : '';
+                if ($this->id){
+                    $file = get_attached_file( $this->id );
+                } else if ( $this->file_url_import_enabled ) {
+                    // Build absolute path.
+                    $target = ABSPATH . ltrim( $this->file_url, '/\\' );
+                    
+                    // Resolve symlinks and normalize path.
+                    $real   = realpath( $target );
+
+                    if ( false === $real ) {
+                        wp_die( esc_html__( 'Invalid file path.', 'comments-import-export-woocommerce' ) );
+                    }
+
+                    // Ensure file is inside ABSPATH (prevents ../../ traversal)
+                    if ( strpos( $real, realpath( ABSPATH ) ) !== 0 ) {
+                        wp_die( esc_html__( 'Access denied.', 'comments-import-export-woocommerce' ), '', array( 'response' => 403 ) );
+                    }
+
+                    $file = $real;
+                }
 
                 $file = str_replace("\\", "/", $file);
 
                 if ($file) {
-?>
+                    ?>
                     <table id="import-progress" class="widefat_importer widefat">
                         <thead>
                             <tr>
@@ -182,9 +229,9 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                                 var data = {
                                     action: 'product_comments_csv_import_request',
                                     file: '<?php echo esc_js($file); ?>',
-                                    mapping: '<?php echo json_encode(Wt_WWCIEP_Security_Helper::sanitize_item($_POST['map_from'], 'text_arr')); ?>',
+                                    mapping: '<?php echo wp_json_encode( ( ! empty($_POST['map_from']) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_POST['map_from'] ) ) : array() ) ); ?>',
                                     profile: '<?php echo esc_js($this->profile); ?>',
-                                    eval_field: '<?php echo esc_html(stripslashes(json_encode(Wt_WWCIEP_Security_Helper::sanitize_item($_POST['eval_field'], 'text_arr'), JSON_HEX_APOS))) ?>',
+                                    eval_field: '<?php echo wp_json_encode( ( ! empty($_POST['eval_field']) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_POST['eval_field'] ) ) : array() ), JSON_HEX_APOS); ?>',
                                     delimiter: '<?php echo esc_js($this->delimiter); ?>',
                                     clean_before_import: '<?php echo esc_js($this->clean_before_import); ?>',
                                     start_pos: start_pos,
@@ -211,7 +258,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                                 ?>
 
                                 return $.ajax({
-                                    url: <?php echo wp_json_encode(esc_url_raw($url)); ?>,
+                                    url: '<?php echo esc_url_raw($url); ?>',
                                     data: data,
                                     type: 'POST',
                                     success: function(response) {
@@ -248,7 +295,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                                                     //                                    crosssell_skus = jQuery.extend({}, crosssell_skus, results.crosssell_skus);
                                                     $(results.import_results).each(function(index, row) {
 
-                                                        $('#import-progress tbody').append('<tr id="row-' + i + '" class="' + row['status'] + '"><td><mark class="result" title="' + row['status'] + '">' + row['post_id'] + '</mark></td><td class="row">' + i + '</td><td>' + row['post_id'] + '</td><td> <a href="' + row['comment_link'] + '" target="_blank" title="Comment:  ' + row['cmd_title'] + '" >Comment :' + row['post_id'] + '</a>  </td><td class="reason">' + row['reason'] + '</td></tr>');
+                                                        $('#import-progress tbody').append('<tr id="row-' + i + '" class="' + row['status'] + '"><td><mark class="result" title="' + row['status'] + '">' + row['post_id'] + '</mark></td><td class="row">' + i + '</td><td>' + row['post_id'] + '</td><td> <a href="' + row['comment_link'] + '" target="_blank">Comment :' + row['post_id'] + '</a>  </td><td class="reason">' + row['reason'] + '</td></tr>');
                                                         i++;
                                                     });
                                                 }
@@ -277,7 +324,8 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                             $enc = mb_detect_encoding($file, 'UTF-8, ISO-8859-1', true);
                             if ($enc)
                                 setlocale(LC_ALL, 'en_US.' . $enc);
-                            @ini_set('auto_detect_line_endings', true);
+                            // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged, WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_set
+                            @ini_set('auto_detect_line_endings', true); // @codingStandardsIgnoreLine.
 
                             $count = 0;
                             $previous_position = 0;
@@ -285,31 +333,41 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                             $import_count = 0;
 
                             // Get CSV positions
-                            if (($handle = fopen($file, "r")) !== FALSE) {
+                            if ( file_exists( $file ) && is_readable( $file ) ) { 
+                                
+                                // PHPCS ignore reason: Direct read is intentional for CSV parsing.
+                                // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+                                $handle = @fopen( $file, 'r' );  // @codingStandardsIgnoreLine.
 
-                                while (($postmeta = fgetcsv($handle, 0, $this->delimiter, '"', '"')) !== FALSE) {
-                                    $count++;
+                                if ( false !== $handle ) {
+                                    
+                                    while (($postmeta = fgetcsv($handle, 0, $this->delimiter, '"', '"')) !== FALSE) {
+                                        $count++;
 
-                                    if ($count >= $limit) {
-                                        $previous_position = $position;
-                                        $position = ftell($handle);
-                                        $count = 0;
-                                        $import_count++;
+                                        if ($count >= $limit) {
+                                            $previous_position = $position;
+                                            $position = ftell($handle);
+                                            $count = 0;
+                                            $import_count++;
 
-                                        // Import rows between $previous_position $position
-                            ?>rows.push([<?php echo esc_js($previous_position); ?>, <?php echo esc_js($position); ?>]);
-                            <?php
+                                            // Import rows between $previous_position $position
+                                            ?>rows.push([<?php echo esc_js($previous_position); ?>, <?php echo esc_js($position); ?>]);
+                                            <?php
+                                        }
                                     }
-                                }
 
-                                // Remainder
-                                if ($count > 0) {
-                            ?>rows.push([<?php echo esc_js($position); ?>, '']);
-                        <?php
-                                    $import_count++;
-                                }
+                                    // Remainder
+                                    if ($count > 0) {
+                                        ?>
+                                        rows.push([<?php echo esc_js($position); ?>, '']);
+                                        <?php
+                                        $import_count++;
+                                    }
 
-                                fclose($handle);
+                                    // PHPCS ignore reason: Direct read is intentional for CSV parsing.
+                                    // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
+                                    @fclose( $handle );  // @codingStandardsIgnoreLine.
+                                }
                             }
                         ?>
 
@@ -317,7 +375,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                         var regen_count = 0;
                         import_rows(data[0], data[1]);
                         $('body').on('product_comments_csv_import_request_complete', function() {
-                            if (done_count == <?php echo wp_json_encode($import_count); ?>) {
+                            if (done_count == <?php echo esc_js($import_count); ?>) {
 
                                 import_done();
 
@@ -354,7 +412,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                             ?>
 
                             $.ajax({
-                                url: <?php echo wp_json_encode( esc_url_raw( $raw_final_url ) ); ?>,
+                                url: '<?php echo esc_url_raw( $raw_final_url ); ?>',
                                 data: data,
                                 type: 'POST',
                                 success: function(response) {
@@ -365,39 +423,38 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                         }
                         });
                     </script>
-<?php
+                    <?php
                 } else {
                     echo '<p class="error">' . esc_html__('Error finding uploaded file!', 'comments-import-export-woocommerce') . '</p>';
                 }
                 break;
             case 3:
-                // Strict nonce and permission check
-                $nonce = isset($_POST['wt_nonce']) ? sanitize_text_field($_POST['wt_nonce']) : '';
-                if (!wp_verify_nonce($nonce, HW_CMT_IMP_EXP_ID) || !HW_Product_Comments_Import_Export_CSV::hf_user_permission()) {
-                    wp_die(esc_html__('Access Denied', 'comments-import-export-woocommerce'));
-                }
 
                 // Sanitize and validate file path
-                $file = sanitize_text_field(stripslashes($_POST['file']));
+                $file = ! empty( $_POST['file'] ) ? sanitize_text_field( wp_unslash( $_POST['file'] ) ) : '';
                 if (filter_var($file, FILTER_VALIDATE_URL) || !self::is_valid_file_path($file)) {
                     wp_die(esc_html__('Invalid file path', 'comments-import-export-woocommerce'));
                 }
 
                 // Sanitize mapping and other inputs
-                $mapping = json_decode(stripslashes(Wt_WWCIEP_Security_Helper::sanitize_item($_POST['mapping'], 'text_arr')), true);
-                $profile = isset($_POST['profile']) ? sanitize_text_field($_POST['profile']) : '';
-                $eval_field = Wt_WWCIEP_Security_Helper::sanitize_item($_POST['eval_field'], 'text_arr');
-                $start_pos = isset($_POST['start_pos']) ? absint($_POST['start_pos']) : 0;
-                $end_pos = isset($_POST['end_pos']) ? absint($_POST['end_pos']) : '';
+                $raw_mapping = ! empty($_POST['mapping']) ? sanitize_text_field(wp_unslash($_POST['mapping'])) : '';
+                $mapping = json_decode($raw_mapping, true);
+                $mapping = is_array($mapping) ? array_map('sanitize_text_field', $mapping) : array();
+                $profile = isset( $_POST['profile'] ) ? sanitize_text_field( wp_unslash( $_POST['profile'] ) ) : '';
+                $eval_field = ! empty( $_POST['eval_field'] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_POST['eval_field'] ) ) : array();
+                $start_pos = isset( $_POST['start_pos'] ) ? absint( wp_unslash( $_POST['start_pos'] ) ) : 0;
+                $end_pos = isset( $_POST['end_pos'] ) ? absint( wp_unslash( $_POST['end_pos'] ) ) : '';
 
                 add_filter('http_request_timeout', array($this, 'bump_request_timeout'));
 
                 if (function_exists('gc_enable'))
                     gc_enable();
 
+                // @codingStandardsIgnoreStart
                 @set_time_limit(0);
-                @ob_flush();
-                @flush();
+                @ob_flush(); //phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+                @flush(); //phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+                // @codingStandardsIgnoreEnd
                 $wpdb->hide_errors();
 
                 $position = $this->import_start($file, $mapping, $start_pos, $end_pos, $eval_field);
@@ -414,27 +471,21 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                 //                $results['crosssell_skus'] = $this->crosssell_skus;
                 // die($results);
                 echo "<!--WC_START-->";
-                echo json_encode($results);
+                echo wp_json_encode($results);
                 echo "<!--WC_END-->";
                 exit;
                 break;
             case 4:
-                // Strict nonce and permission check
-                $nonce = isset($_POST['wt_nonce']) ? sanitize_text_field($_POST['wt_nonce']) : '';
-                if (!wp_verify_nonce($nonce, HW_CMT_IMP_EXP_ID) || !HW_Product_Comments_Import_Export_CSV::hf_user_permission()) {
-                    wp_die(esc_html__('Access Denied', 'comments-import-export-woocommerce'));
-                }
-
                 // Sanitize processed posts and post orphans
-                $this->processed_posts = isset($_POST['processed_posts']) ?
-                    array_map('absint', Wt_WWCIEP_Security_Helper::sanitize_item($_POST['processed_posts'], 'int_arr')) :
+                $this->processed_posts = isset( $_POST['processed_posts'] ) ?
+                    array_map( 'absint', wp_unslash( (array) $_POST['processed_posts'] ) ) :
                     array();
-                $this->post_orphans = isset($_POST['post_orphans']) ?
-                    array_map('absint', Wt_WWCIEP_Security_Helper::sanitize_item($_POST['post_orphans'], 'int_arr')) :
+                $this->post_orphans = isset( $_POST['post_orphans'] ) ?
+                    array_map( 'absint', wp_unslash( (array) $_POST['post_orphans'] ) ) :
                     array();
 
                 // Sanitize file path
-                $file = isset($_POST['file']) ? sanitize_text_field(stripslashes($_POST['file'])) : '';
+                $file = isset( $_POST['file'] ) ? sanitize_text_field( wp_unslash( $_POST['file'] ) ) : '';
 
                 echo esc_html__('Step 1...', 'comments-import-export-woocommerce') . ' ';
 
@@ -463,7 +514,8 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                 echo esc_html__('Finished. Import complete.', 'comments-import-export-woocommerce');
 
                 if (in_array(pathinfo($file, PATHINFO_EXTENSION), array('txt', 'csv'))) {
-                    unlink($file);
+                    // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.file_system_read_unlink
+                    @unlink( $file );  // @codingStandardsIgnoreLine.
                 }
                 $this->import_end();
                 delete_option('wt_post_comment_alter_id');
@@ -498,33 +550,43 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
 
         // Set locale
         $enc = mb_detect_encoding($file, 'UTF-8, ISO-8859-1', true);
-        if ($enc)
+        if ($enc){
             setlocale(LC_ALL, 'en_US.' . $enc);
-        @ini_set('auto_detect_line_endings', true);
-        @delete_option('wt_post_comment_alter_id');
+        }
+        // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged, WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_set
+        @ini_set('auto_detect_line_endings', true); // @codingStandardsIgnoreLine.
+        delete_option('wt_post_comment_alter_id');
         // Get headers
-        if (($handle = fopen($file, "r")) !== FALSE) {
+        if ( file_exists( $file ) && is_readable( $file ) ) {
+            // PHPCS ignore reason: Direct read is intentional for CSV parsing.
+            // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+            $handle = @fopen( $file, 'r' );  // @codingStandardsIgnoreLine.
+            if ( false !== $handle ) {
 
-            $row = $raw_headers = array();
+                $row = $raw_headers = array();
 
-            $header = fgetcsv($handle, 0, $this->delimiter, '"', '"');
+                $header = fgetcsv($handle, 0, $this->delimiter, '"', '"');
 
-            while (($postmeta = fgetcsv($handle, 0, $this->delimiter, '"', '"')) !== FALSE) {
-                foreach ($header as $key => $heading) {
-                    if (!$heading)
-                        continue;
-                    $s_heading = strtolower($heading);
-                    $row[$s_heading] = (isset($postmeta[$key])) ? $this->format_data_from_csv($postmeta[$key], $enc) : '';
-                    $raw_headers[$s_heading] = $heading;
+                while (($postmeta = fgetcsv($handle, 0, $this->delimiter, '"', '"')) !== FALSE) {
+                    foreach ($header as $key => $heading) {
+                        if (!$heading)
+                            continue;
+                        $s_heading = strtolower($heading);
+                        $row[$s_heading] = (isset($postmeta[$key])) ? $this->format_data_from_csv($postmeta[$key], $enc) : '';
+                        $raw_headers[$s_heading] = $heading;
+                    }
+                    break;
                 }
-                break;
+                // PHPCS ignore reason: Direct read is intentional for CSV parsing.
+                // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
+                @fclose( $handle );  // @codingStandardsIgnoreLine.
             }
-            fclose($handle);
         }
 
         $mapping_from_db = get_option('hw_prod_comment_csv_imp_exp_mapping');
 
-        if ($this->profile !== '' && !empty($_GET['clearmapping'])) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        if ($this->profile !== '' && !empty($_GET['clearmapping'])) { // @codingStandardsIgnoreLine.
             unset($mapping_from_db[$this->profile]);
             update_option('hw_prod_comment_csv_imp_exp_mapping', $mapping_from_db);
             $this->profile = '';
@@ -534,17 +596,22 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
 
         $saved_mapping = null;
         $saved_evaluation = null;
-        if ($mapping_from_db && is_array($mapping_from_db) && $this->profile !== '' && count($mapping_from_db) == 2 && empty($_GET['clearmapping'])) {
-            //if(count(array_intersect_key ( $mapping_from_db[0] , $row)) ==  count($mapping_from_db[0])){	
-            $reset_action = 'admin.php?clearmapping=1&amp;profile=' . $this->profile . '&amp;import=' . $this->import_page . '&amp;step=1&amp;merge=' . (!empty($_GET['merge']) ? 1 : 0) . '&amp;file_url=' . $this->file_url . '&amp;delimiter=' . $this->delimiter . '&amp;merge_empty_cells=' . $this->merge_empty_cells . '&amp;file_id=' . $this->id . '';
-            $reset_action = esc_attr(wp_nonce_url($reset_action, 'import-upload'));
-            echo '<h3>' . esc_html__('Columns are pre-selected using the Mapping file: "<b style="color:gray">' . $this->profile . '</b>".  <a href="' . $reset_action . '"> Delete</a> this mapping file.', 'comments-import-export-woocommerce') . '</h3>';
-            $saved_mapping = $mapping_from_db[0];
-            $saved_evaluation = $mapping_from_db[1];
-            //}	
-        }
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $merge = (!empty($_GET['merge']) ? 1 : 0); // @codingStandardsIgnoreLine.
 
-        $merge = (!empty($_GET['merge']) && $_GET['merge']) ? 1 : 0;
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        if ($mapping_from_db && is_array($mapping_from_db) && $this->profile !== '' && count($mapping_from_db) == 2 && empty($_GET['clearmapping'])) { // @codingStandardsIgnoreLine.
+            	
+            $reset_action = wp_nonce_url( 'admin.php?clearmapping=1&profile=' . $this->profile . '&import=' . $this->import_page . '&step=1&merge=' . $merge . '&file_url=' . $this->file_url . '&delimiter=' . $this->delimiter . '&merge_empty_cells=' . $this->merge_empty_cells . '&file_id=' . $this->id, 'import-upload' );
+            printf(
+				/* translators: 1: mapping file name, 2: reset link URL */
+				esc_html__( 'Columns are pre-selected using the Mapping file: %1$s. %2$s this mapping file.', 'comments-import-export-woocommerce' ),
+				'<b style="color:gray">' . esc_html( $this->profile ) . '</b>',
+				'<a href="' . esc_url( $reset_action ) . '">' . esc_html__( 'Delete', 'comments-import-export-woocommerce' ) . '</a>'
+			);
+            $saved_mapping = $mapping_from_db[0];
+            $saved_evaluation = $mapping_from_db[1];	
+        }
 
         include('views/html-hf-import-options.php');
     }
@@ -564,9 +631,10 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
 
 
         if ($this->clean_before_import == 1) {
-            $deletequery = "TRUNCATE TABLE wp_comments";
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-            if (!$wpdb->query($deletequery)) {
+
+            $deletequery = "TRUNCATE TABLE {$wpdb->prefix}comments";
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+            if (! $wpdb->query( $deletequery ) ) { // @codingStandardsIgnoreLine.
                 $this->add_import_result('failed', esc_html__('Didn`t able to clean the previous comments', 'comments-import-export-woocommerce'), esc_html__('Didn`t able to clean the previous comments', 'comments-import-export-woocommerce'), '-', '');
                 return;
             }
@@ -628,8 +696,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
     {
         if (function_exists('WC')) {
 
-
-            if (WC()->version < '2.7.0') {
+            if ( version_compare( WC()->version, '2.7.0', '<' ) ) {
                 $memory = size_format(woocommerce_let_to_num(ini_get('memory_limit')));
                 $wp_memory = size_format(woocommerce_let_to_num(WP_MEMORY_LIMIT));
             } else {
@@ -678,37 +745,33 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
     public function product_id_not_exists($id, $cmd_type)
     {
         global $wpdb;
-        $args = apply_filters('hf_cmt_imp_post_exist_qry_args', array()); //Added a filter if anyone want to restrict import comments for post which has comment_status is closed.
-        if ($cmd_type === 'comment') {
-            $query = "SELECT ID FROM $wpdb->posts WHERE ID = %d AND post_type='post'"; // comment_status removed from query for importing post which has comment_status is closed.
-            $query = apply_filters('wt_cmt_imp_post_exists_query', $query);
-            if ($args) {
-                foreach ($args as $key => $value) {
-                    $query .= " AND $key='$value'";
-                }
-            }
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-            $posts_that_exist = $wpdb->get_col($wpdb->prepare($query, $id));
-            if (!$posts_that_exist) {
-                return true;
-            }
-            return false;
-        } else {
-            $query = "SELECT ID FROM $wpdb->posts WHERE ID = %d AND post_type='product'"; // comment_status removed from query for importing post which has comment_status is closed.
-            $query = apply_filters('wt_cmt_imp_post_exists_query', $query);
-            if ($args) {
-                foreach ($args as $key => $value) {
-                    $query .= " AND $key='$value'";
-                }
-            }
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-            $posts_that_exist = $wpdb->get_col($wpdb->prepare($query, $id));
+        $args = apply_filters('hf_cmt_imp_post_exist_qry_args', array()); // Added a filter if anyone want to restrict import comments for post which has comment_status is closed.
+        $args_allowed_columns = array(
+            'post_status',
+            'post_author',
+            'post_date',
+            'post_name',
+            'post_parent',
+        );
 
-            if (!$posts_that_exist) {
-                return true;
+
+        $query = "SELECT ID FROM $wpdb->posts WHERE ID = %d AND post_type=%s"; // comment_status removed from query for importing post which has comment_status is closed.
+        $placeholder_arr = array( $id );
+        $placeholder_arr[] = $cmd_type === 'comment' ? 'post' : 'product';
+        $query = apply_filters( 'wt_cmt_imp_post_exists_query', $query, $placeholder_arr );
+        if (is_array($args) && !empty($args)) {
+            foreach ($args as $key => $value) {
+                if ( ! in_array( $key, $args_allowed_columns, true ) ) {
+                    continue;
+                }
+                $query .= " AND $key=%s";
+                $placeholder_arr[] = $value;
             }
-            return false;
         }
+        
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        $posts_that_exist = $wpdb->get_col( $wpdb->prepare( $query, $placeholder_arr ) ); // @codingStandardsIgnoreLine.
+        return ( ! $posts_that_exist );
     }
     /**
      * Handles the CSV upload and initial parsing of the file to prepare for
@@ -721,22 +784,39 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
         if ($this->handle_ftp()) {
             return true;
         }
-        if (empty($_POST['file_url'])) {
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification already done in the dispatch() method.
+        if ( empty( $_POST['file_url'] ) ) { // @codingStandardsIgnoreLine.
+            
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification already done in the dispatch() method.
+            if ( empty( $_FILES['import']["name"] ) ) { // @codingStandardsIgnoreLine.
+                ?>
+                <script type="text/javascript">
+                    window.location.href = '<?php echo esc_url( admin_url( 'edit-comments.php?page=hw_cmt_csv_im_ex' ) ); ?>';
+                </script>
+                <?php
+            }
+
+
             $file = wp_import_handle_upload();
 
-            if (isset($file['error'])) {
+            if ( isset( $file['error'] ) ) {
                 echo '<p><strong>' . esc_html__('Sorry, there has been an error.', 'comments-import-export-woocommerce') . '</strong><br />';
-                echo esc_html($file['error']) . '</p>';
+                echo wp_kses_post( $file['error'] );
+                echo '&nbsp;<a href="'. esc_url( wp_get_referer() ) . '">'.esc_html__('Back', 'comments-import-export-woocommerce').' </a>';
+                echo '</p>';
                 return false;
             }
 
             $this->id = (int) $file['id'];
             return true;
         } else {
-            $sanitized_file_url = sanitize_text_field($_POST['file_url']);
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification already done in the dispatch() method.
+            $sanitized_file_url = sanitize_text_field( wp_unslash( $_POST['file_url'] ) ); // @codingStandardsIgnoreLine.
+            $full_path = realpath( ABSPATH . $sanitized_file_url );
 
-            if (file_exists(ABSPATH . $sanitized_file_url)) {
-                $this->file_url = esc_attr($sanitized_file_url);
+            if ( $full_path !== false && strpos( $full_path, ABSPATH ) === 0 && file_exists( $full_path ) ) {
+                $this->file_url = esc_attr( $sanitized_file_url );
                 return true;
             } else {
                 echo '<p><strong>' . esc_html__('Sorry, there has been an error.', 'comments-import-export-woocommerce') . '</strong></p>';
@@ -747,19 +827,12 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
         return false;
     }
 
-    public function product_comment_exists($id)
-    {
+    public function product_comment_exists( $id ) {
         global $wpdb;
-        $query = "SELECT comment_ID FROM $wpdb->comments WHERE comment_ID = %d AND comment_approved != 'trash' ";
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        $posts_that_exist = $wpdb->get_col($wpdb->prepare($query, $id));
-        if ($posts_that_exist) {
-            foreach ($posts_that_exist as $post_exists) {
-                return true;
-            }
-        }
-
-        return false;
+        $posts_that_exist = $wpdb->get_col( $wpdb->prepare("SELECT comment_ID FROM {$wpdb->comments} WHERE comment_ID = %d AND comment_approved != 'trash' ", $id) ); // @codingStandardsIgnoreLine.
+        
+        return (is_array( $posts_that_exist ) && ! empty( $posts_that_exist ) );
     }
 
     public function get_last_comment_id()
@@ -785,10 +858,10 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
 
         if ($post['comment_type'] != 'woodiscuz') {
             $cmd_type = 'comment';
-            $product_post = esc_html__('The post doesn\'t exist.', 'comments-import-export-woocommerce');
+            $product_post = __('The post doesn\'t exist.', 'comments-import-export-woocommerce');
         } else {
             $cmd_type = $post['comment_type'];
-            $product_post = esc_html__('The product doesn\'t exist.', 'comments-import-export-woocommerce');
+            $product_post = __('The product doesn\'t exist.', 'comments-import-export-woocommerce');
         }
 
         $processing_product_title = (!empty($post['post_title']) ? $post['post_title'] : '');
@@ -817,10 +890,10 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
 
             if ($is_post_exist_in_db && ! $post_type_inserted_by_wtim) {
 
-                $usr_msg = 'This Comment ID Already Exists';
-                $this->add_import_result('skipped', __($usr_msg, 'comments-import-export-woocommerce'), $processing_product_id, $comment_txt);
+                $this->add_import_result('skipped', __('This Comment ID Already Exists', 'comments-import-export-woocommerce'), $processing_product_id, $comment_txt);
                 if (function_exists('WC')) {
-                    $this->hf_log_data_change('csv-import', sprintf(__('> &#8220;%s&#8221;' . $usr_msg, 'comments-import-export-woocommerce'), esc_html($processing_product_title)), true);
+                    // translators: %s is the product title
+                    $this->hf_log_data_change( 'csv-import', sprintf( __('> &#8220;%s&#8221; This Comment ID Already Exists', 'comments-import-export-woocommerce'), esc_html($processing_product_title)), true );
                 }
                 unset($post);
                 return;
@@ -833,9 +906,10 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
             $is_product__id_not_exist = $this->product_id_not_exists($post['comment_post_ID'], $cmd_type);
             if ($is_product__id_not_exist) {
                 $usr_msg = $product_post;
-                $this->add_import_result('skipped', __($usr_msg, 'comments-import-export-woocommerce'), $processing_product_id, $comment_txt);
+                $this->add_import_result('skipped', $usr_msg, $processing_product_id, $comment_txt);
                 if (function_exists('WC')) {
-                    $this->hf_log_data_change('csv-import', sprintf(__('> &#8220;%s&#8221;' . $usr_msg, 'comments-import-export-woocommerce'), esc_html($processing_product_title)), true);
+                    // translators: %s is the product title
+                    $this->hf_log_data_change( 'csv-import', sprintf(__('> &#8220;%s&#8221; ', 'comments-import-export-woocommerce') . $usr_msg, esc_html($processing_product_title)), true );
                 }
                 unset($post);
                 return;
@@ -847,6 +921,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
             // Only merge fields which are set
             $post_id = $processing_product_id;
             if (function_exists('WC')) {
+                // translators: %s is the product id
                 $this->hf_log_data_change('csv-import', sprintf(__('> Merging post ID %s.', 'comments-import-export-woocommerce'), $post_id), true);
             }
             if (!empty($post['comment_post_ID'])) {
@@ -857,10 +932,10 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                 $postdata['comment_author'] = $post['comment_author'];
             }
             if (!empty($post['comment_date'])) {
-                $postdata['comment_date'] = date("Y-m-d H:i:s", strtotime($post['comment_date']));
+                $postdata['comment_date'] = get_date_from_gmt( gmdate( 'Y-m-d H:i:s', strtotime( $post['comment_date'] ) ) );
             }
             if (!empty($post['comment_date_gmt'])) {
-                $postdata['comment_date_gmt'] = date("Y-m-d H:i:s", strtotime($post['comment_date_gmt']));
+                $postdata['comment_date_gmt'] = gmdate( 'Y-m-d H:i:s', strtotime( $post['comment_date_gmt'] ) );
             }
             if (!empty($post['comment_author_email'])) {
                 $postdata['comment_author_email'] = $post['comment_author_email'];
@@ -905,6 +980,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
             //check child data
             // Insert product
             if (function_exists('WC')) {
+                // translators: %s is the product id
                 $this->hf_log_data_change('csv-import', sprintf(__('> Inserting %s', 'comments-import-export-woocommerce'), esc_html($processing_product_id)), true);
             }
             /* if ($post['comment_parent'] === '0') {
@@ -933,8 +1009,8 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
             $postdata = array(
                 'comment_ID' => $processing_product_id,
                 'comment_post_ID' => $post['comment_post_ID'],
-                'comment_date' => ($post['comment_date']) ? date('Y-m-d H:i:s', strtotime($post['comment_date'])) : '',
-                'comment_date_gmt' => ($post['comment_date_gmt']) ? date('Y-m-d H:i:s', strtotime($post['comment_date_gmt'])) : '',
+                'comment_date' => ! empty( $post['comment_date'] ) ? get_date_from_gmt( gmdate( 'Y-m-d H:i:s', strtotime( $post['comment_date'] ) ) ) : '',
+                'comment_date_gmt' => ! empty( $post['comment_date_gmt'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $post['comment_date_gmt'] ) ) : '',
                 'comment_author' => $post['comment_author'],
                 'comment_author_email' => $post['comment_author_email'],
                 'comment_author_url' => $post['comment_author_url'],
@@ -972,8 +1048,8 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
 
             if ($cmd_type === 'woodiscuz') {
                 global $wpdb;
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-                $wpdb->insert($wpdb->commentmeta, array('comment_ID' => $post_id, 'meta_key' => 'verified', 'meta_value' => '1'));
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SlowDBQuery
+                $wpdb->insert($wpdb->commentmeta, array('comment_ID' => $post_id, 'meta_key' => 'verified', 'meta_value' => '1')); // @codingStandardsIgnoreLine.
             }
             if (!empty($post['postmeta']) && is_array($post['postmeta'])) { //insert comment meta to wp_commentmeta table
                 foreach ($post['postmeta'] as $meta) {
@@ -984,18 +1060,20 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
 
             //$new_Id.push($post_id);
             if (function_exists('WC')) {
-                $this->hf_log_data_change('csv-import', sprintf(__($post_id . 'hi'), esc_html($processing_product_title)));
+                $this->hf_log_data_change('csv-import', $post_id . 'hi'. esc_html($processing_product_title));
             }
             if (is_wp_error($post_id) || $post_id == false) {
 
                 $this->add_import_result('failed', __('Failed to import product comment', 'comments-import-export-woocommerce'), $processing_product_id);
                 if (function_exists('WC')) {
+                    // translators: %s is the product title
                     $this->hf_log_data_change('csv-import', sprintf(__('Failed to import product comment &#8220;%s&#8221;', 'comments-import-export-woocommerce'), esc_html($processing_product_title)));
                 }
                 unset($post);
                 return;
             } else {
                 if (function_exists('WC')) {
+                    // translators: %s is the product id
                     $this->hf_log_data_change('csv-import', sprintf(__('> Inserted - post ID is %s.', 'comments-import-export-woocommerce'), $post_id));
                 }
             }
@@ -1010,11 +1088,13 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
         if ($merging) {
             $this->add_import_result('merged', 'Merge successful', $post_id, $comment_txt);
             if (function_exists('WC')) {
+                // translators: %s is the product id
                 $this->hf_log_data_change('csv-import', sprintf(__('> Finished merging post ID %s.', 'comments-import-export-woocommerce'), $post_id));
             }
         } else {
             $this->add_import_result('imported', 'Import successful', $post_id, $comment_txt);
             if (function_exists('WC')) {
+                // translators: %s is the product id
                 $this->hf_log_data_change('csv-import', sprintf(__('> Finished importing post ID %s.', 'comments-import-export-woocommerce'), $post_id));
             }
         }
@@ -1048,9 +1128,9 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
 
         // Additional URL security checks
         $allowed_hosts = apply_filters('hw_import_allowed_hosts', array(
-            parse_url(home_url(), PHP_URL_HOST)
+            wp_parse_url(home_url(), PHP_URL_HOST)
         ));
-        $url_host = parse_url($url, PHP_URL_HOST);
+        $url_host = wp_parse_url($url, PHP_URL_HOST);
 
         if (!in_array($url_host, $allowed_hosts)) {
             return new WP_Error('import_file_error', 'Remote file host not allowed');
@@ -1059,7 +1139,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
         // extract the file name and extension from the url
         $file_name = basename(current(explode('?', $url)));
         $wp_filetype = wp_check_filetype($file_name, null);
-        $parsed_url = @parse_url($url);
+        $parsed_url = wp_parse_url($url);
 
         // Check parsed URL
         if (!$parsed_url || !is_array($parsed_url))
@@ -1095,7 +1175,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
         }
 
         // Upload the file
-        $upload = wp_upload_bits($file_name, '', wp_remote_retrieve_body($response));
+        $upload = wp_upload_bits($file_name, null, wp_remote_retrieve_body($response));
 
         if ($upload['error'])
             return new WP_Error('upload_dir_error', $upload['error']);
@@ -1104,7 +1184,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
         $filesize = filesize($upload['file']);
 
         if (0 == $filesize) {
-            @unlink($upload['file']);
+            wp_delete_file($upload['file']);
             unset($upload);
             return new WP_Error('import_file_error', __('Zero size file downloaded', 'comments-import-export-woocommerce'));
         }
@@ -1127,7 +1207,8 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
 
     private function handle_ftp()
     {
-        $enable_ftp_ie = !empty($_POST['enable_ftp_ie']);
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification already done in the dispatch() method.
+        $enable_ftp_ie = !empty($_POST['enable_ftp_ie']); // @codingStandardsIgnoreLine.
 
         // Update the setting early if FTP is disabled
         if (!$enable_ftp_ie) {
@@ -1138,13 +1219,18 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
         }
 
         // Sanitize and validate user input
-        $ftp_server = !empty($_POST['ftp_server']) ? sanitize_text_field(trim(rtrim($_POST['ftp_server'], "-"))) : '';
-        $ftp_server_path = !empty($_POST['ftp_server_path']) ? sanitize_text_field($_POST['ftp_server_path']) : '';
+
+        // @codingStandardsIgnoreStart
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification already done in the dispatch() method.
+        $ftp_server = !empty($_POST['ftp_server']) ? sanitize_text_field(wp_unslash(rtrim($_POST['ftp_server'], "-"))) : ''; 
+        $ftp_server_path = !empty($_POST['ftp_server_path']) ? sanitize_text_field(wp_unslash($_POST['ftp_server_path'])) : '';
         $ftp_user = !empty($_POST['ftp_user']) ? sanitize_text_field(wp_unslash($_POST['ftp_user'])) : '';
-        $ftp_port = !empty($_POST['ftp_port']) ? absint($_POST['ftp_port']) : 21;
+        $ftp_port = !empty($_POST['ftp_port']) ? absint(wp_unslash($_POST['ftp_port'])) : 21;
         $ftp_password = !empty($_POST['ftp_password']) ? sanitize_text_field(wp_unslash($_POST['ftp_password'])) : '';
         $use_ftps = !empty($_POST['use_ftps']);
         $use_pasv = !empty($_POST['use_pasv']);
+        // @codingStandardsIgnoreEnd
+
         // Save FTP settings
         $settings = [
             'ftp_server' => $ftp_server,
@@ -1172,7 +1258,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
             }
 
             if ($ftp_port == 22) {
-                include_once(plugin_dir_path(__FILE__) . '../sftp-modules/sftp.php');
+                include_once(plugin_dir_path(__FILE__) . '../vendor/sftp-modules/sftp.php');
 
                 // Assume SFTP connection
                 if (!class_exists('class_wf_sftp_import_export')) {
@@ -1216,17 +1302,20 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
 
                     if ($use_ftps) {
                         // Try SSL connect with timeout
-                        $ftp_conn = @ftp_ssl_connect($ftp_server, 21, $ftp_timeout);
+                        // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+                        $ftp_conn = @ftp_ssl_connect($ftp_server, 21, $ftp_timeout); // @codingStandardsIgnoreLine.
                         if (!$ftp_conn) {
                             // Try plain FTP fallback automatically
-                            $ftp_conn = @ftp_connect($ftp_server, 21, $ftp_timeout);
+                            // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+                            $ftp_conn = @ftp_connect($ftp_server, 21, $ftp_timeout); // @codingStandardsIgnoreLine.
                             if ($ftp_conn) {
                                 $use_ftps = false; // Downgrade to FTP mode
                             }
                         }
                     } else {
                         // Try normal FTP connect
-                        $ftp_conn = @ftp_connect($ftp_server, 21, $ftp_timeout);
+                        // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+                        $ftp_conn = @ftp_connect($ftp_server, 21, $ftp_timeout); // @codingStandardsIgnoreLine.
                     }
 
                     if (!$ftp_conn) {
@@ -1234,7 +1323,8 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                     }
 
                     // Login attempt
-                    if (!@ftp_login($ftp_conn, $ftp_user, $ftp_password)) {
+                    // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+                    if (!@ftp_login($ftp_conn, $ftp_user, $ftp_password)) { // @codingStandardsIgnoreLine.
                         ftp_close($ftp_conn);
                         throw new Exception('FTP login failed. Please check your username and password.');
                     }
@@ -1245,7 +1335,8 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                     }
 
                     // File download attempt
-                    if (!@ftp_get($ftp_conn, ABSPATH . $local_file, $server_file, FTP_BINARY)) {
+                    // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+                    if (!@ftp_get($ftp_conn, ABSPATH . $local_file, $server_file, FTP_BINARY)) { // @codingStandardsIgnoreLine.
                         ftp_close($ftp_conn);
                         throw new Exception('Failed to download the file from the FTP/FTPS server. Check file path and permissions.');
                     }
@@ -1253,37 +1344,11 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                     ftp_close($ftp_conn);
                     $success = true;
                 } catch (Exception $e) {
-                    error_log('FTP error: ' . $e->getMessage());
-                    wp_die(esc_html__($e->getMessage(), 'comments-import-export-woocommerce'));
+                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                    error_log('FTP error: ' . $e->getMessage()); // @codingStandardsIgnoreLine.
+                    wp_die(esc_html($e->getMessage()));
                 }
 
-
-
-
-
-                // $ftp_conn = $use_ftps ? ftp_ssl_connect($ftp_server, 21) : ftp_connect($ftp_server, 21);
-                // // var_dump( 'fewfkjwerfnw');exit;
-
-                // if (!$ftp_conn) {
-                //     throw new Exception('Unable to connect to the FTP/FTPS server. Please verify the Host/IP and Port.');
-                // }
-
-                // if (!ftp_login($ftp_conn, $ftp_user, $ftp_password)) {
-                //     ftp_close($ftp_conn);
-                //     throw new Exception('FTP/FTPS login failed. Please check username and password.');
-                // }
-
-                // if ($use_pasv) {
-                //     ftp_pasv($ftp_conn, true);
-                // }
-
-                // if (!ftp_get($ftp_conn, ABSPATH . $local_file, $server_file, FTP_BINARY)) {
-                //     ftp_close($ftp_conn);
-                //     throw new Exception('Failed to download the file from the FTP/FTPS server. Please check the file path or file permissions.');
-                // }
-
-                // ftp_close($ftp_conn);
-                // $success = true;
             }
 
             if ($success) {
@@ -1293,24 +1358,16 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
                 throw new Exception('Unknown error occurred during FTP/SFTP transfer.');
             }
         } catch (Exception $e) {
-            wp_die(esc_html__($e->getMessage(), 'comments-import-export-woocommerce'));
+            wp_die(esc_html($e->getMessage()));
         }
     }
-
-
-    // Display import page title
-    // public function header()
-    // {
-    //     echo esc_html('<div class="wrap"><div class="icon32" id="icon-woocommerce-importer"><br></div>');
-    //     echo esc_html('<h2>' . (empty($_GET['merge']) ? esc_html__('Import', 'comments-import-export-woocommerce') : esc_html__('Merge WordPress Comments', 'comments-import-export-woocommerce')) . '</h2>');
-
-    // }
 
     // Display import page title
     public function header()
     {
         echo '<div class="wrap"><div class="icon32" id="icon-woocommerce-importer"><br></div>';
-        echo '<h2>' . (empty($_GET['merge']) ? esc_html__('Import', 'comments-import-export-woocommerce') : esc_html__('Merge WordPress Comments', 'comments-import-export-woocommerce')) . '</h2>';
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification not needed.
+        echo '<h2>' . (empty($_GET['merge']) ? esc_html__('Import', 'comments-import-export-woocommerce') : esc_html__('Merge WordPress Comments', 'comments-import-export-woocommerce')) . '</h2>'; // @codingStandardsIgnoreLine.
     }
 
     // Close div.wrap
@@ -1326,7 +1383,8 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
      */
     public function greet()
     {
-        $action = 'admin.php?import=product_comments_csv&amp;step=1&amp;merge=' . (!empty($_GET['merge']) ? 1 : 0);
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification not needed.
+        $action = 'admin.php?import=product_comments_csv&step=1&merge=' . (!empty($_GET['merge']) ? 1 : 0); // @codingStandardsIgnoreLine.
         $bytes = apply_filters('import_upload_size_limit', wp_max_upload_size());
         $size = size_format($bytes);
         $upload_dir = wp_upload_dir();
@@ -1344,13 +1402,11 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
     }
     public static function is_valid_file_path($file_url)
     {
-
         $real_file_path = realpath($file_url);
 
         if (! $real_file_path) {
             return false;
         }
-
 
         $content_dir         = realpath(WP_CONTENT_DIR); // Get the real path of WP_CONTENT_DIR.
         $upload_dir         = wp_upload_dir();

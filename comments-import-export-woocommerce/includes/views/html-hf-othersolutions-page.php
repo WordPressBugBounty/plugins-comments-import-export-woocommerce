@@ -362,14 +362,14 @@ if (!defined('WPINC')) {
 							if (isset($value['premium_url']) && ! empty($value['premium_url'])) {
 							?>
 								<div class="wt_premium_button" style="width: 100%;">
-									<a href="<?php echo esc_url($value['premium_url']); ?>" class="wt_get_premium_btn" target="_blank"><img src="<?php echo esc_url($wt_admin_img_path . '/promote_crown.png'); ?>" style="width: 10px;height: 10px;"><?php esc_html_e(' Get Premium', 'wt-import-export-for-woo'); ?></a>
+									<a href="<?php echo esc_url($value['premium_url']); ?>" class="wt_get_premium_btn" target="_blank"><img src="<?php echo esc_url($wt_admin_img_path . '/promote_crown.png'); ?>" style="width: 10px;height: 10px;"><?php esc_html_e(' Get Premium', 'comments-import-export-woocommerce'); ?></a>
 								</div>
 							<?php           }
 							if (is_plugin_active($value['basic_plugin'])) {
 							?>
 								<div class="wt_installed_button">
 									<button class="wt_installed_btn">
-										<?php esc_html_e('Installed', 'wt-import-export-for-woo'); ?>
+										<?php esc_html_e('Installed', 'comments-import-export-woocommerce'); ?>
 									</button>
 								</div>
 							<?php
@@ -378,10 +378,10 @@ if (!defined('WPINC')) {
 								&& isset($value['basic_url']) && "" !== $value['basic_url'] && isset($value['pro_plugin']) && is_string($value['pro_plugin']) && "" !== $value['pro_plugin'] && !is_plugin_active($value['pro_plugin'])
 							) {
 							?>
-								<div class="wt_free_button<?php echo (empty($value['premium_url'])) ? ' full_width' : ''; ?>">
-									<a class="wt_free_btn_a" href="<?php echo esc_url($value['basic_url']); ?>" target="_blank">
-										<button class="wt_free_btn<?php echo (empty($value['premium_url'])) ? ' full_width' : ''; ?>">
-											<?php esc_html_e('Get Free Plugin', 'wt-import-export-for-woo'); ?>
+								<div class="wt_free_button<?php echo esc_attr( empty( $value['premium_url'] ) ? ' full_width' : '' ); ?>">
+									<a class="wt_free_btn_a" href="<?php echo esc_url( $value['basic_url'] ); ?>" target="_blank">
+										<button class="wt_free_btn<?php echo esc_attr( empty( $value['premium_url'] ) ? ' full_width' : '' ); ?>">
+											<?php esc_html_e('Get Free Plugin', 'comments-import-export-woocommerce'); ?>
 										</button>
 									</a>
 								</div>

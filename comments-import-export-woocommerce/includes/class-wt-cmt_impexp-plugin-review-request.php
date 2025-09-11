@@ -47,12 +47,16 @@ class Comments_import_export_Review_Request
         //Set config vars
         $this->set_vars();
 
-        add_action($this->activation_hook, array($this, 'on_activate'));
-        add_action($this->deactivation_hook, array($this, 'on_deactivate'));
+        add_action( $this->activation_hook, array( $this, 'on_activate' ) );
+        add_action( $this->deactivation_hook, array( $this, 'on_deactivate' ) );
+        add_action( 'admin_init', array( $this, 'init' ) );  
+    }
 
-        if ($this->check_condition()) /* checks the banner is active now */ {
+    public function init(){
+       if ( $this->check_condition() ) { /* checks the banner is active now */
             
-            $this->banner_message = sprintf(wp_kses_post("Hey, we at %sWebToffee%s would like to thank you for using our plugin. We would really appreciate if you could take a moment to drop a quick review that will inspire us to keep going.", 'comments-import-export-woocommerce'), '<strong>', '</strong>');
+            // translators: %1$s HTML strong tag opening, %2$s HTML strong tag closing.
+            $this->banner_message = sprintf(__('Hey, we at %1$sWebToffee%2$s would like to thank you for using our plugin. We would really appreciate if you could take a moment to drop a quick review that will inspire us to keep going.', 'comments-import-export-woocommerce'), '<strong>', '</strong>');
 
             /* button texts */
             $this->later_btn_text   = __("Remind me later", 'comments-import-export-woocommerce');
@@ -62,7 +66,7 @@ class Comments_import_export_Review_Request
             add_action('admin_notices', array($this, 'show_banner')); /* show banner */
             add_action('admin_print_footer_scripts', array($this, 'add_banner_scripts')); /* add banner scripts */
             add_action('wp_ajax_' . $this->ajax_action_name, array($this, 'process_user_action')); /* process banner user action */
-        }
+        } 
     }
 
     /**
@@ -183,8 +187,8 @@ class Comments_import_export_Review_Request
 
                 /* prepare data object */
                 var data_obj = {
-                    _wpnonce: '<?php echo wp_json_encode($nonce); ?>',
-                    action: '<?php echo wp_json_encode($this->ajax_action_name); ?>',
+                    _wpnonce: '<?php echo esc_js($nonce); ?>',
+                    action: '<?php echo esc_js($this->ajax_action_name); ?>',
                     wt_review_action_type: ''
                 };
 
@@ -217,7 +221,7 @@ class Comments_import_export_Review_Request
 
             })(jQuery)
         </script>
-<?php
+    <?php
     }
 
     /**

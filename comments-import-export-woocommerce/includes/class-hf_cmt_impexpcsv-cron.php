@@ -24,6 +24,7 @@ class HW_Cmt_ImpExpCsv_Cron {
             if ($export_interval) {
                 $schedules['export_interval'] = array(
                     'interval' => (int) $export_interval * 60,
+                    // translators: %d is the interval
                     'display' => sprintf(__('Every %d minutes', 'comments-import-export-woocommerce'), (int) $export_interval)
                 );
             }

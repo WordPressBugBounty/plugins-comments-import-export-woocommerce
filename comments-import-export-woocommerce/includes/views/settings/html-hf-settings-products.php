@@ -30,12 +30,14 @@ if (function_exists('WC')) {
 }
 wp_localize_script('woocommerce-product-csv-importer', 'woocommerce_product_csv_importer_params', array('auto_export' => $auto_export, 'auto_import' => $auto_import));
 if ($scheduled_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_export_products')) {
-    $scheduled_desc = sprintf(__('The next export is scheduled on <code>%s</code>', 'comments-import-export-woocommerce'), get_date_from_gmt(date('Y-m-d H:i:s', $scheduled_timestamp), $datefor . ' ' . $timefor));
+    // translators: %s is the scheduled time
+    $scheduled_desc = sprintf(__('The next export is scheduled on <code>%s</code>', 'comments-import-export-woocommerce'), get_date_from_gmt(gmdate('Y-m-d H:i:s', $scheduled_timestamp), $datefor . ' ' . $timefor));
 } else {
-        $scheduled_desc = __('There is no export scheduled.', 'comments-import-export-woocommerce');
+    $scheduled_desc = __('There is no export scheduled.', 'comments-import-export-woocommerce');
 }
 if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_import_products')) {
-    $scheduled_import_desc = sprintf(__('The next import is scheduled on <code>%s</code>', 'comments-import-export-woocommerce'), get_date_from_gmt(date('Y-m-d H:i:s', $scheduled_import_timestamp), $datefor . ' ' . $timefor));
+    // translators: %s is the scheduled time
+    $scheduled_import_desc = sprintf(__('The next import is scheduled on <code>%s</code>', 'comments-import-export-woocommerce'), get_date_from_gmt(gmdate('Y-m-d H:i:s', $scheduled_import_timestamp), $datefor . ' ' . $timefor));
 } else {
     $scheduled_import_desc = __('There is no import scheduled.', 'comments-import-export-woocommerce');
 }
@@ -148,9 +150,15 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                     </th>
                     <td>
                         <input type="text" name="auto_export_start_time" id="auto_export_start_time"  value="<?php echo esc_attr($auto_export_start_time); ?>"/>
-                        <span class="description"><?php echo sprintf(wp_kses_post('Local time is <code>%s</code>.', 'comments-import-export-woocommerce'), esc_html(date_i18n($timefor))) . ' ' . esc_html($scheduled_desc); ?></span>
                         <br/>
-                        <span class="description"><?php echo wp_kses_post('<code>Enter like 6:18pm or 12:27am</code>', 'comments-import-export-woocommerce'); ?></span>
+                        <span class="description">
+                            <?php 
+                            // translators: %s is the scheduled time
+                            echo wp_kses_post(sprintf(__('Local time is <code>%s</code>.', 'comments-import-export-woocommerce'), date_i18n($timefor))) . ' ' . wp_kses_post($scheduled_desc); 
+                            ?>
+                        </span>
+                        <br/><br/>
+                        <span class="description"><code><?php echo wp_kses_post(__('Enter like 6:18pm or 12:27am', 'comments-import-export-woocommerce')); ?></code></span>
                     </td>
                 </tr>
                 <tr>
@@ -193,9 +201,15 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                     </th>
                     <td>
                         <input type="text" name="auto_import_start_time" id="auto_export_start_time"  value="<?php echo esc_attr($auto_import_start_time); ?>"/>
-                        <span class="description"><?php echo sprintf(esc_html__('Local time is <code>%s</code>.', 'comments-import-export-woocommerce'), esc_html(date_i18n($timefor))) . ' ' . esc_html($scheduled_import_desc); ?></span>
                         <br/>
-                        <span class="description"><?php esc_html_e('<code>Enter like 6:18pm or 12:27am</code>', 'comments-import-export-woocommerce'); ?></span>
+                        <span class="description">
+                            <?php 
+                            // translators: %s is the scheduled time.
+                            echo wp_kses_post(sprintf(__('Local time is <code>%s</code>.', 'comments-import-export-woocommerce'), date_i18n($timefor))) . ' ' . wp_kses_post($scheduled_import_desc); 
+                            ?>
+                        </span>
+                        <br/><br/>
+                        <span class="description"><code><?php esc_html_e('Enter like 6:18pm or 12:27am', 'comments-import-export-woocommerce'); ?></code></span>
                     </td>
                 </tr>
                 <tr>
@@ -223,7 +237,7 @@ if (!empty($mapping_from_db)) {
     ?>
                     <tr>
                         <th>
-                            <label for="auto_import_profile"><?php esc_html_e('Select a mapping file.'); ?></label>
+                            <label for="auto_import_profile"><?php esc_html_e('Select a mapping file.', 'comments-import-export-woocommerce'); ?></label>
                         </th>
                         <td>
                             <select name="auto_import_profile">

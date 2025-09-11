@@ -10,8 +10,14 @@ if ( ! defined( 'ABSPATH' ) ) {
     </div> */?>
     <div class="pipe-review-widget">
         <?php
-        echo  sprintf(wp_kses_post('<div class=""><p><i>If you like the plugin please leave us a %1$s review!</i><p></div>', 'comments-import-export-woocommerce'), '<a href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/reviews#new-post" target="_blank" class="xa-pipe-rating-link" data-reviewed="' . esc_attr__('Thanks for the review.', 'comments-import-export-woocommerce') . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>');
-        ?>
+		echo wp_kses_post('<div class=""><p><i>' . sprintf(
+			// Translators: %1$s is the link to the plugin review page.
+		    __('If you like the plugin please leave us a %1$s review!', 'comments-import-export-woocommerce'),
+		    '<a href="https://wordpress.org/support/plugin/comments-import-export-woocommerce/reviews/#new-post" target="_blank" class="xa-pipe-rating-link" data-reviewed="' .
+		        esc_attr__('Thanks for the review.', 'comments-import-export-woocommerce') .
+		    '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
+		) . '</i></p></div>');
+		?>
     </div>
 	
 	<div class="wt-ierpro-header wt-comment-pipe-premium-features">
@@ -20,12 +26,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 		<div class="wt-comment-ierpro-mainfeatures">
 			<ul>
-				<li class="money-back"><?php esc_html_e('30 Day Money Back Guarantee'); ?></li>
-				<li class="support"><?php esc_html_e('Fast and Superior Support'); ?></li>
-				<li class="pipe-support"><?php esc_html_e('Third party plugin support'); ?></li>
+				<li class="money-back"><?php esc_html_e('30 Day Money Back Guarantee', 'comments-import-export-woocommerce'); ?></li>
+				<li class="support"><?php esc_html_e('Fast and Superior Support', 'comments-import-export-woocommerce'); ?></li>
+				<li class="pipe-support"><?php esc_html_e('Third party plugin support', 'comments-import-export-woocommerce'); ?></li>
 			</ul>
 			<div class="wt-ierpro-btn-wrapper">
-				<a href="https://www.webtoffee.com/plugins/" class="wt-ierpro-blue-btn" target="_blank"><?php esc_html_e('PREMIUM PLUGINS'); ?></a>
+				<a href="https://www.webtoffee.com/plugins/" class="wt-ierpro-blue-btn" target="_blank"><?php esc_html_e('PREMIUM PLUGINS', 'comments-import-export-woocommerce'); ?></a>
 			</div>                
 		</div>
 	</div>

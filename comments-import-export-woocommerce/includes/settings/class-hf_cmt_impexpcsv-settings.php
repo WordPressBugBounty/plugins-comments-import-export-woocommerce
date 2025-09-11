@@ -30,14 +30,14 @@ class HW_Cmt_ImpExpCsv_Settings {
 
 		$allowed_modes = array('Enabled', 'Disabled');
 
-		$auto_export                 = in_array($_POST['auto_export'] ?? '', $allowed_modes, true) ? $_POST['auto_export'] : 'Disabled';
+		$auto_export                 = in_array($_POST['auto_export'] ?? '', $allowed_modes, true) ? sanitize_text_field( wp_unslash( $_POST['auto_export'] ) ) : 'Disabled';
 		$auto_export_start_time     = isset($_POST['auto_export_start_time']) ? sanitize_text_field(wp_unslash($_POST['auto_export_start_time'])) : '';
 		$auto_export_interval       = isset($_POST['auto_export_interval']) ? absint(wp_unslash($_POST['auto_export_interval'])) : 0;
 
 		$export_ftp_path            = ! empty($_POST['export_ftp_path']) ? sanitize_text_field(wp_unslash($_POST['export_ftp_path'])) : '';
 		$export_ftp_file_name       = ! empty($_POST['export_ftp_file_name']) ? sanitize_text_field(wp_unslash($_POST['export_ftp_file_name'])) : '';
 
-		$auto_import                = in_array($_POST['auto_import'] ?? '', $allowed_modes, true) ? $_POST['auto_import'] : 'Disabled';
+		$auto_import                = in_array($_POST['auto_import'] ?? '', $allowed_modes, true) ? sanitize_text_field( wp_unslash( $_POST['auto_import'] ) ) : 'Disabled';
 		$auto_import_start_time     = isset($_POST['auto_import_start_time']) ? sanitize_text_field(wp_unslash($_POST['auto_import_start_time'])) : '';
 		$auto_import_interval       = isset($_POST['auto_import_interval']) ? absint(wp_unslash($_POST['auto_import_interval'])) : 0;
 		$auto_import_profile        = ! empty($_POST['auto_import_profile']) ? sanitize_text_field(wp_unslash($_POST['auto_import_profile'])) : '';

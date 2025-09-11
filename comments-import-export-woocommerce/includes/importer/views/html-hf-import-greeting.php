@@ -24,7 +24,7 @@ if (!empty($ftp_settings)) {
 
 	<?php if (! empty($upload_dir['error'])) : ?>
 		<div class="error">
-			<p><?php esc_html_e('Before you can upload your import file, you will need to fix the following error:'); ?></p>
+			<p><?php esc_html_e('Before you can upload your import file, you will need to fix the following error:', 'comments-import-export-woocommerce'); ?></p>
 			<p><strong><?php echo esc_html($upload_dir['error']); ?></strong></p>
 		</div>
 	<?php else : ?>
@@ -33,13 +33,18 @@ if (!empty($ftp_settings)) {
 				<tbody>
 					<tr>
 						<th>
-							<label for="upload"><?php esc_html_e('Method 1: Select a file from your computer'); ?></label>
+							<label for="upload"><?php esc_html_e('Method 1: Select a file from your computer', 'comments-import-export-woocommerce'); ?></label>
 						</th>
 						<td>
 							<input type="file" id="upload" name="import" size="25" />
 							<input type="hidden" name="action" value="save" />
 							<input type="hidden" name="max_file_size" value="<?php echo esc_attr(absint($bytes)); ?>" />
-							<small><?php printf(esc_html__('Maximum size: %s', 'comments-import-export-woocommerce'), esc_html($size)); ?></small>
+							<small>
+								<?php
+								// translators: %s is the maximum size
+								printf(esc_html__('Maximum size: %s', 'comments-import-export-woocommerce'), esc_html($size));
+								?>
+							</small>
 
 						</td>
 					</tr>
@@ -125,7 +130,7 @@ if (!empty($ftp_settings)) {
 					?>
 						<tr>
 							<th>
-								<label for="profile"><?php esc_html_e('Select a mapping file.'); ?></label>
+								<label for="profile"><?php esc_html_e('Select a mapping file.', 'comments-import-export-woocommerce'); ?></label>
 							</th>
 							<td>
 								<select name="profile">
@@ -146,7 +151,7 @@ if (!empty($ftp_settings)) {
 				</tbody>
 			</table>
 			<p class="submit">
-				<input type="submit" class="button button-primary" value="<?php esc_attr_e('Upload file and import'); ?>" />
+				<input type="submit" class="button button-primary" value="<?php esc_attr_e('Upload file and import', 'comments-import-export-woocommerce'); ?>" />
 			</p>
 		</form>
 	<?php endif; ?>

@@ -38,7 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <img src="<?php echo esc_url(HF_CMT_IM_EX_PATH_URL . '/images/documentation.png'); ?>"/>
                     <h3><?php esc_html_e('Documentation', 'comments-import-export-woocommerce'); ?></h3>
                     <p style=""><?php esc_html_e('Refer to our documentation to set and get started', 'comments-import-export-woocommerce'); ?></p>
-                    <a target="_blank" href="https://www.webtoffee.com/category/documentation/product-import-export-plugin-for-woocommerce/" class="button-primary"><?php esc_html_e('Documentation', 'wf_csv_import_export'); ?></a> 
+                    <a target="_blank" href="https://www.webtoffee.com/category/documentation/product-import-export-plugin-for-woocommerce/" class="button-primary"><?php esc_html_e('Documentation', 'comments-import-export-woocommerce'); ?></a> 
                 </div>
 
                 <div class="inner-panel" style="">

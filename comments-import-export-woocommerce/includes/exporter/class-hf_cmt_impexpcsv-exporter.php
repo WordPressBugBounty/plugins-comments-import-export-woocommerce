@@ -23,14 +23,14 @@ class HW_Cmt_ImpExpCsv_Exporter
             $_nonce = '';
         }
 
-        $do_action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+        $do_action = isset($_REQUEST['action']) ? sanitize_text_field(wp_unslash($_REQUEST['action'])) : '';
 
         if ('download_to_cmtiew_csv_hf' === $do_action) {
             if (!check_admin_referer('bulk-comments')) {
                 wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'comments-import-export-woocommerce'));
             }
         } else {
-            if (!wp_verify_nonce($_nonce, 'comments-import-export-woocommerce')) {
+            if ( ! wp_doing_cron() && ! wp_verify_nonce($_nonce, 'comments-import-export-woocommerce') ) {
                 wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'comments-import-export-woocommerce'));
             }
         }
@@ -43,15 +43,15 @@ class HW_Cmt_ImpExpCsv_Exporter
             $selected_cmt_ids = '';
         }
 
-        $export_limit = !empty($_POST['limit']) ? intval($_POST['limit']) : 999999999;
+        $export_limit = !empty($_POST['limit']) ? intval(wp_unslash($_POST['limit'])) : 999999999;
         $limit = 100;
-        $delimiter = !empty($_POST['delimiter']) ? $_POST['delimiter'] : ','; // WPCS: CSRF ok, input var ok.
-        $articles = !empty($_POST['articles']) ? Wt_WWCIEP_Security_Helper::sanitize_item($_POST['articles'], 'int_arr') : '';
-        $products = !empty($_POST['products']) ? Wt_WWCIEP_Security_Helper::sanitize_item($_POST['products'], 'int_arr') : '';
+        $delimiter = !empty($_POST['delimiter']) ? sanitize_text_field(wp_unslash($_POST['delimiter'])) : ','; // WPCS: CSRF ok, input var ok.
+        $articles = !empty($_POST['articles']) ? array_map('absint', wp_unslash($_POST['articles'])) : array();
+        $products = !empty($_POST['products']) ? array_map('absint', wp_unslash($_POST['products'])) : array();
         if ($limit > $export_limit)
             $limit = $export_limit;
 
-        if (isset($_POST['woo_enable']) && $_POST['woo_enable'] != 0) {
+        if (isset($_POST['woo_enable']) && absint($_POST['woo_enable']) !== 0) {
             $woo_set = '1';
             $product_enable = 'product';
             $cmd_type = 'woodiscuz';
@@ -60,11 +60,11 @@ class HW_Cmt_ImpExpCsv_Exporter
             $woo_set = '0';
             $cmd_type = null;
         }
-        $cmt_date_from = !empty($_POST['cmt_date_from']) ? $_POST['cmt_date_from'] : date('Y-m-d 00:00', 0);
-        $cmt_date_to = !empty($_POST['cmt_date_to']) ? $_POST['cmt_date_to'] : date('Y-m-d 23:59', current_time('timestamp'));
+        $cmt_date_from = !empty($_POST['cmt_date_from']) ? sanitize_text_field(wp_unslash($_POST['cmt_date_from'])) : gmdate('Y-m-d 00:00', 0);
+        $cmt_date_to = !empty($_POST['cmt_date_to']) ? sanitize_text_field(wp_unslash($_POST['cmt_date_to'])) : gmdate('Y-m-d 23:59', current_time('timestamp'));
         $csv_columns = include('data/data-hf-post-columns.php');
-        $user_columns_name = !empty($_POST['columns_name']) ? Wt_WWCIEP_Security_Helper::sanitize_item($_POST['columns_name'], 'text_arr') : $csv_columns;
-        $export_columns = !empty($_POST['columns']) ? Wt_WWCIEP_Security_Helper::sanitize_item($_POST['columns'], 'text_arr') : '';
+        $user_columns_name = !empty($_POST['columns_name']) ? array_map('sanitize_text_field', wp_unslash($_POST['columns_name'])) : $csv_columns;
+        $export_columns = !empty($_POST['columns']) ? array_map('sanitize_text_field', wp_unslash($_POST['columns'])) : '';
         if ($limit > $export_limit)
             $limit = $export_limit;
         $settings = get_option('woocommerce_' . HW_CMT_IMP_EXP_ID . '_settings', null);
@@ -77,30 +77,36 @@ class HW_Cmt_ImpExpCsv_Exporter
         $use_pasv = isset($settings['use_pasv']) ? $settings['use_pasv'] : '';
 
         $wpdb->hide_errors();
+        // @codingStandardsIgnoreStart
         @set_time_limit(0);
-        if (function_exists('apache_setenv'))
+        if (function_exists('apache_setenv')){
+            // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
             @apache_setenv('no-gzip', 1);
+        }
+        // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged, WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_set
         @ini_set('zlib.output_compression', 0);
+        // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
         @ob_end_clean();
+        // @codingStandardsIgnoreEnd
         if ($enable_ftp_ie) {
             $upload_path = wp_upload_dir();
             $file_path = $upload_path['path'] . '/';
-            $file = (!empty($settings['export_ftp_file_name'])) ? $file_path . $settings['export_ftp_file_name'] : "WP_comments-export-" . date('Y_m_d_H_i_s', current_time('timestamp')) . ".csv";;
-            //            $file = "WP_comments-export-" . date('Y_m_d_H_i_s', current_time('timestamp')) . ".csv";
-            $fp = fopen($file, 'w');
+            $file = (!empty($settings['export_ftp_file_name'])) ? $file_path . sanitize_file_name($settings['export_ftp_file_name']) : "WP_comments-export-" . gmdate('Y_m_d_H_i_s', current_time('timestamp')) . ".csv";
+            // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+            $fp = fopen($file, 'w'); // @codingStandardsIgnoreLine.
         } else {
             header('Content-Type: text/csv; charset=UTF-8');
-            header('Content-Disposition: attachment; filename=WP-comments-export-' . date('Y_m_d_H_i_s', current_time('timestamp')) . '.csv');
+            header('Content-Disposition: attachment; filename=WP-comments-export-' . gmdate('Y_m_d_H_i_s', current_time('timestamp')) . '.csv');
             header('Pragma: no-cache');
             header('Expires: 0');
-            $fp = fopen('php://output', 'w');
+            // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+            $fp = fopen('php://output', 'w'); // @codingStandardsIgnoreLine.
         }
 
         // Headers
-        //        $all_meta_keys = array('');
         global $wpdb;
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        $all_meta_keys = $wpdb->get_col("SELECT DISTINCT pm.meta_key FROM {$wpdb->commentmeta} AS pm LEFT JOIN {$wpdb->comments} AS p ON p.comment_ID = pm.comment_id WHERE p.comment_approved IN ( '0','1') ");
+        $all_meta_keys = $wpdb->get_col("SELECT DISTINCT pm.meta_key FROM {$wpdb->commentmeta} AS pm LEFT JOIN {$wpdb->comments} AS p ON p.comment_ID = pm.comment_id WHERE p.comment_approved IN ( '0','1') "); // @codingStandardsIgnoreLine.
         $found_coupon_meta = array();
         // Some of the values may not be usable (e.g. arrays of arrays) but the worse
         // that can happen is we get an empty column.
@@ -123,7 +129,7 @@ class HW_Cmt_ImpExpCsv_Exporter
         // Export header rows
         foreach ($csv_columns as $column => $value) {
 
-            if ('comment_meta' == $column && isset($export_columns[$column])) { //exprt commentmeta header 
+            if ('comment_meta' == $column && isset($export_columns[$column])) { //exprt comment meta header 
                 foreach ($all_meta_keys as $comment_meta) {
                     $row[] = 'meta:' . self::format_data($comment_meta);
                 }
@@ -145,7 +151,9 @@ class HW_Cmt_ImpExpCsv_Exporter
         }
         $row = apply_filters('wt_comments_csv_export_columns', $row);
         $row = array_map('HW_Cmt_ImpExpCsv_Exporter::wrap_column', $row);
-        fwrite($fp, implode($delimiter, $row) . "\n");
+
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_write_fwrite
+        fwrite($fp, implode($delimiter, $row) . "\n"); // @codingStandardsIgnoreLine.
         unset($row);
         $args = array(
             'status' => 'all',
@@ -169,48 +177,42 @@ class HW_Cmt_ImpExpCsv_Exporter
         }
 
         if ($woo_set != '0') {
-            if (!empty($products)) {
-                for ($i = 0; $i < count($products); $i++) {
-                    $args = array(
-                        'post__in' => implode(',', $products),
-                        'orderby' => 'comment_ID',
-                        'order' => 'ASC',
-                        'post_type' => $product_enable,
-                        'type' => $cmd_type,
-                        'number' => $export_limit,
-                        'suppress_filters' => false,
-                        'date_query' => array(
-                            array(
-                                'before' => $cmt_date_to,
-                                'after' => $cmt_date_from,
-                                'inclusive' => true,
-                            ),
+            if (!empty($products) && is_array($products)) {
+                $args = array(
+                    'post__in' => implode(',', $products),
+                    'orderby' => 'comment_ID',
+                    'order' => 'ASC',
+                    'post_type' => $product_enable,
+                    'type' => $cmd_type,
+                    'number' => $export_limit,
+                    'suppress_filters' => false,
+                    'date_query' => array(
+                        array(
+                            'before' => $cmt_date_to,
+                            'after' => $cmt_date_from,
+                            'inclusive' => true,
                         ),
-                    );
-                }
+                    ),
+                );
             }
         } else {
-            if (!empty($articles)) {
-                for ($i = 0; $i < count($articles); $i++) {
-                    $args = array(
-                        'post__in' => implode(',', $articles),
-                        'orderby' => 'comment_ID',
-                        'order' => 'ASC',
-                        'post_type' => $product_enable,
-                        'type' => $cmd_type,
-                        'number' => $export_limit,
-                        'suppress_filters' => false,
-                        'date_query' => array(
-                            array(
-                                'before' => $cmt_date_to,
-                                'after' => $cmt_date_from,
-                                'inclusive' => true,
-                            ),
+            if (!empty($articles) && is_array($articles)) {
+                $args = array(
+                    'post__in' => implode(',', $articles),
+                    'orderby' => 'comment_ID',
+                    'order' => 'ASC',
+                    'post_type' => $product_enable,
+                    'type' => $cmd_type,
+                    'number' => $export_limit,
+                    'suppress_filters' => false,
+                    'date_query' => array(
+                        array(
+                            'before' => $cmt_date_to,
+                            'after' => $cmt_date_from,
+                            'inclusive' => true,
                         ),
-                    );
-
-                    // $args['post__in'] = implode(',', $articles);
-                }
+                    ),
+                );
             }
         }
 
@@ -245,7 +247,7 @@ class HW_Cmt_ImpExpCsv_Exporter
                         $meta_value = maybe_unserialize(maybe_unserialize($value));
 
                         if (is_array($meta_value)) {
-                            $meta_value = json_encode($meta_value);
+                            $meta_value = wp_json_encode($meta_value);
                         }
 
                         $comment->meta->$meta = self::format_export_meta($meta_value, $meta);
@@ -282,7 +284,7 @@ class HW_Cmt_ImpExpCsv_Exporter
                                 $comment_meta_value = get_comment_meta($comment_ID, $commt_meta, true);
                                 if (isset($comment_meta_value)) {
                                     if (is_array($comment_meta_value)) {
-                                        $comment_meta_value = json_encode($comment_meta_value);
+                                        $comment_meta_value = wp_json_encode($comment_meta_value);
                                     }
                                     $row[] = self::format_data($comment_meta_value);
                                 } else {
@@ -319,12 +321,14 @@ class HW_Cmt_ImpExpCsv_Exporter
                 }
                 $row = apply_filters('wt_comments_export_csv_data', $row);
                 $row = array_map('HW_Cmt_ImpExpCsv_Exporter::wrap_column', $row);
-                fwrite($fp, implode($delimiter, $row) . "\n");
+
+                // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_write_fwrite
+                fwrite($fp, implode($delimiter, $row) . "\n"); // @codingStandardsIgnoreLine.
                 unset($row);
             }
         }
         if ($enable_ftp_ie) {
-            include_once(plugin_dir_path(__FILE__) . '../sftp-modules/sftp.php');
+            include_once(plugin_dir_path(__FILE__) . '../vendor/sftp-modules/sftp.php');
 
             $remote_path = isset($settings['export_ftp_path']) ? $settings['export_ftp_path'] : null;
             $file_name = isset($settings['export_ftp_file_name']) ? $settings['export_ftp_file_name'] : null;
@@ -353,9 +357,11 @@ class HW_Cmt_ImpExpCsv_Exporter
 
 
             if ($use_ftps) {
-                $ftp_conn = @ftp_ssl_connect($ftp_server) or die(esc_html__("Could not connect to $ftp_server", 'comments-import-export-woocommerce'));
+                // translators: %s is the FTP server
+                $ftp_conn = @ftp_ssl_connect($ftp_server) or die(esc_html(sprintf(__("Could not connect to %s", 'comments-import-export-woocommerce'), $ftp_server)));
             } else {
-                $ftp_conn = @ftp_connect($ftp_server) or die(esc_html__("Could not connect to $ftp_server", 'comments-import-export-woocommerce'));
+                // translators: %s is the FTP server
+                $ftp_conn = @ftp_connect($ftp_server) or die(esc_html(sprintf(__("Could not connect to %s", 'comments-import-export-woocommerce'), $ftp_server)));
             }
             $login = @ftp_login($ftp_conn, $ftp_user, $ftp_password);
             if ($use_pasv) {
@@ -378,7 +384,8 @@ class HW_Cmt_ImpExpCsv_Exporter
             ftp_close($ftp_conn);
         }
 
-        fclose($fp);
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_write_fclose
+        fclose($fp); // @codingStandardsIgnoreLine.
         exit;
     }
 
@@ -393,11 +400,12 @@ class HW_Cmt_ImpExpCsv_Exporter
         switch ($meta) {
             case '_sale_price_dates_from':
             case '_sale_price_dates_to':
-                return $meta_value ? date('Y-m-d', $meta_value) : '';
+                return $meta_value ? gmdate('Y-m-d', $meta_value) : '';
                 break;
             case '_upsell_ids':
             case '_crosssell_ids':
-                return implode('|', array_filter((array) json_decode($meta_value)));
+                $decoded = json_decode($meta_value, true);
+                return is_array($decoded) ? implode('|', array_filter($decoded)) : '';
                 break;
             default:
                 return $meta_value;

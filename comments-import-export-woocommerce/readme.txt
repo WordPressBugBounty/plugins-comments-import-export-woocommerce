@@ -1,11 +1,11 @@
-=== WordPress Comments Import & Export ===
+=== Comments Import & Export ===
 Contributors: webtoffee
 Donate link: https://www.webtoffee.com/plugins/
 Tags: comments import, comments export, wordpress comments, wordpress comments import, wordpress comments export.
 Requires at least: 3.0.1
 Tested up to: 6.8
-Requires PHP: 7
-Stable tag: 2.4.5
+Requires PHP: 7.0
+Stable tag: 2.4.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -91,201 +91,15 @@ No. The plugin only supports the import and export of post/article comments. For
 
 == Changelog ==
 
-= 2.4.5 2025-05-30 =
-* [Fix] Access Denied Issue.
+= 2.4.6 2025-09-11 =
+* [Compatibility] – Tested OK with WooCommerce 10.1.2
+* [Update] – Plugin Check Plugin fixes.
 
-= 2.4.4 2025-05-27 =
-* [Fix] Vulnerability issues.
+[See changelog for all versions](https://plugins.svn.wordpress.org/comments-import-export-woocommerce/trunk/changelog.txt)
 
-= 2.4.3 2025-05-07 =
-* [Fix] Vulnerability issues.
-* [Fix] SFTP Connectivity Issues
-
-= 2.4.2 2025-04-25 =
-* [Compatibility] Tested OK with WordPress 6.8
-
-= 2.4.1 2025-04-21 =
-* [Fix] Vulnerability. @Octovian thanks for pointing out the issue. 
-
-= 2.4.0 2024-11-15 =
-* [Compatibility] Tested OK with WordPress 6.7
-
-= 2.3.9 2024-10-03 =
-* [Fix] Added File path validation Check.
-* [Compatibility] Tested OK with WordPress 6.6.2
-
-= 2.3.8 2024-08-20 =
-* [Fix] Vulnerability issue reported by scottaglia.
-* [Compatibility] Tested OK with WordPress 6.6.1
-
-= 2.3.7 2024-05-28 =
-* [Fix] The comment merge option isn't functioning properly.
-* [Compatibility] Tested OK with WordPress 6.5.3
-
-= 2.3.6  2024-01-11 =
-* [Fix] Security check failed.
-* Tested OK with WordPress 6.4.2
-
-= 2.3.5  2023-11-23 =
-* Tested OK with WordPress 6.4.1
-
-= 2.3.4  2023-08-31 =
-* Tested OK with WordPress 6.3
-
-= 2.3.3  2023-07-11 =
-* Tested OK with WordPress 6.2
-
-= 2.3.2  2023-01-09 =
-* Tested OK with WordPress 6.1
-* Security fixes
-
-= 2.3.1  2022-08-31 =
-* Tested OK with WordPress 6.0.2
-
-= 2.3.0  2022-05-26 =
-* Tested OK with WordPress 6.0
-
-= 2.2.9 =
-* Tested OK with WP 5.8
-
-= 2.2.8 =
-* Tested OK with WC 5.3.0 and WP 5.7.2
-* Improvement:- Import comments based on post_title and post_name.
-
-= 2.2.7 =
-* Improvement:- Warnings fix.
-
-= 2.2.6 =
-* Minor Content Changed.
-* New filter hook added in import.
-
-= 2.2.5 =
-* Tested OK with WC 5.2.2 and WP 5.7.1
-
-= 2.2.4 =
-* Tested OK with WC 5.1.0 and WP 5.7.0
-
-= 2.2.3 =
-* Tested OK with WP 5.6 and WC 4.8.0.
-
-= 2.2.2 =
-* Tested OK with WP 5.5.3 and WC 4.7.0.
-
-= 2.2.1 =
-* Tested OK with WP 5.5.1 and WC 4.5.2.
-
-= 2.2.0 =
-* Tested OK with WP 5.4.0 and WC 4.0.1.
-
-= 2.1.12 =
-* Support WP Translating.
-* Tested OK with WC 4.0.0
-
-= 2.1.11 =
-* [Improvement] Security
-
-= 2.1.10 =
-* Security Fix.
-
-= 2.1.9 =
-* [Improvement] Security
-
-= 2.1.8 =
-* Bug Fix:- CSS and JS.
-* Improvement:- sFTP support.
-* Improvement:- Export and Import Comment meta.
-* Tested OK with WC 3.8.1 and WP 5.3.2
-
-= 2.1.7 =
-* Tested OK with WC 3.8 and WP 5.2.4
-
-= 2.1.6 =
-* Bug Fix:- FTP Export and Import.
-* Bug Fix:- Scheduled FTP Export and Import.
-* Bug Fix:- Linking with parent comment.
-* Improvement:- Provision to specify file name on scheduled export.
-* Improvement:- Export to specific path on scheduled export.
-* Improvement:- Option to specify import file name with path on scheduled import.
-* Tested OK with WC 3.7.1 and WP 5.2.3
-
-= 2.1.5 =
-* Bug Fix:- Exported file contain gibberish content.
-* update information hook added.
-
-= 2.1.4 =
-* Tested OK with WC 3.7.0
-
-= 2.1.3 =
-* Tested OK with WC 3.6.5
-
-= 2.1.2 =
-* Tested OK with WC 3.6.4 and WP 5.2.2
-
-= 2.1.1 =
-* Tested OK with WC 3.6.2
-
-= 2.1.0 =
-* Bug Fix.
-* Tested OK with WC 3.5.5 and WP 5.1
-* UI Changed.
-
-= 2.0.9 =
-* Bug Fix.
-* Tested OK with WC 3.5.4 and WP 5.0.3
-
-= 2.0.8 =
-* Tested OK with WC 3.5.0 and WP 4.9.8
-
-= 2.0.7 =
-* Tested OK with WC 3.4.5
-* Review link added on footer.
-
-= 2.0.6 =
-* Tested OK with WC 3.4.4
-* Bug fix, comment_status check removed for import.
-* Error messages updated.
-
-= 2.0.5 =
-* Tested OK with WP 4.9.6 and WC 3.4.2.
-* Bug fix, comment data filtered, Warnings fixed.
-* CSV Injection was fixed - reported by one of our user (Bhushan B. Patil 
-) CVE-2018-11526 
-
-= 2.0.4 =
-* Fix with bulk CSV export from Comments list table.
-
-= 2.0.3 =
-* Sub Menu Section Changed.
-
-= 2.0.2 =
-* Minor Content Changed.
-
-= 2.0.1 =
-* Version Tested.
-
-= 2.0.0 =
-* Comments Import/Export.
-* Filterd by Products.
-* Mapping CSV File.
-* Auto Import/Export option.
-* WooDiscuz Comments Export/Import.
-
-= 1.0.4 =
-* Grammer Check.
-
-= 1.0.3 =
-* Improved Ajax Actions.
-
-= 1.0.2 =
-* Bug Fix.
-
-= 1.0.1 =
-* Version Tested.
-
-= 1.0.0 =
-* Export /Import WordPress Comments.
 
 == Upgrade Notice ==
 
-= 2.4.5 =
-* [Fix] Access Denied Issue.
+= 2.4.6 =
+* [Compatibility] – Tested OK with WooCommerce 10.1.2
+* [Update] – Plugin Check Plugin fixes.
