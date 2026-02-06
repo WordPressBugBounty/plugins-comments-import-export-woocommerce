@@ -755,9 +755,9 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
         );
 
 
-        $query = "SELECT ID FROM $wpdb->posts WHERE ID = %d AND post_type=%s"; // comment_status removed from query for importing post which has comment_status is closed.
+        $query = "SELECT ID FROM $wpdb->posts WHERE ID = %d AND post_type IN ('post', 'product')";
         $placeholder_arr = array( $id );
-        $placeholder_arr[] = $cmd_type === 'comment' ? 'post' : 'product';
+        
         $query = apply_filters( 'wt_cmt_imp_post_exists_query', $query, $placeholder_arr );
         if (is_array($args) && !empty($args)) {
             foreach ($args as $key => $value) {
@@ -770,7 +770,7 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
         }
         
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        $posts_that_exist = $wpdb->get_col( $wpdb->prepare( $query, $placeholder_arr ) ); // @codingStandardsIgnoreLine.
+        $posts_that_exist = $wpdb->get_col( call_user_func_array( array( $wpdb, 'prepare' ), array_merge( array( $query ), $placeholder_arr ) ) ); // @codingStandardsIgnoreLine.
         return ( ! $posts_that_exist );
     }
     /**

@@ -127,7 +127,7 @@ if (!defined('WPINC')) {
 
 	.wt_installed_btn {
 		height: 30px;
-		width: 109px;
+		width: 100%;
 		border-style: solid;
 		border-color: #2A2EEA;
 		border-radius: 5px;
@@ -159,6 +159,15 @@ if (!defined('WPINC')) {
 
 			/* Plugin lists array */
 			$plugins = array(
+				'accessibility-checker' => array(
+					'title' => __('Accessibility Tool Kit: WP Accessibility for WCAG, Section 508, ADA, EAA Compliance', 'comments-import-export-woocommerce'),
+					'description' => __('Build an accessible WordPress site that works for everyone. Scan for accessibility issues, get fix recommendations, and ensure WCAG compliance, all without writing code. Inclusive web design made simple.', 'comments-import-export-woocommerce'),
+					'image_url' => 'accessibility-checker.png',
+					'premium_url' => '',
+					'basic_url' => 'https://wordpress.org/plugins/accessibility-plus/',
+					'pro_plugin' => '', // No pro plugin available
+					'basic_plugin' => 'accessibility-plus/accessibility.php',
+				),
 				'product_feed_sync' => array(
 					'title' => __('WebToffee WooCommerce Product Feed & Sync Manager', 'comments-import-export-woocommerce'),
 					'description' => __('Generate WooCommerce product feeds for Google Merchant Center and Facebook Business Manager. Use the Facebook catalog sync manager to sync WooCommerce products with Facebook and Instagram shops.', 'comments-import-export-woocommerce'),
@@ -260,7 +269,7 @@ if (!defined('WPINC')) {
 					'premium_url' => 'https://www.webtoffee.com/product/smart-coupons-for-woocommerce/?utm_source=other_solution_page&utm_medium=free_plugin&utm_campaign=smart_coupons',
 					'basic_url' => 'https://wordpress.org/plugins/wt-smart-coupons-for-woocommerce/',
 					'pro_plugin' => 'wt-smart-coupon-pro/wt-smart-coupon-pro.php',
-					'basic_plugin' => 'wt-smart-coupon/wt-smart-coupon.php',
+					'basic_plugin' => 'wt-smart-coupons-for-woocommerce/wt-smart-coupon.php',
 				),
 				'url_coupons_plugin' => array(
 					'title' => __('URL Coupons for WooCommerce', 'comments-import-export-woocommerce'),
@@ -375,7 +384,8 @@ if (!defined('WPINC')) {
 							<?php
 							} elseif (
 								isset($value['basic_plugin']) && "" !== $value['basic_plugin'] && !is_plugin_active($value['basic_plugin'])
-								&& isset($value['basic_url']) && "" !== $value['basic_url'] && isset($value['pro_plugin']) && is_string($value['pro_plugin']) && "" !== $value['pro_plugin'] && !is_plugin_active($value['pro_plugin'])
+								&& isset($value['basic_url']) && "" !== $value['basic_url'] 
+								&& ( empty($value['pro_plugin'] ) || ! is_plugin_active( $value['pro_plugin'] ) )
 							) {
 							?>
 								<div class="wt_free_button<?php echo esc_attr( empty( $value['premium_url'] ) ? ' full_width' : '' ); ?>">

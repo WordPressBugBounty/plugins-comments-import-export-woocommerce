@@ -6,7 +6,7 @@
  * Description: Import and Export WordPress Comments From and To your Website.
  * Author: WebToffee
  * Author URI: https://www.webtoffee.com/
- * Version: 2.4.6
+ * Version: 2.4.8
  * Text Domain: comments-import-export-woocommerce
  * License: GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -27,7 +27,7 @@ if (!defined('HW_CMT_CSV_IM_EX')) {
 
 if (!defined('WBTE_CMT_IMP_EXP_VERSION')) {
 
-    define("WBTE_CMT_IMP_EXP_VERSION", "2.4.6");
+    define("WBTE_CMT_IMP_EXP_VERSION", "2.4.8");
 }
 
 define('HF_CMT_IM_EX_PATH_URL',  plugin_dir_url(__FILE__));
@@ -69,6 +69,9 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
                     
                     add_filter('admin_footer_text', array($this, 'WT_admin_footer_text'), 100);
                     add_action('wp_ajax_wcie_wt_review_plugin', array($this, "review_plugin"));
+                    
+                    // Add filter for BFCM banner screens
+                    add_filter('wt_bfcm_banner_screens', array($this, 'wt_bfcm_banner_screens'));
 
                     include_once( 'includes/class-hf_cmt_impexpcsv-system-status-tools.php' );
                     include_once( 'includes/class-hf_cmt_impexpcsv-admin-screen.php' );
@@ -94,6 +97,12 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
                     
                     // review request
                     include_once 'includes/class-wt-cmt_impexp-plugin-review-request.php';
+                    
+                    // BFCM 2025 Banner
+                    include_once 'includes/banner/class-wt-bfcm-twenty-twenty-five.php';
+                    
+                    // EMA Banner
+                    include_once 'includes/banner/class-wbte-ema-banner.php';
                 }
 
                 public function hw_plugin_action_links($links) {                    
@@ -239,6 +248,34 @@ require_once(ABSPATH."wp-admin/includes/plugin.php");
                     }
                     update_option('wcie_wt_plugin_reviewed', 1);
                     wp_die();
+                }
+
+                /**
+                 * Set screens to show BFCM promotional banner
+                 *
+                 * @since 2.4.7
+                 * @param array $screens Array of screen IDs
+                 * @return array Modified array of screen IDs
+                 */
+                public function wt_bfcm_banner_screens( $screens ) {
+                    $screens[] = 'comments_page_hw_cmt_csv_im_ex';
+                    return $screens;
+                }
+
+                /**
+                 * To Check if the current date is on or between the start and end date of black friday and cyber monday banner.
+                 * @since 2.4.7
+                 */
+                public static function is_bfcm_season() {
+                    $start_date   = new DateTime( '17-NOV-2025, 12:00 AM', new DateTimeZone( 'Asia/Kolkata' ) ); // Start date.
+                    $current_date = new DateTime( 'now', new DateTimeZone( 'Asia/Kolkata' ) ); // Current date.
+                    $end_date     = new DateTime( '04-DEC-2025, 11:59 PM', new DateTimeZone( 'Asia/Kolkata' ) ); // End date.
+
+                    // Check if the date is on or between the start and end date of black friday and cyber monday banner for 2025.
+                    if ( $current_date < $start_date || $current_date > $end_date ) {
+                        return false;
+                    }
+                    return true;
                 }
 
     }

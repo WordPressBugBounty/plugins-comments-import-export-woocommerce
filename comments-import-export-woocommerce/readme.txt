@@ -3,9 +3,9 @@ Contributors: webtoffee
 Donate link: https://www.webtoffee.com/plugins/
 Tags: comments import, comments export, wordpress comments, wordpress comments import, wordpress comments export.
 Requires at least: 3.0.1
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.0
-Stable tag: 2.4.6
+Stable tag: 2.4.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -90,6 +90,13 @@ No. The plugin only supports the import and export of post/article comments. For
 4. Imported Article Page Screen
 
 == Changelog ==
+= 2.4.8 2025-12-05 =
+* [Compatibility] – Tested OK with WooCommerce 10.3.6
+* [Compatibility] – Tested OK with WordPress 6.9
+
+= 2.4.7 2025-11-07 =
+* [Compatibility] – Tested OK with WooCommerce 10.3.4
+* [Improvement] Security Improvements.
 
 = 2.4.6 2025-09-11 =
 * [Compatibility] – Tested OK with WooCommerce 10.1.2
@@ -100,6 +107,6 @@ No. The plugin only supports the import and export of post/article comments. For
 
 == Upgrade Notice ==
 
-= 2.4.6 =
-* [Compatibility] – Tested OK with WooCommerce 10.1.2
-* [Update] – Plugin Check Plugin fixes.
+= 2.4.8 =
+* [Compatibility] – Tested OK with WooCommerce 10.3.6
+* [Compatibility] – Tested OK with WordPress 6.9

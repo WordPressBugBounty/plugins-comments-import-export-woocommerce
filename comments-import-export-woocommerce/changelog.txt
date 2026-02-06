@@ -1,6 +1,14 @@
 
 == Changelog ==
 
+= 2.4.8 2025-12-05 =
+* [Compatibility] – Tested OK with WooCommerce 10.3.6
+* [Compatibility] – Tested OK with WordPress 6.9
+
+= 2.4.7 2025-11-07 =
+* [Compatibility] – Tested OK with WooCommerce 10.3.4
+* [Improvement] Security Improvements.
+
 = 2.4.6 2025-09-11 =
 * [Compatibility] – Tested OK with WooCommerce 10.1.2
 * [Update] – Plugin Check Plugin fixes.

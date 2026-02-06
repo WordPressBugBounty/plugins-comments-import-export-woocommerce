@@ -220,7 +220,7 @@ if (!class_exists('WT_Cmt_ImpExp_Uninstall_Feedback')) :
 
             global $wpdb;
 
-            if ( ! empty($_POST['_wpnonce']) && ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'cmtimport_submit_uninstall_reason')) {
+            if ( ! check_ajax_referer( 'cmtimport_submit_uninstall_reason', '_wpnonce', false ) || ! current_user_can('manage_options') ) {
                 wp_send_json_error();
             }
 
