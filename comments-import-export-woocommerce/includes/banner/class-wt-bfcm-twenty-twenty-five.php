@@ -137,7 +137,7 @@ if ( ! class_exists( 'Wt_Bfcm_Twenty_Twenty_Five' ) ) {
 							esc_html__( 'Did you know?', 'comments-import-export-woocommerce' ),
 							sprintf(
 								// translators: 1: a tag opening, 2: a tag closing.
-								__( 'With the %1$s Smart Coupons %2$s plugin, you can create Buy One Get One offers and advanced coupons that boost sales during BFCM.', 'comments-import-export-woocommerce' ),
+								__( 'With the %1$s Smart Coupons %2$s plugin, you can create advanced coupons and Buy One Get One Offers for your WooCommerce store.', 'comments-import-export-woocommerce' ),
 								'<a href="' . esc_url( $campaign_url ) . '" target="_blank"><b>',
 								'</b></a>'
 							),

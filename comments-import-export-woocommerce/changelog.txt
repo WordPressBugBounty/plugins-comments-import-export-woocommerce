@@ -1,6 +1,11 @@
 
 == Changelog ==
 
+= 2.4.9 2026-2-17 =
+* [Compatibility] – Tested OK with WordPress 6.9.1
+* [Compatibility] – Tested OK with WooCommerce 10.5.1
+* [Update] - Updated translation template (POT file)
+
 = 2.4.8 2025-12-05 =
 * [Compatibility] – Tested OK with WooCommerce 10.3.6
 * [Compatibility] – Tested OK with WordPress 6.9

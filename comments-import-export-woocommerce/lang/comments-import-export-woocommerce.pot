@@ -1,80 +1,150 @@
-#, fuzzy
+# Copyright (C) 2026 WebToffee
+# This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: WordPress Comments Import & Export\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-06 11:48+0530\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Project-Id-Version: Comments Import & Export 2.4.9\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/comments-import-export-woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
-"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && "
-"n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
-"X-Poedit-KeywordsList: __;esc_html_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"X-Loco-Version: 2.5.0; wp-5.6.1\n"
+"POT-Creation-Date: 2026-01-06T07:17:23+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: comments-import-export-woocommerce\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-SearchPath-0: .\n"
 
-#: hf-comments-import-export.php:104
+#. Plugin Name of the plugin
+#: hf-comments-import-export.php
+msgid "Comments Import & Export"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: hf-comments-import-export.php
+msgid "https://wordpress.org/plugins/comments-import-export-woocommerce/"
+msgstr ""
+
+#. Description of the plugin
+#: hf-comments-import-export.php
+msgid "Import and Export WordPress Comments From and To your Website."
+msgstr ""
+
+#. Author of the plugin
+#: hf-comments-import-export.php
+msgid "WebToffee"
+msgstr ""
+
+#. Author URI of the plugin
+#: hf-comments-import-export.php
+msgid "https://www.webtoffee.com/"
+msgstr ""
+
+#: hf-comments-import-export.php:110
 msgid "Import Export"
 msgstr ""
 
-#: hf-comments-import-export.php:105 includes/views/html-wf-help-guide.php:39
+#: hf-comments-import-export.php:111
+#: includes/views/html-wf-help-guide.php:39
 #: includes/views/html-wf-help-guide.php:41
 msgid "Documentation"
 msgstr ""
 
-#: hf-comments-import-export.php:106 includes/views/html-wf-help-guide.php:46
+#: hf-comments-import-export.php:112
+#: includes/views/html-wf-help-guide.php:46
 msgid "Support"
 msgstr ""
 
-#: hf-comments-import-export.php:107
+#: hf-comments-import-export.php:113
 msgid "Premium Plugins"
 msgstr ""
 
-#: hf-comments-import-export.php:108
+#: hf-comments-import-export.php:114
 msgid "Review"
 msgstr ""
 
-#: hf-comments-import-export.php:128
+#: hf-comments-import-export.php:132
 msgid "Successfully uploaded via FTP."
 msgstr ""
 
-#: hf-comments-import-export.php:131
+#: hf-comments-import-export.php:135
 msgid "Error while uploading via FTP."
 msgstr ""
 
-#: hf-comments-import-export.php:134
+#: hf-comments-import-export.php:138
 msgid "Please choose the file in CSV format either using Method 1 or Method 2."
 msgstr ""
 
-#: hf-comments-import-export.php:188
+#: hf-comments-import-export.php:192
 msgid "Import <strong>product Comments</strong> to your store via a csv file."
 msgstr ""
 
-#: hf-comments-import-export.php:189
-msgid ""
-"Cron Import <strong>product Comments</strong> to your store via a csv file."
+#: hf-comments-import-export.php:193
+msgid "Cron Import <strong>product Comments</strong> to your store via a csv file."
 msgstr ""
 
-#: hf-comments-import-export.php:217
-#, php-format
+#. Translators: %1$s is the link to the plugin review page with 5 stars symbol.
+#: hf-comments-import-export.php:229
 msgid "If you like the plugin please leave us a %1$s review."
 msgstr ""
 
-#: hf-comments-import-export.php:217
+#. Translators: %1$s is the link to the plugin review page with 5 stars symbol.
+#: hf-comments-import-export.php:229
 msgid "Thanks :)"
 msgstr ""
 
-#: hf-comments-import-export.php:227
+#: hf-comments-import-export.php:238
 msgid "Thank you for your review."
+msgstr ""
+
+#: includes/banner/class-wbte-ema-banner.php:139
+#: includes/banner/class-wt-bfcm-twenty-twenty-five.php:137
+msgid "Did you know?"
+msgstr ""
+
+#: includes/banner/class-wbte-ema-banner.php:140
+msgid "You can boost your store revenue and recover lost sales with automated email campaigns, cart recovery, and upsell popups using the WebToffee Marketing Automation App."
+msgstr ""
+
+#: includes/banner/class-wbte-ema-banner.php:143
+msgid "Sign Up for Free"
+msgstr ""
+
+#: includes/banner/class-wbte-ema-banner.php:145
+msgid "Dismiss this notice."
+msgstr ""
+
+#. translators: 1: a tag opening, 2: a tag closing.
+#: includes/banner/class-wt-bfcm-twenty-twenty-five.php:140
+msgid "With the %1$s Smart Coupons %2$s plugin, you can create advanced coupons and Buy One Get One Offers for your WooCommerce store."
+msgstr ""
+
+#: includes/banner/class-wt-bfcm-twenty-twenty-five.php:145
+msgid "Get Plugin Now"
+msgstr ""
+
+#: includes/banner/class-wt-bfcm-twenty-twenty-five.php:146
+msgid "Maybe later"
+msgstr ""
+
+#: includes/banner/class-wt-bfcm-twenty-twenty-five.php:202
+msgid "Black Friday Cyber Monday 2025"
+msgstr ""
+
+#: includes/banner/class-wt-bfcm-twenty-twenty-five.php:206
+msgid "Never Miss This Deal"
+msgstr ""
+
+#. translators: 1: Discount text with span wrapper, e.g. <span>30% OFF</span>.
+#: includes/banner/class-wt-bfcm-twenty-twenty-five.php:213
+msgid "Your Last Chance to Avail %1$s on WebToffee Plugins. Grab the deal before it`s gone!"
+msgstr ""
+
+#: includes/banner/class-wt-bfcm-twenty-twenty-five.php:214
+msgid "OFF"
+msgstr ""
+
+#: includes/banner/class-wt-bfcm-twenty-twenty-five.php:220
+msgid "View plugins"
 msgstr ""
 
 #: includes/class-hf_cmt_impexpcsv-admin-screen.php:29
@@ -85,35 +155,43 @@ msgstr ""
 msgid "Download to CSV"
 msgstr ""
 
-#: includes/class-hf_cmt_impexpcsv-admin-screen.php:46
-#: includes/class-hf_cmt_impexpcsv-admin-screen.php:153
-#: includes/settings/class-hf_cmt_impexpcsv-settings.php:17
+#: includes/class-hf_cmt_impexpcsv-admin-screen.php:47
+#: includes/class-hf_cmt_impexpcsv-admin-screen.php:164
+#: includes/exporter/class-hf_cmt_impexpcsv-exporter.php:30
+#: includes/exporter/class-hf_cmt_impexpcsv-exporter.php:34
+#: includes/settings/class-hf_cmt_impexpcsv-settings.php:16
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: includes/class-hf_cmt_impexpcsv-admin-screen.php:63
-msgid ""
-"Product CSV Import Export requires the function <code>mb_detect_encoding</"
-"code> to import and export CSV files. Please ask your hosting provider to "
-"enable this function."
+#: includes/class-hf_cmt_impexpcsv-admin-screen.php:64
+msgid "Product CSV Import Export requires the function <code>mb_detect_encoding</code> to import and export CSV files. Please ask your hosting provider to enable this function."
 msgstr ""
 
 #: includes/class-hf_cmt_impexpcsv-admin-screen.php:73
 msgid "Comments Im-Ex"
 msgstr ""
 
-#: includes/class-hf_cmt_impexpcsv-admin-screen.php:139
+#: includes/class-hf_cmt_impexpcsv-admin-screen.php:115
+msgid "Please select a file to import"
+msgstr ""
+
+#: includes/class-hf_cmt_impexpcsv-admin-screen.php:150
 msgid "Download as CSV"
 msgstr ""
 
-#: includes/class-hf_cmt_impexpcsv-cron.php:25
-#: includes/class-hf_cmt_impexpcsv-import-cron.php:29
-#, php-format
+#: includes/class-hf_cmt_impexpcsv-ajax-handler.php:22
+msgid "You do not have sufficient permissions to import data."
+msgstr ""
+
+#. translators: %d is the interval
+#: includes/class-hf_cmt_impexpcsv-cron.php:28
+#: includes/class-hf_cmt_impexpcsv-import-cron.php:33
 msgid "Every %d minutes"
 msgstr ""
 
-#: includes/class-hf_cmt_impexpcsv-import-cron.php:106
-msgid "Fetching file failed. Reason:"
+#. translators: %s is the error message
+#: includes/class-hf_cmt_impexpcsv-import-cron.php:89
+msgid "Fetching file failed. Reason: %s"
 msgstr ""
 
 #: includes/class-wf-cmt_impexp-plugin-uninstall-feedback.php:19
@@ -196,304 +274,338 @@ msgstr ""
 msgid "Deactivate and leave a review"
 msgstr ""
 
-#: includes/class-wt-cmt_impexp-plugin-review-request.php:54
-#, php-format
-msgid ""
-"Hey, we at %sWebToffee%s would like to thank you for using our plugin. We "
-"would really appreciate if you could take a moment to drop a quick review that "
-"will inspire us to keep going."
+#. translators: %1$s HTML strong tag opening, %2$s HTML strong tag closing.
+#: includes/class-wt-cmt_impexp-plugin-review-request.php:59
+msgid "Hey, we at %1$sWebToffee%2$s would like to thank you for using our plugin. We would really appreciate if you could take a moment to drop a quick review that will inspire us to keep going."
 msgstr ""
 
-#: includes/class-wt-cmt_impexp-plugin-review-request.php:57
+#: includes/class-wt-cmt_impexp-plugin-review-request.php:62
 msgid "Remind me later"
 msgstr ""
 
-#: includes/class-wt-cmt_impexp-plugin-review-request.php:58
+#: includes/class-wt-cmt_impexp-plugin-review-request.php:63
 msgid "Not interested"
 msgstr ""
 
-#: includes/class-wt-cmt_impexp-plugin-review-request.php:59
+#: includes/class-wt-cmt_impexp-plugin-review-request.php:64
 msgid "Review now"
 msgstr ""
 
-#: includes/importer/class-hf-csv-parser.php:184
-#, php-format
+#. translators: %s is the FTP server
+#: includes/exporter/class-hf_cmt_impexpcsv-exporter.php:361
+#: includes/exporter/class-hf_cmt_impexpcsv-exporter.php:364
+msgid "Could not connect to %s"
+msgstr ""
+
+#. translators: %s is the row number
+#: includes/importer/class-hf-csv-parser.php:205
 msgid "> Row %s - preparing for merge."
 msgstr ""
 
-#: includes/importer/class-hf-csv-parser.php:190
+#. translators: %s is the row number
+#: includes/importer/class-hf-csv-parser.php:211
 msgid "> > Cannot merge without id. Importing instead."
 msgstr ""
 
-#: includes/importer/class-hf-csv-parser.php:207
-#, php-format
+#. translators: %s is the product id
+#: includes/importer/class-hf-csv-parser.php:225
 msgid "> > Skipped. Cannot find product comments with ID %s. Importing instead."
 msgstr ""
 
-#: includes/importer/class-hf-csv-parser.php:214
-#, php-format
+#. translators: %s is the product id
+#: includes/importer/class-hf-csv-parser.php:230
 msgid "> > Found product comments with ID %s."
 msgstr ""
 
-#: includes/importer/class-hf-csv-parser.php:226
-#, php-format
+#. translators: %s is the row number
+#: includes/importer/class-hf-csv-parser.php:242
 msgid "> Row %s - preparing for import."
 msgstr ""
 
-#: includes/importer/class-hf-csv-parser.php:233
+#: includes/importer/class-hf-csv-parser.php:247
 msgid "> > Skipped. No comment content set for new product comments."
 msgstr ""
 
-#: includes/importer/class-hf-csv-parser.php:235
+#: includes/importer/class-hf-csv-parser.php:249
 msgid "No comment content set for new product comments."
 msgstr ""
 
-#: includes/importer/class-hf-csv-parser.php:241
-msgid ""
-"> > Skipped. No post(product) id found, for which new comment is to be imported"
+#: includes/importer/class-hf-csv-parser.php:253
+msgid "> > Skipped. No post(product) id found, for which new comment is to be imported"
 msgstr ""
 
-#: includes/importer/class-hf-csv-parser.php:243
+#: includes/importer/class-hf-csv-parser.php:255
 msgid "No post(product) id found, for which new comment is to be imported."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:159
-msgid "Row"
-msgstr ""
-
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:160
-msgid "ID"
-msgstr ""
-
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:161
-msgid "Comment Link"
-msgstr ""
-
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:162
-msgid "Status Msg"
-msgstr ""
-
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:245
-msgid "AJAX Error"
-msgstr ""
-
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:343
-msgid "Error finding uploaded file!"
-msgstr ""
-
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:352
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:404
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:102
 msgid "Access Denied"
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:424
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:103
+msgid "Error"
+msgstr ""
+
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:180
+msgid "Invalid file path."
+msgstr ""
+
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:185
+msgid "Access denied."
+msgstr ""
+
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:199
+msgid "Row"
+msgstr ""
+
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:200
+msgid "ID"
+msgstr ""
+
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:201
+msgid "Comment Link"
+msgstr ""
+
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:202
+msgid "Status Msg"
+msgstr ""
+
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:306
+msgid "AJAX Error"
+msgstr ""
+
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:428
+msgid "Error finding uploaded file!"
+msgstr ""
+
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:436
+msgid "Invalid file path"
+msgstr ""
+
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:490
 msgid "Step 1..."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:429
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:495
 msgid "Step 2..."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:445
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:497
+msgid "Step 3..."
+msgstr ""
+
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:511
 msgid "Finalizing..."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:448
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:514
 msgid "Finished. Import complete."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:524
-msgid ""
-"Columns are pre-selected using the Mapping file: \"<b style=\"color:gray\">"
+#. translators: 1: mapping file name, 2: reset link URL
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:608
+msgid "Columns are pre-selected using the Mapping file: %1$s. %2$s this mapping file."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:560
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:610
+msgid "Delete"
+msgstr ""
+
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:638
+msgid "Didn`t able to clean the previous comments"
+msgstr ""
+
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:649
 msgid "Processing product comments."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:575
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:664
 msgid "Finished processing product comments."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:617
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:707
 msgid "Parsing product comments CSV."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:628
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:718
 msgid "Finished parsing product comments CSV."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:702
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:717
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:804
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:822
 msgid "Sorry, there has been an error."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:759
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:806
+msgid "Back"
+msgstr ""
+
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:861
 msgid "The post doesn't exist."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:762
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:864
 msgid "The product doesn't exist."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:769
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:871
 msgid "Product comment already processed"
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:772
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:873
 msgid "> Post ID already processed. Skipping."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:779
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:880
 msgid "Skipping auto-draft"
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:782
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:882
 msgid "> Skipping auto-draft."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:797
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:813
-#, php-format
-msgid "> &#8220;%s&#8221;"
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:893
+msgid "This Comment ID Already Exists"
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:826
-#, php-format
+#. translators: %s is the product title
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:896
+msgid "> &#8220;%s&#8221; This Comment ID Already Exists"
+msgstr ""
+
+#. translators: %s is the product title
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:912
+msgid "> &#8220;%s&#8221; "
+msgstr ""
+
+#. translators: %s is the product id
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:925
 msgid "> Merging post ID %s."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:885
-#, php-format
+#. translators: %s is the product id
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:984
 msgid "> Inserting %s"
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:948
-msgid "hi"
-msgstr ""
-
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:952
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:1067
 msgid "Failed to import product comment"
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:955
-#, php-format
+#. translators: %s is the product title
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:1070
 msgid "Failed to import product comment &#8220;%s&#8221;"
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:962
-#, php-format
+#. translators: %s is the product id
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:1077
 msgid "> Inserted - post ID is %s."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:977
-#, php-format
+#. translators: %s is the product id
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:1092
 msgid "> Finished merging post ID %s."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:984
-#, php-format
+#. translators: %s is the product id
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:1098
 msgid "> Finished importing post ID %s."
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:1058
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:1189
 msgid "Zero size file downloaded"
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:1175
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:1370
 msgid "Import"
 msgstr ""
 
-#: includes/importer/class-hf_cmt_impexpcsv-import.php:1175
+#: includes/importer/class-hf_cmt_impexpcsv-import.php:1370
 msgid "Merge WordPress Comments"
 msgstr ""
 
 #: includes/importer/views/html-hf-import-greeting.php:23
-msgid ""
-"You can import comments (in CSV format) in to the shop using any of below "
-"methods."
+msgid "You can import comments (in CSV format) in to the shop using any of below methods."
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:26
-msgid ""
-"Before you can upload your import file, you will need to fix the following "
-"error:"
+#: includes/importer/views/html-hf-import-greeting.php:27
+msgid "Before you can upload your import file, you will need to fix the following error:"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:34
+#: includes/importer/views/html-hf-import-greeting.php:36
 msgid "Method 1: Select a file from your computer"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:40
-#, php-format
+#. translators: %s is the maximum size
+#: includes/importer/views/html-hf-import-greeting.php:45
 msgid "Maximum size: %s"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:46
+#: includes/importer/views/html-hf-import-greeting.php:54
 msgid "Method 2: Provide FTP Details:"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:52
+#: includes/importer/views/html-hf-import-greeting.php:60
 msgid "Enable FTP import"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:60
-#: includes/views/settings/html-hf-settings-products.php:63
+#: includes/importer/views/html-hf-import-greeting.php:68
+#: includes/views/settings/html-hf-settings-products.php:65
 msgid "FTP Server Host/IP"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:63
-#: includes/views/settings/html-hf-settings-products.php:66
+#: includes/importer/views/html-hf-import-greeting.php:71
+#: includes/views/settings/html-hf-settings-products.php:68
 msgid "XXX.XXX.XXX.XXX"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:68
-#: includes/views/settings/html-hf-settings-products.php:71
+#: includes/importer/views/html-hf-import-greeting.php:76
+#: includes/views/settings/html-hf-settings-products.php:73
 msgid "FTP User Name"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:76
-#: includes/views/settings/html-hf-settings-products.php:79
+#: includes/importer/views/html-hf-import-greeting.php:84
+#: includes/views/settings/html-hf-settings-products.php:81
 msgid "FTP Password"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:84
-#: includes/views/settings/html-hf-settings-products.php:87
+#: includes/importer/views/html-hf-import-greeting.php:92
+#: includes/views/settings/html-hf-settings-products.php:89
 msgid "FTP Port"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:88
-#: includes/views/settings/html-hf-settings-products.php:91
+#: includes/importer/views/html-hf-import-greeting.php:96
+#: includes/views/settings/html-hf-settings-products.php:93
 msgid "Enter your port number"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:93
-#: includes/views/settings/html-hf-settings-products.php:184
+#: includes/importer/views/html-hf-import-greeting.php:101
+#: includes/views/settings/html-hf-settings-products.php:192
 msgid "FTP Server Path"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:102
-#: includes/views/settings/html-hf-settings-products.php:96
+#: includes/importer/views/html-hf-import-greeting.php:110
+#: includes/views/settings/html-hf-settings-products.php:98
 msgid "Use FTPS"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:110
-#: includes/views/settings/html-hf-settings-products.php:105
+#: includes/importer/views/html-hf-import-greeting.php:118
+#: includes/views/settings/html-hf-settings-products.php:107
 msgid "Enable Passive mode"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:125
-#: includes/views/settings/html-hf-settings-products.php:226
+#: includes/importer/views/html-hf-import-greeting.php:133
+#: includes/views/settings/html-hf-settings-products.php:240
 msgid "Select a mapping file."
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:139
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:148
-#: includes/views/export/html-hf-export-WordPress-Comments.php:107
+#: includes/importer/views/html-hf-import-greeting.php:147
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:106
+#: includes/views/export/html-hf-export-WordPress-Comments.php:106
 msgid "Delimiter"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-greeting.php:146
+#: includes/importer/views/html-hf-import-greeting.php:154
 msgid "Upload file and import"
 msgstr ""
 
@@ -523,18 +635,19 @@ msgstr ""
 
 #: includes/importer/views/html-hf-import-options.php:22
 #: includes/importer/views/html-hf-import-options.php:24
-msgid ""
-"Assign constant value Webtoffee to comment_author:</br>=Webtoffee</br>Append a "
-"value By Webtoffee to comments_content:</br>&By Webtoffee</br>Prepend a value "
-"Webtoffee to comments_content:</br>&Webtoffee [VAL]."
+msgid "Assign constant value Webtoffee to comment_author:</br>=Webtoffee</br>Append a value By Webtoffee to comments_content:</br>&By Webtoffee</br>Prepend a value Webtoffee to comments_content:</br>&Webtoffee [VAL]."
 msgstr ""
 
-#: includes/importer/views/html-hf-import-options.php:66
+#: includes/importer/views/html-hf-import-options.php:73
 msgid "Do not import"
 msgstr ""
 
-#: includes/importer/views/html-hf-import-options.php:82
+#: includes/importer/views/html-hf-import-options.php:102
 msgid "Submit"
+msgstr ""
+
+#: includes/settings/class-hf_cmt_impexpcsv-settings.php:20
+msgid "You do not have permission to save these settings."
 msgstr ""
 
 #: includes/views/export/html-hf-export-WordPress-Comments-normal.php:2
@@ -544,61 +657,59 @@ msgstr ""
 
 #: includes/views/export/html-hf-export-WordPress-Comments-normal.php:3
 #: includes/views/export/html-hf-export-WordPress-Comments.php:3
-msgid ""
-"Export and download your Comments in CSV format. This file can be used to "
-"import Comments back into your Woocommerce shop."
+msgid "Export and download your Comments in CSV format. This file can be used to import Comments back into your Woocommerce shop."
 msgstr ""
 
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:9
-#: includes/views/export/html-hf-export-WordPress-Comments.php:9
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:10
+#: includes/views/export/html-hf-export-WordPress-Comments.php:10
 msgid "Limit"
-msgstr ""
-
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:12
-#: includes/views/export/html-hf-export-WordPress-Comments.php:12
-msgid "Unlimited"
 msgstr ""
 
 #: includes/views/export/html-hf-export-WordPress-Comments-normal.php:13
 #: includes/views/export/html-hf-export-WordPress-Comments.php:13
+msgid "Unlimited"
+msgstr ""
+
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:14
+#: includes/views/export/html-hf-export-WordPress-Comments.php:14
 msgid "The number of Comments to return."
 msgstr ""
 
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:18
-#: includes/views/export/html-hf-export-WordPress-Comments.php:18
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:19
+#: includes/views/export/html-hf-export-WordPress-Comments.php:19
 msgid "Date"
-msgstr ""
-
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:21
-#: includes/views/export/html-hf-export-WordPress-Comments.php:21
-msgid "From date"
 msgstr ""
 
 #: includes/views/export/html-hf-export-WordPress-Comments-normal.php:22
 #: includes/views/export/html-hf-export-WordPress-Comments.php:22
-msgid "To date"
+msgid "From date"
 msgstr ""
 
 #: includes/views/export/html-hf-export-WordPress-Comments-normal.php:23
 #: includes/views/export/html-hf-export-WordPress-Comments.php:23
+msgid "To date"
+msgstr ""
+
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:24
+#: includes/views/export/html-hf-export-WordPress-Comments.php:24
 msgid "The comments date."
 msgstr ""
 
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:28
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:29
 msgid "Export Woodiscuz Comments"
 msgstr ""
 
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:31
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:32
 msgid "Get Check to choose Product comments"
 msgstr ""
 
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:39
-#: includes/views/export/html-hf-export-WordPress-Comments.php:53
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:40
+#: includes/views/export/html-hf-export-WordPress-Comments.php:54
 msgid "Products"
 msgstr ""
 
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:45
-#: includes/views/export/html-hf-export-WordPress-Comments.php:59
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:46
+#: includes/views/export/html-hf-export-WordPress-Comments.php:60
 msgid "All Products"
 msgstr ""
 
@@ -613,89 +724,50 @@ msgid "Articles"
 msgstr ""
 
 #: includes/views/export/html-hf-export-WordPress-Comments-normal.php:72
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:87
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:86
 msgid "All Articles"
 msgstr ""
 
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:102
-#: includes/views/export/html-hf-export-WordPress-Comments.php:101
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:100
+#: includes/views/export/html-hf-export-WordPress-Comments.php:100
 msgid "Comments under these Articles will be exported."
 msgstr ""
 
 #: includes/views/export/html-hf-export-WordPress-Comments-normal.php:109
-msgid "Stars"
-msgstr ""
-
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:112
-msgid "Any Star"
-msgstr ""
-
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:120
-msgid "Comments with these stars will be exported."
-msgstr ""
-
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:125
-msgid "Verified Owner`s Comments?"
-msgstr ""
-
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:128
-msgid "Any Owner"
-msgstr ""
-
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:134
-msgid "Comments of these users will be exported."
-msgstr ""
-
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:139
-msgid "Sort Columns"
-msgstr ""
-
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:142
-msgid "post_parent , ID"
-msgstr ""
-
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:143
-msgid ""
-"What columns to sort pages by, comma-separated. Accepts post_author , "
-"post_date , post_title, post_name, post_modified, menu_order, "
-"post_modified_gmt , rand , comment_count."
-msgstr ""
-
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:151
-#: includes/views/export/html-hf-export-WordPress-Comments.php:110
+#: includes/views/export/html-hf-export-WordPress-Comments.php:109
 msgid ","
 msgstr ""
 
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:152
-#: includes/views/export/html-hf-export-WordPress-Comments.php:111
-msgid "Column seperator for exported file"
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:110
+#: includes/views/export/html-hf-export-WordPress-Comments.php:110
+msgid "Column seperator for exported file ( default comma )"
 msgstr ""
 
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:157
-#: includes/views/export/html-hf-export-WordPress-Comments.php:116
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:115
+#: includes/views/export/html-hf-export-WordPress-Comments.php:115
 msgid "Columns"
 msgstr ""
 
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:161
-#: includes/views/export/html-hf-export-WordPress-Comments.php:120
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:119
+#: includes/views/export/html-hf-export-WordPress-Comments.php:119
 msgid "Column"
 msgstr ""
 
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:164
-#: includes/views/export/html-hf-export-WordPress-Comments.php:123
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:122
+#: includes/views/export/html-hf-export-WordPress-Comments.php:122
 msgid "Column Name"
 msgstr ""
 
-#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:195
-#: includes/views/export/html-hf-export-WordPress-Comments.php:152
+#: includes/views/export/html-hf-export-WordPress-Comments-normal.php:153
+#: includes/views/export/html-hf-export-WordPress-Comments.php:151
 msgid "Export Comments"
 msgstr ""
 
-#: includes/views/export/html-hf-export-WordPress-Comments.php:28
+#: includes/views/export/html-hf-export-WordPress-Comments.php:29
 msgid "WooDiscuz Comments"
 msgstr ""
 
-#: includes/views/export/html-hf-export-WordPress-Comments.php:31
+#: includes/views/export/html-hf-export-WordPress-Comments.php:32
 msgid "Enable"
 msgstr ""
 
@@ -720,232 +792,182 @@ msgid "Other Solutions"
 msgstr ""
 
 #: includes/views/html-hf-getting-started.php:3
-msgid ""
-"<strong>WordPress Comments CSV Import Export</strong> &#8211; Before getting "
-"started prepare your CSV files"
+msgid "WordPress Comments CSV Import Export &#8211; Before getting started prepare your CSV files"
 msgstr ""
 
 #: includes/views/html-hf-getting-started.php:5
 msgid "Sample CSV File"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:131
+#: includes/views/html-hf-othersolutions-page.php:152
 msgid "More Plugins To Make Your Store Stand Out"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:132
-msgid ""
-"Check out our other plugins that are perfectly suited for WooCommerce store "
-"needs."
+#: includes/views/html-hf-othersolutions-page.php:153
+msgid "Check out our other plugins that are perfectly suited for WooCommerce store needs."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:142
-msgid "WebToffee WooCommerce Best Sellers"
+#: includes/views/html-hf-othersolutions-page.php:163
+msgid "Accessibility Tool Kit: WP Accessibility for WCAG, Section 508, ADA, EAA Compliance"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:143
-msgid ""
-"Highlight top-selling products on your WooCommerce store using best seller "
-"labels, sliders, and custom seals. You can display ranking positions for best-"
-"seller products in different categories."
+#: includes/views/html-hf-othersolutions-page.php:164
+msgid "Build an accessible WordPress site that works for everyone. Scan for accessibility issues, get fix recommendations, and ensure WCAG compliance, all without writing code. Inclusive web design made simple."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:151
+#: includes/views/html-hf-othersolutions-page.php:172
 msgid "WebToffee WooCommerce Product Feed & Sync Manager"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:152
-msgid ""
-"Generate WooCommerce product feeds for Google Merchant Center and Facebook "
-"Business Manager. Use the Facebook catalog sync manager to sync WooCommerce "
-"products with Facebook and Instagram shops."
+#: includes/views/html-hf-othersolutions-page.php:173
+msgid "Generate WooCommerce product feeds for Google Merchant Center and Facebook Business Manager. Use the Facebook catalog sync manager to sync WooCommerce products with Facebook and Instagram shops."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:160
+#: includes/views/html-hf-othersolutions-page.php:181
 msgid "WebToffee WooCommerce Gift Cards"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:161
-msgid ""
-"Create and manage advanced gift cards for WooCommerce stores. Enable your "
-"customers to buy, redeem, and share gift cards from your store."
+#: includes/views/html-hf-othersolutions-page.php:182
+msgid "Create and manage advanced gift cards for WooCommerce stores. Enable your customers to buy, redeem, and share gift cards from your store."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:169
+#: includes/views/html-hf-othersolutions-page.php:190
 msgid "Frequently Bought Together for WooCommerce"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:170
-msgid ""
-"Boost the visibility of the products by displaying them as ‘Frequently bought "
-"together’ items in your store. You may also set up discounts for Frequently "
-"Bought Together bundles with this plugin."
+#: includes/views/html-hf-othersolutions-page.php:191
+msgid "Boost the visibility of the products by displaying them as ‘Frequently bought together’ items in your store. You may also set up discounts for Frequently Bought Together bundles with this plugin."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:178
+#: includes/views/html-hf-othersolutions-page.php:199
 msgid "WebToffee Woocommerce Request a Quote"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:179
-msgid ""
-"Configure a fully optimized WooCommerce quote request set up in your store. "
-"Allow customers to request quotes and store managers to respond to them. Hide "
-"product prices, set up email alerts, and more."
+#: includes/views/html-hf-othersolutions-page.php:200
+msgid "Configure a fully optimized WooCommerce quote request set up in your store. Allow customers to request quotes and store managers to respond to them. Hide product prices, set up email alerts, and more."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:187
+#: includes/views/html-hf-othersolutions-page.php:208
 msgid "GDPR Cookie Consent Plugin (CCPA Ready)"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:188
-msgid ""
-"The plugin helps you get compliant with GDPR, CCPA, and other major cookie "
-"laws. You can create and manage cookie consent banners, scan website cookies, "
-"and generate cookie policies with this plugin."
+#: includes/views/html-hf-othersolutions-page.php:209
+msgid "The plugin helps you get compliant with GDPR, CCPA, and other major cookie laws. You can create and manage cookie consent banners, scan website cookies, and generate cookie policies with this plugin."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:196
-msgid ""
-"WooCommerce PDF Invoices, Packing Slips, Delivery Notes and Shipping Labels"
+#: includes/views/html-hf-othersolutions-page.php:217
+msgid "WooCommerce PDF Invoices, Packing Slips, Delivery Notes and Shipping Labels"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:197
-msgid ""
-"Generate, customize, and manage WooCommerce documents including PDF invoices, "
-"packing slips, delivery notes, shipping labels, address labels, and other "
-"shipping documents using a single plugin."
+#: includes/views/html-hf-othersolutions-page.php:218
+msgid "Generate, customize, and manage WooCommerce documents including PDF invoices, packing slips, delivery notes, shipping labels, address labels, and other shipping documents using a single plugin."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:205
+#: includes/views/html-hf-othersolutions-page.php:226
 msgid "Product Import Export Plugin For WooCommerce"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:206
-msgid ""
-"Seamlessly import/export your WooCommerce products including simple, variable, "
-"custom products and subscriptions. You may also import and export product "
-"images, tags, categories, reviews, and ratings."
+#: includes/views/html-hf-othersolutions-page.php:227
+msgid "Seamlessly import/export your WooCommerce products including simple, variable, custom products and subscriptions. You may also import and export product images, tags, categories, reviews, and ratings."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:214
+#: includes/views/html-hf-othersolutions-page.php:235
 msgid "WordPress Users & WooCommerce Customers Import Export"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:215
-msgid ""
-"Easily import and export your WordPress users and WooCommerce customers using "
-"the Import Export plugin for WooCommerce. The plugin supports the use of CSV, "
-"XML, TSV, XLS, and XLSX file formats."
+#: includes/views/html-hf-othersolutions-page.php:236
+msgid "Easily import and export your WordPress users and WooCommerce customers using the Import Export plugin for WooCommerce. The plugin supports the use of CSV, XML, TSV, XLS, and XLSX file formats."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:223
+#: includes/views/html-hf-othersolutions-page.php:244
 msgid "Order, Coupon, Subscription Export Import for WooCommerce"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:224
-msgid ""
-"Export and Import your WooCommerce orders, subscriptions, and discount coupons "
-"using a single Import Export plugin. You may customize the export and import "
-"files with advanced filters and settings."
+#: includes/views/html-hf-othersolutions-page.php:245
+msgid "Export and Import your WooCommerce orders, subscriptions, and discount coupons using a single Import Export plugin. You may customize the export and import files with advanced filters and settings."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:232
+#: includes/views/html-hf-othersolutions-page.php:253
 msgid "Import Export Suite for WooCommerce"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:233
-msgid ""
-"An all-in-one plugin to import and export WooCommerce store data. You can "
-"import and export products, product reviews, orders, customers, discount "
-"coupons, and subscriptions using this single plugin."
+#: includes/views/html-hf-othersolutions-page.php:254
+msgid "An all-in-one plugin to import and export WooCommerce store data. You can import and export products, product reviews, orders, customers, discount coupons, and subscriptions using this single plugin."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:245
+#: includes/views/html-hf-othersolutions-page.php:266
 msgid "Smart Coupons for WooCommerce"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:246
-msgid ""
-"Create coupons to offer discounts and free products to your customers with "
-"Smart Coupons for WooCommerce. You can set up BOGO coupons, giveaways, gift "
-"cards, store credits, and more with this plugin."
+#: includes/views/html-hf-othersolutions-page.php:267
+msgid "Create coupons to offer discounts and free products to your customers with Smart Coupons for WooCommerce. You can set up BOGO coupons, giveaways, gift cards, store credits, and more with this plugin."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:254
+#: includes/views/html-hf-othersolutions-page.php:275
 msgid "URL Coupons for WooCommerce"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:255
-msgid ""
-"Generate custom URLs and QR codes for every discount coupon in your "
-"WooCommerce store. These unique coupons are easy to share and can even be set "
-"to add new products to the cart upon application."
+#: includes/views/html-hf-othersolutions-page.php:276
+msgid "Generate custom URLs and QR codes for every discount coupon in your WooCommerce store. These unique coupons are easy to share and can even be set to add new products to the cart upon application."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:263
+#: includes/views/html-hf-othersolutions-page.php:284
 msgid "PayPal Express Checkout Payment Gateway for WooCommerce"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:264
-msgid ""
-"Offer a fast checkout experience to your customers with PayPal Payment "
-"Gateway. You can set up the PayPal Express Checkout option on the product "
-"pages to reduce the clicks to complete the checkout."
+#: includes/views/html-hf-othersolutions-page.php:285
+msgid "Offer a fast checkout experience to your customers with PayPal Payment Gateway. You can set up the PayPal Express Checkout option on the product pages to reduce the clicks to complete the checkout."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:272
+#: includes/views/html-hf-othersolutions-page.php:293
 msgid "WooCommerce Stripe Payment Gateway"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:273
-msgid ""
-"Ensure a fast and secure checkout experience for your users with WooCommerce "
-"Stripe Payment Gateway. Stripe accepts credit/debit cards and offers "
-"integrations with Apple Pay, SEPA, Alipay, and more."
+#: includes/views/html-hf-othersolutions-page.php:294
+msgid "Ensure a fast and secure checkout experience for your users with WooCommerce Stripe Payment Gateway. Stripe accepts credit/debit cards and offers integrations with Apple Pay, SEPA, Alipay, and more."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:281
+#: includes/views/html-hf-othersolutions-page.php:302
 msgid "Subscriptions for WooCommerce"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:282
-msgid ""
-"Enable subscriptions on your WooCommerce store to sell products (physical and "
-"digital) and services that require accepting recurring payments. Supports both "
-"simple and variable subscription products."
+#: includes/views/html-hf-othersolutions-page.php:303
+msgid "Enable subscriptions on your WooCommerce store to sell products (physical and digital) and services that require accepting recurring payments. Supports both simple and variable subscription products."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:290
+#: includes/views/html-hf-othersolutions-page.php:311
 msgid "Sequential Order Numbers for WooCommerce"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:291
-msgid ""
-"Number your WooCommerce orders in a custom, sequential & manageable format. "
-"The Sequential Order Number plugin lets your orders follow a custom & unique "
-"numbering sequence suitable for your business."
+#: includes/views/html-hf-othersolutions-page.php:312
+msgid "Number your WooCommerce orders in a custom, sequential & manageable format. The Sequential Order Number plugin lets your orders follow a custom & unique numbering sequence suitable for your business."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:299
+#: includes/views/html-hf-othersolutions-page.php:320
 msgid "WordPress Backup and Migration"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:300
-msgid ""
-"A complete WordPress backup and migration plugin to easily back up and migrate "
-"your WordPress website and database. This fast and flexible backup solution "
-"makes creating and restoring backups easy."
+#: includes/views/html-hf-othersolutions-page.php:321
+msgid "A complete WordPress backup and migration plugin to easily back up and migrate your WordPress website and database. This fast and flexible backup solution makes creating and restoring backups easy."
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:341
+#: includes/views/html-hf-othersolutions-page.php:329
+msgid "WooCommerce Product Recommendations"
+msgstr ""
+
+#: includes/views/html-hf-othersolutions-page.php:330
+msgid "Generate Intelligent Product Recommendations For Your WooCommerce Store. Offer WooCommerce smart product recommendations to your customers & maximize the average cart value."
+msgstr ""
+
+#: includes/views/html-hf-othersolutions-page.php:374
 msgid " Get Premium"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:348
+#: includes/views/html-hf-othersolutions-page.php:381
 msgid "Installed"
 msgstr ""
 
-#: includes/views/html-hf-othersolutions-page.php:357
+#: includes/views/html-hf-othersolutions-page.php:394
 msgid "Get Free Plugin"
 msgstr ""
 
@@ -978,9 +1000,7 @@ msgid "Import Comments in CSV Format:"
 msgstr ""
 
 #: includes/views/import/html-hf-import-product-comments.php:3
-msgid ""
-"Import comments in CSV format from different sources (  from your computer OR "
-"from another server via FTP )"
+msgid "Import comments in CSV format from different sources (  from your computer OR from another server via FTP )"
 msgstr ""
 
 #: includes/views/import/html-hf-import-product-comments.php:9
@@ -991,136 +1011,143 @@ msgstr ""
 msgid "Merge comments if exists"
 msgstr ""
 
-#: includes/views/market.php:13
-#, php-format
-msgid ""
-"<div class=\"\"><p><i>If you like the plugin please leave us a %1$s review!</"
-"i><p></div>"
+#. Translators: %1$s is the link to the plugin review page.
+#: includes/views/market.php:15
+msgid "If you like the plugin please leave us a %1$s review!"
 msgstr ""
 
-#: includes/views/market.php:13
+#: includes/views/market.php:17
 msgid "Thanks for the review."
 msgstr ""
 
-#: includes/views/market.php:23
+#: includes/views/market.php:29
 msgid "30 Day Money Back Guarantee"
 msgstr ""
 
-#: includes/views/market.php:24
+#: includes/views/market.php:30
 msgid "Fast and Superior Support"
 msgstr ""
 
-#: includes/views/market.php:25
+#: includes/views/market.php:31
 msgid "Third party plugin support"
 msgstr ""
 
-#: includes/views/market.php:28
+#: includes/views/market.php:34
 msgid "PREMIUM PLUGINS"
 msgstr ""
 
-#: includes/views/market.php:35
+#: includes/views/market.php:41
 msgid "Related free plugins from WebToffee"
 msgstr ""
 
-#: includes/views/market.php:38
+#: includes/views/market.php:44
 msgid "Product Import Export for WooCommerce"
 msgstr ""
 
-#: includes/views/market.php:39
+#: includes/views/market.php:45
 msgid "Import Export WordPress Users and WooCommerce Customers"
 msgstr ""
 
-#: includes/views/market.php:40
+#: includes/views/market.php:46
 msgid "Order Export & Order Import for WooCommerce"
 msgstr ""
 
-#: includes/views/market.php:41
+#: includes/views/market.php:47
 msgid "WordPress Backup & Migration"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:33
-#, php-format
+#: includes/views/market.php:48
+msgid "Product Feed for WooCommerce – Google Shopping Feed, Pinterest Feed, TikTok Ads & More"
+msgstr ""
+
+#. translators: %s is the scheduled time
+#: includes/views/settings/html-hf-settings-products.php:34
 msgid "The next export is scheduled on <code>%s</code>"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:35
+#: includes/views/settings/html-hf-settings-products.php:36
 msgid "There is no export scheduled."
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:38
-#, php-format
+#. translators: %s is the scheduled time
+#: includes/views/settings/html-hf-settings-products.php:40
 msgid "The next import is scheduled on <code>%s</code>"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:40
+#: includes/views/settings/html-hf-settings-products.php:42
 msgid "There is no import scheduled."
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:50
+#: includes/views/settings/html-hf-settings-products.php:52
 msgid "FTP Settings for Export"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:55
+#: includes/views/settings/html-hf-settings-products.php:57
 msgid "Enable FTP"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:114
+#: includes/views/settings/html-hf-settings-products.php:116
 msgid "Export Path"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:124
+#: includes/views/settings/html-hf-settings-products.php:126
 msgid "Export Filename"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:135
+#: includes/views/settings/html-hf-settings-products.php:129
+msgid "For example sample.csv"
+msgstr ""
+
+#: includes/views/settings/html-hf-settings-products.php:137
 msgid "Automatically Export WordPress Comments"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:139
-#: includes/views/settings/html-hf-settings-products.php:176
+#: includes/views/settings/html-hf-settings-products.php:141
+#: includes/views/settings/html-hf-settings-products.php:184
 msgid "Disabled"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:140
-#: includes/views/settings/html-hf-settings-products.php:177
+#: includes/views/settings/html-hf-settings-products.php:142
+#: includes/views/settings/html-hf-settings-products.php:185
 msgid "Enabled"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:147
+#: includes/views/settings/html-hf-settings-products.php:149
 msgid "Export Start Time"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:151
-#: includes/views/settings/html-hf-settings-products.php:196
-#, php-format
+#. translators: %s is the scheduled time
+#. translators: %s is the scheduled time.
+#: includes/views/settings/html-hf-settings-products.php:157
+#: includes/views/settings/html-hf-settings-products.php:208
 msgid "Local time is <code>%s</code>."
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:153
-#: includes/views/settings/html-hf-settings-products.php:198
-msgid "<code>Enter like 6:18pm or 12:27am</code>"
+#: includes/views/settings/html-hf-settings-products.php:161
+#: includes/views/settings/html-hf-settings-products.php:212
+msgid "Enter like 6:18pm or 12:27am"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:158
+#: includes/views/settings/html-hf-settings-products.php:166
 msgid "Export Interval [ Minutes ]"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:172
+#: includes/views/settings/html-hf-settings-products.php:180
 msgid "Automatically Import WordPress Comments"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:192
+#: includes/views/settings/html-hf-settings-products.php:200
 msgid "Import Start Time"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:203
+#: includes/views/settings/html-hf-settings-products.php:217
 msgid "Import Interval [ Minutes ]"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:211
+#: includes/views/settings/html-hf-settings-products.php:225
 msgid "Update Comment if exist"
 msgstr ""
 
-#: includes/views/settings/html-hf-settings-products.php:245
+#: includes/views/settings/html-hf-settings-products.php:259
 msgid "Save Settings"
 msgstr ""

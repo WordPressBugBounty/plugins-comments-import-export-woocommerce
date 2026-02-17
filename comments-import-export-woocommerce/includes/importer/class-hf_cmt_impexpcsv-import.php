@@ -999,7 +999,14 @@ class HW_Cmt_ImpExpCsv_Import extends WP_Importer
             }*/
 
             $comment_parent = $post['comment_parent'];
-            $comment_parent_session = unserialize(get_option('wt_post_comment_alter_id'));
+            $comment_parent_session = get_option('wt_post_comment_alter_id');
+            $comment_parent_session = is_string($comment_parent_session) ? unserialize($comment_parent_session) : $comment_parent_session;
+            if (!is_array($comment_parent_session)) {
+                $comment_parent_session = array();
+            }
+            if (!isset($comment_parent_session['wt_comment_basic']) || !is_array($comment_parent_session['wt_comment_basic'])) {
+                $comment_parent_session['wt_comment_basic'] = array();
+            }
             if ($post['comment_parent'] != 0) {
                 $arr_index = $post['comment_parent'];
                 if (isset($comment_parent_session['wt_comment_basic']) && array_key_exists($arr_index, $comment_parent_session['wt_comment_basic'])) {
