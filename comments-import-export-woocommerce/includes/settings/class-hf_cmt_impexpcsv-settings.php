@@ -20,6 +20,10 @@ class HW_Cmt_ImpExpCsv_Settings {
 			wp_die( esc_html__('You do not have permission to save these settings.', 'comments-import-export-woocommerce') );
 		}
 
+		// Preserve existing password unless explicitly changed or cleared.
+		$settings_db = get_option('woocommerce_' . HW_CMT_IMP_EXP_ID . '_settings', null);
+		$existing_password = isset($settings_db['ftp_password']) ? $settings_db['ftp_password'] : '';
+
 		$ftp_server     = ! empty($_POST['ftp_server']) ? sanitize_text_field(wp_unslash($_POST['ftp_server'])) : '';
 		$ftp_user       = ! empty($_POST['ftp_user']) ? sanitize_text_field(wp_unslash($_POST['ftp_user'])) : '';
 		$ftp_password   = ! empty($_POST['ftp_password']) ? sanitize_text_field(wp_unslash($_POST['ftp_password'])) : '';
@@ -27,6 +31,14 @@ class HW_Cmt_ImpExpCsv_Settings {
 		$use_ftps       = ! empty($_POST['use_ftps']);
 		$enable_ftp_ie  = ! empty($_POST['enable_ftp_ie']);
 		$use_pasv       = ! empty($_POST['use_pasv']);
+		$clear_password = ! empty($_POST['clear_ftp_password']);
+
+		// Keep prior password when the field is left blank.
+		if ( true === $clear_password ) {
+			$ftp_password = '';
+		} elseif ( '' === $ftp_password ) {
+			$ftp_password = $existing_password;
+		}
 
 		$allowed_modes = array('Enabled', 'Disabled');
 
@@ -64,8 +76,6 @@ class HW_Cmt_ImpExpCsv_Settings {
 			'auto_import_merge'        => $auto_import_merge,
 			'ftp_server_path'          => $ftp_server_path,
 		);
-
-		$settings_db = get_option('woocommerce_' . HW_CMT_IMP_EXP_ID . '_settings', null);
 
 		$orig_export_start_inverval = '';
 		if (isset($settings_db['auto_export_start_time'], $settings_db['auto_export_interval'])) {

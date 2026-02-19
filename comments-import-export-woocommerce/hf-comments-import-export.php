@@ -6,7 +6,7 @@
  * Description: Import and Export WordPress Comments From and To your Website.
  * Author: WebToffee
  * Author URI: https://www.webtoffee.com/
- * Version: 2.4.9
+ * Version: 2.5.0
  * Text Domain: comments-import-export-woocommerce
  * License: GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -27,7 +27,7 @@ if (!defined('HW_CMT_CSV_IM_EX')) {
 
 if (!defined('WBTE_CMT_IMP_EXP_VERSION')) {
 
-    define("WBTE_CMT_IMP_EXP_VERSION", "2.4.9");
+    define("WBTE_CMT_IMP_EXP_VERSION", '2.5.0');
 }
 
 define('HF_CMT_IM_EX_PATH_URL',  plugin_dir_url(__FILE__));

@@ -81,7 +81,13 @@ if ($scheduled_import_timestamp = wp_next_scheduled('hw_cmt_csv_im_ex_auto_impor
                     <label for="ftp_password"><?php esc_html_e('FTP Password', 'comments-import-export-woocommerce'); ?></label>
                 </th>
                 <td>
-                    <input type="password" name="ftp_password" id="ftp_password"  value="<?php echo esc_attr($ftp_password); ?>" class="input-text" />
+                    <!-- Do not render the saved password to avoid disclosure in HTML. -->
+                    <input type="password" name="ftp_password" id="ftp_password" value="" class="input-text" autocomplete="new-password" />
+                    <p class="description"><?php esc_html_e('Leave blank to keep the existing password.', 'comments-import-export-woocommerce'); ?></p>
+                    <label>
+                        <input type="checkbox" name="clear_ftp_password" value="1" />
+                        <?php esc_html_e('Clear saved password', 'comments-import-export-woocommerce'); ?>
+                    </label>
                 </td>
             </tr>
              <tr>

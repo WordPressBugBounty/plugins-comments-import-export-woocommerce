@@ -69,9 +69,14 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
      * Admin Menu
      */
     public function admin_menu() {
-       
-            $page = add_comments_page(esc_html__('Comments Im-Ex', 'comments-import-export-woocommerce'), __('Comments Im-Ex', 'comments-import-export-woocommerce'), apply_filters('product_reviews_csv_product_role', 'read'), 'hw_cmt_csv_im_ex', array($this, 'output'));
-       
+        // Restrict menu visibility to roles that can edit content by default.
+        $page = add_comments_page(
+            esc_html__('Comments Im-Ex', 'comments-import-export-woocommerce'),
+            __('Comments Im-Ex', 'comments-import-export-woocommerce'),
+            apply_filters('product_reviews_csv_product_role', 'edit_posts'),
+            'hw_cmt_csv_im_ex',
+            array($this, 'output')
+        );
     }
 
     /**
@@ -122,6 +127,10 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
 	 * Admin Screen output
 	 */
 	public function output() {
+        // Prevent direct access to the admin screen by low-privileged users.
+        if (!HW_Product_Comments_Import_Export_CSV::hf_user_permission()) {
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'comments-import-export-woocommerce'));
+        }
 
 		$tab = 'import';
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification not needed.
@@ -135,6 +144,13 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
 				$tab = 'othersolutions';
 			}
 		}
+
+        $can_view_settings = current_user_can('manage_options');
+
+        // Settings include credentials; require admin capability.
+        if ('settings' === $tab && !$can_view_settings) {
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'comments-import-export-woocommerce'));
+        }
 
 		include( 'views/html-hf-admin-screen.php' );
 	}
@@ -217,6 +233,9 @@ class HW_Cmt_ImpExpCsv_Admin_Screen {
      * Admin Page for settings
      */
     public function admin_settings_page() {
+        if (!current_user_can('manage_options')) {
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'comments-import-export-woocommerce'));
+        }
         include( 'views/settings/html-hf-settings-products.php' );
     }
 
