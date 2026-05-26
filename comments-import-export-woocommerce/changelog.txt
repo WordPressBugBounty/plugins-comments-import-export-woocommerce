@@ -1,6 +1,9 @@
 
 == Changelog ==
 
+= 2.5.1 2026-05-26 =
+* [Compatibility] - Tested OK with WordPress 7.0
+
 = 2.5.0 2026-02-19 =
 * [Fix] - FTP settings were accessible to low-privileged users. Thanks to @Jitlada for pointing out the issue.
 

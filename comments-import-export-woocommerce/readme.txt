@@ -3,9 +3,9 @@ Contributors: webtoffee
 Donate link: https://www.webtoffee.com/plugins/
 Tags: comments import, comments export, wordpress comments, wordpress comments import, wordpress comments export.
 Requires at least: 3.0.1
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.0
-Stable tag: 2.5.0
+Stable tag: 2.5.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -91,13 +91,13 @@ No. The plugin only supports the import and export of post/article comments. For
 
 == Changelog ==
 
-= 2.5.0 2026-02-19 =
-* [Fix] - FTP settings were accessible to low-privileged users. Thanks to @Jitlada for pointing out the issue.
+= 2.5.1 2026-05-26 =
+* [Compatibility] - Tested OK with WordPress 7.0
 
 [See changelog for all versions](https://plugins.svn.wordpress.org/comments-import-export-woocommerce/trunk/changelog.txt)
 
 
 == Upgrade Notice ==
 
-= 2.5.0 =
-* [Fix] - FTP settings were accessible to low-privileged users. Thanks to @Jitlada for pointing out the issue.
+= 2.5.1 =
+* [Compatibility] - Tested OK with WordPress 7.0
